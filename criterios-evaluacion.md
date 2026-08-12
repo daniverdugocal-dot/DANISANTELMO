@@ -44,11 +44,14 @@
 
 - **Guía CPNNI-24** — "Guía para redactar informes basados en casos", Instituto Internacional
   San Telmo. Estructura obligatoria y reglas de redacción resumidas en `estructura-informe.md`.
+- **Anexo al CPNNI-24 (2026)** — formato, extensión y normas de la defensa oral, resumidos en
+  `especificaciones-entrega.md`.
 
 ## Pendiente de definir
 
-- [ ] Formato y extensión de entrega
-- [ ] Fecha de entrega / fecha de defensa
-- [ ] Tema o empresa objeto del trabajo
-- [ ] Duración de la defensa oral
+- [x] ~~Formato y extensión de entrega~~ → Calibri 11, máx. 10 carillas (ideal 7), PDF
+- [x] ~~Duración de la defensa oral~~ → 10 minutos, 10-12 diapositivas
+- [ ] **El caso a analizar** (falta el documento del caso)
+- [ ] Fecha de entrega del informe / fecha de defensa
+- [ ] ¿Trabajo individual o de equipo? (el anexo menciona autor y, opcionalmente, equipo)
 - [ ] Resto de factores / requisitos que aporte Dani
