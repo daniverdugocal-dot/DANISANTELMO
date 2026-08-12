@@ -46,12 +46,20 @@
   San Telmo. Estructura obligatoria y reglas de redacción resumidas en `estructura-informe.md`.
 - **Anexo al CPNNI-24 (2026)** — formato, extensión y normas de la defensa oral, resumidos en
   `especificaciones-entrega.md`.
+- **Caso DTI-1399 "Alcopalet"** — datos extraídos en `caso-alcopalet-datos.md`; análisis
+  financiero de partida en `analisis-financiero.md`; cálculos en `scripts/calc_alcopalet.py`.
 
 ## Pendiente de definir
 
 - [x] ~~Formato y extensión de entrega~~ → Calibri 11, máx. 10 carillas (ideal 7), PDF
 - [x] ~~Duración de la defensa oral~~ → 10 minutos, 10-12 diapositivas
-- [ ] **El caso a analizar** (falta el documento del caso)
+- [x] ~~El caso a analizar~~ → DTI-1399 Alcopalet
 - [ ] Fecha de entrega del informe / fecha de defensa
 - [ ] ¿Trabajo individual o de equipo? (el anexo menciona autor y, opcionalmente, equipo)
 - [ ] Resto de factores / requisitos que aporte Dani
+
+## Estado del trabajo
+
+Con criterios, estructura, especificaciones de entrega y caso ya en el repo, lo que falta es
+construir el informe siguiendo el "orden de elaboración" de la guía CPNNI-24: argumento →
+problema → opciones/criterios → elección justificada → conclusión → resumen ejecutivo → portada.
