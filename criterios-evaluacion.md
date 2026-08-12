@@ -40,6 +40,11 @@
 - **Creatividad para generar soluciones y alternativas** (informe, criterio 8): no basta con
   diagnosticar; hay que proponer varias alternativas y justificar la elegida.
 
+## Documentación de referencia recibida
+
+- **Guía CPNNI-24** — "Guía para redactar informes basados en casos", Instituto Internacional
+  San Telmo. Estructura obligatoria y reglas de redacción resumidas en `estructura-informe.md`.
+
 ## Pendiente de definir
 
 - [ ] Formato y extensión de entrega
