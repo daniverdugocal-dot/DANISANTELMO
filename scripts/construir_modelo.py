@@ -535,10 +535,10 @@ f += 1
 for etiqueta, formula, nota in [
     ("Operarios implícitos — palet nuevo",
      f"={ESC['mod']['man']}*{LIN['u_nuevo']}/{R['coste_mo']}",
-     "= 10 operarios: los 8 de manual + los 2 de la línea automática. Coherente."),
+     "Da 10 operarios: los 8 de manual más los 2 de la línea automática. Coherente."),
     ("Operarios implícitos — palet usado",
      f"={ESC['mod']['usa']}*{LIN['u_usado']}/{R['coste_mo']}",
-     "= 7 operarios. Coincide exactamente con el dato del caso. El escandallo es fiable."),
+     "Da 7 operarios. Coincide exactamente con el dato del caso: el escandallo es fiable."),
 ]:
     ws.cell(f, 1, etiqueta).font = ETIQUETA
     c = ws.cell(f, 2, formula); c.font = FORMULA; c.number_format = NUM2
