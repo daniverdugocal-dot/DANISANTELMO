@@ -46,17 +46,41 @@
   San Telmo. Estructura obligatoria y reglas de redacción resumidas en `estructura-informe.md`.
 - **Anexo al CPNNI-24 (2026)** — formato, extensión y normas de la defensa oral, resumidos en
   `especificaciones-entrega.md`.
-- **Caso DTI-1399 "Alcopalet"** — datos extraídos en `caso-alcopalet-datos.md`; análisis
-  financiero de partida en `analisis-financiero.md`; cálculos en `scripts/calc_alcopalet.py`.
+- **Caso DGI-445 "El valor de la sostenibilidad. Piñas Cultivadas de Costa Rica"** — **caso
+  definitivo del trabajo final**. PDF original en `DGI-445-caso-pcc.pdf`; datos extraídos y
+  estructurados en `caso-pcc-datos.md`.
+
+### Material del caso anterior (no se usa)
+
+El repo conserva el trabajo hecho sobre el caso **DTI-1399 "Alcopalet"** (`caso-alcopalet-datos.md`,
+`analisis-financiero.md`, `scripts/`, ficheros Excel). Queda como histórico: **el trabajo final va
+sobre DGI-445**.
 
 ## Pendiente de definir
 
 - [x] ~~Formato y extensión de entrega~~ → Calibri 11, máx. 10 carillas (ideal 7), PDF
 - [x] ~~Duración de la defensa oral~~ → 10 minutos, 10-12 diapositivas
-- [x] ~~El caso a analizar~~ → DTI-1399 Alcopalet
+- [x] ~~El caso a analizar~~ → **DGI-445 Piñas Cultivadas de Costa Rica (PCC Fresh)**
 - [ ] Fecha de entrega del informe / fecha de defensa
 - [ ] ¿Trabajo individual o de equipo? (el anexo menciona autor y, opcionalmente, equipo)
 - [ ] Resto de factores / requisitos que aporte Dani
+
+## Implicación del cambio de caso
+
+Alcopalet era un caso **financiero** (P&G, escandallos, decisión de inversión). DGI-445 es un caso
+de **estrategia comercial y de marca**, y **no aporta ni un solo dato económico de la empresa**:
+sin cuenta de resultados, sin precios, sin márgenes, sin volúmenes. Dos consecuencias directas
+sobre los criterios de evaluación:
+
+- **Realismo** (criterio 6 en informe y defensa) es el criterio en riesgo. Sin cifras de la
+  empresa, la tentación es proponer ideas genéricas de marketing. Habrá que **construir un caso
+  económico propio** a partir de datos públicos del sector y de supuestos explícitos y defendibles
+  (precio de caja, volumen estimado desde las 1.500 ha, coste del co-branding, etc.), dejando
+  siempre visible qué es dato y qué es supuesto.
+- **Creatividad para generar soluciones y alternativas** (criterio 8 del informe): el caso ya sirve
+  tres alternativas cerradas en el Apéndice 1. Limitarse a elegir una de las tres es hacer lo
+  mínimo. Hay margen para construir **una opción propia** (p. ej. combinaciones por canal o por
+  mercado, o secuencias en el tiempo) y justificar por qué supera a las tres del caso.
 
 ## Estado del trabajo
 
