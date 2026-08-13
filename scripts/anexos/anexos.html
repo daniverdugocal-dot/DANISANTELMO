@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Anexo 1 — Dimensionado económico de PCC Fresh</title>
+<style>
+  @page { size: A4; margin: 22mm 25mm 18mm 25mm; }
+  :root { --accent:#1F4E3D; --bar:#1E8A5F; --grey:#595959; --soft:#F2F5F3; --rule:#D9E2DD; }
+  body {
+    font-family: "Calibri","Carlito","Liberation Sans",sans-serif;
+    font-size: 11pt; line-height: 1.15; color:#000; margin:0;
+  }
+  .anexo-title {
+    font-size: 12pt; font-weight: 700; color: var(--accent);
+    padding-bottom: 3pt; border-bottom: 1pt solid var(--accent); margin: 0 0 10pt;
+  }
+  .legend { font-size: 9pt; color: var(--grey); margin: 0 0 5pt; text-align: justify; }
+  .legend b { color: #000; }
+  table { border-collapse: collapse; width: 100%; margin: 0 0 4pt 0; font-size: 9.5pt; }
+  th { background: var(--accent); color:#fff; text-align:left; padding: 4pt 6pt; font-weight:700; }
+  th.num, td.num { text-align: right; }
+  td { padding: 3.5pt 6pt; border-bottom: 0.5pt solid var(--rule); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--soft); }
+  tr.total td { border-top: 1pt solid var(--accent); border-bottom: none; font-weight: 700; }
+  .src { font-size: 8pt; font-style: italic; color: var(--grey); margin: 3pt 0 16pt; }
+  figure { margin: 0 0 4pt; }
+  svg { width: 100%; height: auto; display: block; }
+</style>
+</head>
+<body>
+
+<div class="anexo-title">ANEXO 1. Dimensionado económico de la división de piña de PCC Fresh</div>
+
+<div class="legend"><b>Tabla A1.1. Volumen, ingresos y margen anuales estimados de PCC Fresh, y coste del esquema de co-branding según su alcance.</b> El caso no aporta información económica de la empresa, por lo que la estimación parte de las 1.500 hectáreas en producción y de la productividad exportadora del sector costarricense (175 millones de cajas de 12 kg sobre 42.000 hectáreas). La columna de origen distingue el dato público del supuesto propio. Escenario base; entre paréntesis, el rango de trabajo.</div>
+
+<table>
+<tr>
+  <th style="width:47%">Concepto</th>
+  <th class="num" style="width:30%">Valor</th>
+  <th style="width:23%">Origen</th>
+</tr>
+<tr><td>Superficie en producción</td><td class="num">1.500 ha</td><td>Caso DGI-445</td></tr>
+<tr><td>Productividad exportadora del sector</td><td class="num">4.167 cajas/ha</td><td>CANAPEP</td></tr>
+<tr><td>Volumen anual estimado</td><td class="num">6,25 M cajas (5,6–6,9)</td><td>Cálculo propio</td></tr>
+<tr><td>Precio por caja</td><td class="num">8,0 USD (7,5–9,0)</td><td>PROCOMER / mercado</td></tr>
+<tr><td>Ingresos anuales estimados</td><td class="num">50 M USD (42–62)</td><td>Cálculo propio</td></tr>
+<tr><td>Margen operativo de referencia</td><td class="num">12 % · 6,0 M USD</td><td>Supuesto propio</td></tr>
+<tr><td>Coste unitario de la banda individual</td><td class="num">0,50 USD/caja</td><td>Caso DGI-445</td></tr>
+<tr><td>Coste del co-branding en el 100 % del volumen</td><td class="num">3,1 M USD/año</td><td>Cálculo propio</td></tr>
+<tr class="total"><td>Coste del co-branding en el 25 % del volumen</td><td class="num">0,8 M USD/año</td><td>Cálculo propio</td></tr>
+</table>
+<div class="src">Fuentes: caso DGI-445; CANAPEP (2025); PROCOMER (2025); FAOSTAT (2024); cotización del mercado mayorista (2026).</div>
+
+<div class="legend"><b>Figura A1.1. Margen operativo anual resultante según el alcance del esquema de co-branding.</b> Millones de dólares que restan del margen operativo estimado una vez descontado el coste de 0,50 dólares por caja, aplicado a la totalidad del volumen exportado o solo al canal seleccionado.</div>
+
+<figure>
+<svg viewBox="0 0 660 220" role="img" aria-label="Margen operativo anual resultante según el alcance del co-branding">
+  <!-- gridlines -->
+  <g stroke="#D9E2DD" stroke-width="1">
+    <line x1="215" y1="18" x2="215" y2="178"/>
+    <line x1="348.3" y1="18" x2="348.3" y2="178"/>
+    <line x1="481.7" y1="18" x2="481.7" y2="178"/>
+    <line x1="615" y1="18" x2="615" y2="178"/>
+  </g>
+
+  <!-- bars -->
+  <g fill="#1E8A5F">
+    <path d="M215,28 H611 A4,4 0 0 1 615,32 V54 A4,4 0 0 1 611,58 H215 Z"/>
+    <path d="M215,82 H557.7 A4,4 0 0 1 561.7,86 V108 A4,4 0 0 1 557.7,112 H215 Z"/>
+    <path d="M215,136 H409.3 A4,4 0 0 1 413.3,140 V162 A4,4 0 0 1 409.3,166 H215 Z"/>
+  </g>
+
+  <!-- category labels -->
+  <g font-family="Carlito, Calibri, sans-serif" font-size="13" fill="#0b0b0b" text-anchor="end">
+    <text x="203" y="47">Sin co-branding</text>
+    <text x="203" y="101">Co-branding en el 25 % del volumen</text>
+    <text x="203" y="155">Co-branding en el 100 % del volumen</text>
+  </g>
+
+  <!-- value labels -->
+  <g font-family="Carlito, Calibri, sans-serif" font-size="13.5" font-weight="700" fill="#0b0b0b">
+    <text x="623" y="47">6,0</text>
+    <text x="569.7" y="101">5,2</text>
+    <text x="421.3" y="155">2,9</text>
+  </g>
+
+  <!-- axis -->
+  <line x1="215" y1="178" x2="640" y2="178" stroke="#B9C7C0" stroke-width="1"/>
+  <g font-family="Carlito, Calibri, sans-serif" font-size="11.5" fill="#595959" text-anchor="middle">
+    <text x="215" y="194">0</text>
+    <text x="348.3" y="194">2</text>
+    <text x="481.7" y="194">4</text>
+    <text x="615" y="194">6</text>
+  </g>
+  <text x="215" y="213" font-family="Carlito, Calibri, sans-serif" font-size="11.5" fill="#595959">Margen operativo anual, en millones de dólares</text>
+</svg>
+</figure>
+<div class="src">Elaboración propia a partir de la Tabla A1.1.</div>
+
+</body>
+</html>
