@@ -58,9 +58,10 @@ def fila(etiqueta, valor, fmt=EUR, fuente=FOR, pct=None, porque=None,
          relleno=None, ffont=None):
     global f
     ws.cell(f, 1, etiqueta).font = ffont or (TOT if relleno else ETI)
-    c = ws.cell(f, 2, valor)
-    c.font = ffont or fuente
-    c.number_format = fmt
+    if valor != "":                      # las filas «¿PARA QUÉ?» no llevan importe
+        c = ws.cell(f, 2, valor)
+        c.font = ffont or fuente
+        c.number_format = fmt
     if pct:
         p = ws.cell(f, 3, pct)
         p.font = FOR
