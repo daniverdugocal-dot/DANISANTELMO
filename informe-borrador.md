@@ -98,16 +98,20 @@ con sus relaciones de causalidad · definir es «poner límites»: decir tambié
 
 ### Texto definitivo — 6 líneas, 91 palabras
 
-El problema es de posicionamiento comercial, no productivo: PCC Fresh resolvió el reto técnico
-—piña libre de pesticidas al coste de la convencional—, pero no lo ha traducido en valor
-reconocible. Ocurre porque el mercado solo reconoce dos categorías, convencional y orgánica, y
-porque la empresa vende bajo marca ajena, invisible ante el consumidor. La consecuencia: ocho
-años de inversión sin ingreso diferencial y una ventaja que se diluirá en cuanto la competencia
-la replique. La urgencia la marca 2026, entre la incertidumbre arancelaria y la floración masiva
-prevista para julio.
+PCC Fresh ha desarrollado una innovación productiva única, pero no consigue que el mercado
+reconozca ni remunere ese valor diferencial. Su piña libre de pesticidas no encaja en las
+categorías comerciales existentes y se vende bajo la marca de los distribuidores, lo que impide
+construir una ventaja competitiva visible. Ocho años de inversión no generan así ingreso
+adicional, y la innovación corre el riesgo de ser imitada antes de convertirse en fuente
+sostenible de rentabilidad. La urgencia la marca 2026, entre la incertidumbre arancelaria y la
+floración masiva prevista para julio.
 
 **Estructura del párrafo**, que responde en orden a las preguntas de la guía: qué pasa (frase 1) ·
 por qué pasa (frase 2) · con qué consecuencias (frase 3) · con qué urgencia (frase 4).
+
+**Registro adoptado**: prosa corrida y vocabulario de dirección —innovación, valor diferencial,
+ventaja competitiva, rentabilidad—, sin frases telegráficas ni dos puntos enumerativos. Es el
+registro que se mantiene en el resto del informe.
 
 ### Síntomas frente al problema
 
