@@ -91,6 +91,57 @@ corrientes y es reversible si el mercado no responde.
 
 ## 3. Identificación del problema planteado
 
+*Requisito de la guía: 4-6 líneas · concisa y clara · de aquí se deriva por lógica todo lo demás ·
+distinguir el síntoma del problema en sí · un solo problema principal que arrastra a los demás,
+con sus relaciones de causalidad · definir es «poner límites»: decir también qué no es el problema
+· defecto más común: mirar la situación desde todos los ángulos sin comprometerse con ninguno.*
+
+### Texto definitivo — 6 líneas, 85 palabras
+
+El problema no es de producto ni de coste: ambos están resueltos. PCC ha construido un atributo
+que solo el consumidor final puede valorar y lo comercializa por un canal —transnacionales y
+grandes mayoristas— cuyo modelo consiste precisamente en borrar al productor. Sin acceso a ese
+consumidor, la piña libre de pesticidas no tiene quien la pague: el vacío de categoría y la
+confusión del comprador son consecuencia de esa distancia, no su causa. Y mientras la decisión se
+aplaza, una ventaja imitable pierde valor.
+
+### Síntomas frente al problema
+
+La guía advierte de que el síntoma es «señal o indicio de algo que está sucediendo» y no el
+problema en sí. En este caso todo lo visible es sintomático:
+
+| Lo que se ve (síntoma) | Lo que hay debajo |
+|---|---|
+| «¿Es orgánica?» — la confusión del comprador | El producto se explica a quien no lo consume |
+| La piña no encaja en ninguna categoría | Nadie crea una categoría desde una posición invisible |
+| El nombre «libre de pesticidas» comunica mal | Un problema de lenguaje solo importa si alguien te escucha |
+| Se vende al precio de la convencional | Sin marca ante el consumidor no hay prima que cobrar |
+
+Los cuatro son manifestaciones de una misma causa: **PCC no tiene acceso al único interlocutor
+capaz de pagar su diferencia.** Ese es el problema principal, y de él dependen los demás.
+
+### Los límites del problema — qué NO es
+
+Definir es poner límites, y conviene declararlos para que el jurado vea que la elección es
+deliberada:
+
+- **No es un problema productivo.** El sistema funciona, está escalado a 1.500 hectáreas y
+  certificado por Rainforest Alliance, GlobalGAP y Kiwa.
+- **No es un problema de costes.** La paridad con la piña convencional está lograda.
+- **No es un problema de demanda.** La fruta se vende entera; lo que no se cobra es la diferencia.
+- **No es un problema de I+D.** Ocho años de investigación ya han dado su resultado.
+- **Tampoco es, en el fondo, un problema de naming.** Rebautizar el atributo no sirve de nada
+  mientras el mensaje no llegue a quien decide la compra en el lineal.
+
+### Área afectada y urgencia
+
+Es un **problema comercial y de canal**, no financiero ni productivo. Afecta a la dirección
+comercial de PCC Fresh y, por dependencia, a la rentabilidad del activo construido durante ocho
+años. La urgencia no la marca una fecha contractual, sino la erosión: **la ventaja es replicable**,
+y cada temporada sin decisión la acerca a convertirse en un coste hundido.
+
+## 3. Identificación del problema planteado
+
 *Requisito de la guía: 4-6 líneas · concisa y clara, porque de ella se deriva por lógica todo lo
 posterior · distinguir **síntoma** de **problema en sí** · definir es «poner límites» y hay que
 expresarlos · comprometerse con un problema central y situar los demás por causalidad respecto a
