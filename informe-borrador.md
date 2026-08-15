@@ -120,27 +120,43 @@ limitaciones (temporales, financieras, de personal) · agruparlas en ventajas y 
 numerarlas · resaltarlas con un diseño apropiado · las opciones son variables que pueden
 controlarse y hasta cuantificarse · sin opciones claras no hay posibilidad de decidir.*
 
-### Texto de entrada — 3 líneas
+### Texto definitivo — 309 palabras · media carilla (129 mm de los 247 útiles)
 
-El caso plantea tres opciones; el análisis del canal permite formular una cuarta. Las cuatro son
-razonables y viables, y se presentan ordenadas por el alcance del cambio que exigen sobre el
-modelo actual. El coste anual estimado procede del dimensionado recogido en el Anexo 1.
+El caso plantea tres opciones y el análisis del canal permite formular una cuarta. Se presentan
+ordenadas por el alcance del cambio que exigen sobre el modelo actual, con el coste anual estimado
+en el Anexo 1.
 
-### Tabla de opciones
+**1. Continuidad en la marca del distribuidor.** Mantener el esquema actual y cobrar una prima
+solo a quien solicite la certificación.
 
-| # | Opción | Ventaja principal | Limitación principal | Coste anual |
-|---|---|---|---|---|
-| 1 | **Continuidad en marca del distribuidor** | Ingresos ciertos y crecimiento inmediato con clientes ya activos | La empresa sigue invisible y la ventaja técnica se diluye al ser replicada | — |
-| 2 | **Co-branding selectivo en el canal especializado** | Construye marca ante el consumidor sin tensionar la cartera actual | Alcance limitado; depende del éxito de la alianza con HoneyBear | 0,8 M USD |
-| 3 | **Co-branding universal al precio de la convencional** | Lidera la creación de la categoría; máxima exposición de marca | Tensa la relación con las transnacionales y absorbe la mitad del margen | 3,1 M USD |
-| 4 | **Transición a producción orgánica certificada** | Categoría ya reconocida, con sobreprecio medio del 61 % | Tres años de conversión, nueva inversión en I+D y pérdida de la paridad de coste | No cuantificable |
+- *Ventajas:* ingresos ciertos, crecimiento inmediato y ninguna inversión adicional.
+- *Limitaciones:* la empresa sigue invisible y la ventaja se diluye al ser replicada.
 
-### Texto de cierre — 3 líneas
+**2. Co-branding selectivo en el canal especializado.** Desplegar el sello CERO™ donde el atributo
+se percibe y se paga, a partir de la alianza con HoneyBear. Coste: 0,8 millones de dólares
+anuales.
 
-La opción 4 es la única que no admite cuantificación con la información disponible, y eso es en sí
-mismo un dato: obliga a comprometer el activo que sostiene todo el modelo —la paridad de coste—
-sin poder anticipar el resultado. Las tres primeras, en cambio, se mueven dentro del sistema
-productivo ya construido.
+- *Ventajas:* construye marca ante el consumidor sin tensionar la cartera actual, y es reversible.
+- *Limitaciones:* alcance inicial reducido y dependencia de un solo socio.
+
+**3. Co-branding universal al precio de la convencional.** Condicionar toda venta, actual y futura,
+a la presencia del sello junto a la marca del cliente. Coste: 3,1 millones de dólares anuales.
+
+- *Ventajas:* sitúa a PCC Fresh como creadora de la categoría, con la máxima exposición posible.
+- *Limitaciones:* absorbe la mitad del margen y tensiona a las transnacionales, de las que depende
+  la caja.
+
+**4. Transición a la producción orgánica certificada.** Abandonar el esquema libre de pesticidas e
+invertir en la certificación orgánica.
+
+- *Ventajas:* categoría ya reconocida por el consumidor, con un sobreprecio medio del 61 %.
+- *Limitaciones:* tres años de conversión, nueva I+D, menores rendimientos y pérdida de la paridad
+  de coste.
+
+Solo la última no admite cuantificación con la información disponible, y esa imposibilidad es en sí
+misma un dato: exige comprometer el activo sobre el que descansa todo el modelo —la paridad de
+coste— sin poder anticipar el resultado. Las tres primeras operan dentro del sistema ya construido
+y difieren solo en el alcance que se dé a la marca propia.
 
 ### Decisiones de redacción
 
