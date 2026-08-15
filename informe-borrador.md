@@ -232,6 +232,44 @@ sostenibilidad accesible, mientras que la categoría orgánica opera con un sobr
 61 % que excluye por definición al consumidor masivo. Adoptarla resolvería el problema de
 categoría al precio de renunciar al propósito.
 
+### 6.2 Resumen de las consecuencias financieras — 296 palabras · 96 mm (0,39 carilla)
+
+Las consecuencias financieras de la alternativa elegida se resumen a continuación; su desarrollo
+completo figura en los Anexos 1 y 3.
+
+La división explota 1.500 hectáreas, equivalentes a un volumen anual estimado de 6,25 millones de
+cajas y a unos 50 millones de dólares de ingresos, con un margen operativo de referencia próximo a
+los 6 millones. Sobre esa base, la aplicación del sello CERO™ añade un coste unitario de 0,50
+dólares por caja, de modo que extenderlo a la totalidad del volumen ascendería a 3,1 millones
+anuales, esto es, cerca de la mitad del margen operativo.
+
+Dado que la alternativa renuncia deliberadamente a aplicar sobreprecio, deducimos que el retorno
+no puede proceder del precio, sino del crecimiento del volumen y de la menor dependencia
+comercial, porque el único ingreso adicional posible es el que aporten nuevos clientes atraídos
+por la marca. Si aplicamos el criterio económico-financiero de riesgo asociado a la implantación,
+entonces sucederá que un despliegue simultáneo sobre toda la cartera exigiría, valorado al margen
+unitario actual, incrementar las ventas en más de un 50 % para quedar compensado, magnitud
+inalcanzable en un solo ejercicio. Iniciar el despliegue en el canal especializado, en torno al
+25 % del volumen, reduce el coste a 0,8 millones anuales y sitúa el umbral de compensación en un
+13 % de crecimiento, cifra compatible con la demanda existente y con la alianza ya negociada con
+HoneyBear.
+
+Se propone, por tanto, una implantación por fases: el coste se asume de forma escalonada, el
+margen no queda comprometido en ningún ejercicio y la extensión al resto de la cartera se
+condiciona al reconocimiento efectivo de la categoría. El detalle del dimensionado y de los
+escenarios figura en el Anexo 1, y la comparación económica entre alternativas, en el Anexo 3.
+
+#### Cálculo del umbral de compensación (no va al informe)
+
+| Concepto | Valor |
+|---|---|
+| Margen operativo unitario | 8,0 USD/caja × 12 % = **0,96 USD/caja** |
+| Coste del despliegue al 100 % | 3,1 M USD → **3,23 M cajas adicionales = +51,7 %** |
+| Coste del despliegue al 25 % | 0,78 M USD → **0,81 M cajas adicionales = +13,0 %** |
+
+Supuesto declarado: el volumen adicional se valora al margen unitario actual. Es una
+simplificación conservadora y debe presentarse como tal si el jurado pregunta.
+
 ### Aviso sobre la coherencia con el Anexo 1
 
 La opción elegida —co-branding con presencia visible **en el empaque de todos los clientes**—
