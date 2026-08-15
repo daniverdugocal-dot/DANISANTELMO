@@ -88,3 +88,57 @@ corrientes y es reversible si el mercado no responde.
 | Alternativas | Las tres, enumeradas | Las tres, con su coste o su pérdida |
 | Decisión | La cuarta vía, con su cifra | La cuarta vía, con cifra y reversibilidad |
 | Criterios | Implícitos en la cifra comparada | Explícitos: coste, riesgo comercial y reversibilidad |
+
+## 3. Identificación del problema planteado
+
+*Requisito de la guía: 4-6 líneas · concisa y clara, porque de ella se deriva por lógica todo lo
+posterior · distinguir **síntoma** de **problema en sí** · definir es «poner límites» y hay que
+expresarlos · comprometerse con un problema central y situar los demás por causalidad respecto a
+él.*
+
+### Texto recomendado — 6 líneas, 91 palabras
+
+Lo que ocurre no es un problema de comunicación, sino de acceso al mercado: PCC vende a granel
+bajo la marca de sus distribuidores y, sin contacto con el consumidor final, ningún atributo
+diferencial puede monetizarse; la confusión del comprador es solo el síntoma. Se trata, por
+tanto, de un problema comercial y de posicionamiento —no productivo ni financiero—, localizado
+sobre todo en Estados Unidos y urgente: mientras la ventaja no se capitaliza se deprecia, porque
+el modelo es replicable y entretanto la fruta se vende al precio de la convencional.
+
+### Variante más seca — 5 líneas, 72 palabras
+
+El problema no es de comunicación, sino de acceso al mercado: PCC vende bajo la marca de sus
+distribuidores y, sin contacto con el consumidor final, ningún atributo diferencial puede
+monetizarse. La confusión del comprador es el síntoma, no la causa. Es un problema comercial y de
+posicionamiento —no productivo ni financiero—, concentrado en Estados Unidos y urgente, porque el
+modelo es replicable y, mientras no se capitaliza, la ventaja se deprecia.
+
+### Por qué este problema y no otro
+
+El caso invita a formular el problema como *«no sabemos explicar nuestra piña»*. Esa es la
+formulación del propio equipo comercial y es un **síntoma**: si el problema fuera de lenguaje, se
+resolvería con una campaña. No se resuelve, porque incluso una explicación perfecta llegaría a un
+comprador intermedio que no tiene incentivo alguno en trasladarla —vende su propia marca— y a un
+consumidor que nunca llega a ver el nombre del productor.
+
+**Jerarquía de problemas y su relación causal con el central:**
+
+| Problema | Relación con el central |
+|---|---|
+| **Central: PCC no controla el punto de contacto con el consumidor** | Causa raíz: sin él, ningún atributo se paga |
+| El producto no encaja en las categorías del mercado | Agrava el central: sin categoría, el intermediario no tiene dónde colocarlo |
+| La denominación «libre de pesticidas» nombra lo que se quiere evitar | Subordinado al anterior; problema de forma, no de fondo |
+| Dependencia financiera de los grandes distribuidores | Restringe la solución: impide romper con el canal actual |
+| Ventaja técnica replicable | Fija el plazo: convierte el problema en urgente |
+
+**Los límites del problema** (definir es poner límites):
+
+- **Es** un problema comercial y de posicionamiento. **No es** productivo —el sistema funciona y
+  tiene paridad de coste— ni financiero —no hay tensión de tesorería descrita en el caso—.
+- **Dónde:** Estados Unidos en primer término, que absorbe el 52 % de las exportaciones
+  costarricenses y donde están las conversaciones fallidas y la alianza con HoneyBear. Europa
+  queda fuera del alcance de esta decisión.
+- **Quién decide:** la dirección del Grupo Los Nacientes. **Quién está afectado:** PCC Fresh y su
+  relación con los distribuidores actuales.
+- **Cuándo:** decisión en la primavera de 2026, antes de las ferias de julio en Monterrey y de la
+  respuesta pendiente a HoneyBear.
