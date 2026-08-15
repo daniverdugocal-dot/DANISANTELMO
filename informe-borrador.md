@@ -279,6 +279,34 @@ Rainforest Alliance y GlobalGAP, y el 82 % de sustitución de insumo químico—
 cualquier acusación de greenwashing. En un sector señalado internacionalmente por su impacto
 ambiental, esa transparencia constituye en sí misma un factor de diferenciación.
 
+### 6.4 Esfuerzo en áreas determinadas — 232 palabras · 89 mm (0,36 carilla)
+
+El esfuerzo que exige la decisión se reparte de forma muy desigual entre áreas; su desarrollo se
+recoge en el Anexo 4.
+
+El área comercial soporta la mayor carga. Debe cerrar los términos de la alianza con HoneyBear,
+negociar la inclusión del sello con cada cliente del canal especializado y sostener la presencia
+en las ferias de julio en Monterrey, donde la marca se presenta por primera vez. Le corresponde
+asimismo sustituir el argumentario técnico vigente por otro construido sobre el beneficio
+percibido por el consumidor, pues la experiencia acumulada demuestra que explicar el sistema
+productivo no genera interés comercial.
+
+El área de marketing y comunicación asume el esfuerzo más novedoso: la marca CERO™ requiere un
+relato propio, material específico de punto de venta y una política de uso del sello que garantice
+su coherencia cuando aparezca junto al distintivo de terceros.
+
+El esfuerzo productivo, en cambio, es reducido. El sistema de cultivo no se modifica en absoluto y
+la única adaptación afecta a la línea de empaque, que debe incorporar el banding individual y la
+trazabilidad por cliente.
+
+En el área de personal no se precisan nuevas incorporaciones en campo, sino el refuerzo de la
+estructura comercial en Estados Unidos y la formación del equipo de ventas. Finanzas, por último,
+debe dotar los 0,8 millones de dólares del primer ejercicio y establecer la revisión anual que
+condiciona la extensión del despliegue.
+
+**Diferencia con el apartado anterior**: 6.3 responde a *qué le ocurre a la empresa* como resultado
+de la decisión; 6.4 responde a *qué tiene que hacer cada área* para ejecutarla. No deben solaparse.
+
 **Reparto entre cuerpo y anexos**, según la regla de que los pormenores van al anexo:
 
 | Consecuencia | Resumen en el cuerpo | Pormenor en el anexo |
