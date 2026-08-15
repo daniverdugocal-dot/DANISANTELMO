@@ -259,6 +259,35 @@ margen no queda comprometido en ningún ejercicio y la extensión al resto de la
 condiciona al reconocimiento efectivo de la categoría. El detalle del dimensionado y de los
 escenarios figura en el Anexo 1, y la comparación económica entre alternativas, en el Anexo 3.
 
+### 6.3 Consecuencias de otro tipo — 215 palabras · 71 mm (0,29 carilla)
+
+En el plano comercial, la decisión modifica la relación con los grandes distribuidores, a quienes
+se solicita ceder espacio de marca en el empaque. El despliegue por fases evita plantear esa
+exigencia de forma simultánea a toda la cartera: se inicia con socios que comparten la filosofía
+de producción —HoneyBear y su acceso a Sprouts Farmers Market— y se extiende después con casos de
+éxito ya demostrados. La consecuencia buscada es reducir la concentración de la facturación en las
+transnacionales, hoy principal fuente de dependencia financiera.
+
+En el plano organizativo y humano, la alternativa elegida no altera el sistema productivo, por lo
+que no reabre la rotación de agrónomos e ingenieros que la empresa sufrió al implantar el modelo
+libre de pesticidas. Exige, en cambio, reforzar la función comercial y de comunicación en Estados
+Unidos y formar al equipo de ventas para argumentar un atributo y no un precio.
+
+En el plano ambiental y reputacional, la decisión expone públicamente el sistema de economía
+circular, lo que obliga a sostener el mensaje con evidencia verificable —las certificaciones Kiwa,
+Rainforest Alliance y GlobalGAP, y el 82 % de sustitución de insumo químico— para prevenir
+cualquier acusación de greenwashing. En un sector señalado internacionalmente por su impacto
+ambiental, esa transparencia constituye en sí misma un factor de diferenciación.
+
+**Reparto entre cuerpo y anexos**, según la regla de que los pormenores van al anexo:
+
+| Consecuencia | Resumen en el cuerpo | Pormenor en el anexo |
+|---|---|---|
+| Financiera | Coste, umbral de compensación y fases | Anexos 1 y 3 |
+| Comercial | Qué se pide a cada tipo de cliente y en qué orden | Anexo 2 |
+| Organizativa | Refuerzo comercial y formación de ventas | Anexo 4 |
+| Ambiental | Evidencia que sostiene el mensaje | — (ya en el caso) |
+
 #### Cálculo del umbral de compensación (no va al informe)
 
 | Concepto | Valor |
