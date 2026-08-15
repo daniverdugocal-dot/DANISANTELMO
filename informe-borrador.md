@@ -157,6 +157,70 @@ tras la conjunción adversativa, sus limitaciones. La agrupación que pide la gu
 dentro de la prosa. La numeración se resuelve con ordinales —la primera, la segunda, la tercera,
 la cuarta— en lugar de con dígitos y viñetas.
 
+## 5. Fijación de criterios
+
+*Requisito de la guía: **no es criterio aquello que no discrimina entre opciones** · un criterio
+es en el fondo una limitación o restricción (financiera, temporal, de personal) que sirve para
+valorar opciones · formulación breve, mensurable al menos por comparación, y relacionada con el
+problema y las opciones · la guía ilustra además una forma «plástica» de evaluar: el cubo de
+impacto, riesgo e incertidumbre.*
+
+### Texto definitivo — 310 palabras · 109 mm de los 247 útiles (0,44 carilla)
+
+Un criterio solo lo es si discrimina entre las opciones planteadas; los que las valoran a todas
+por igual se han descartado. Se agrupan en cuatro familias y se aplican en el Anexo 3, donde cada
+opción se pondera en términos de impacto, riesgo e incertidumbre.
+
+Los **criterios económicos** son tres: el coste anual que cada opción detrae del margen operativo,
+que va de cero a 3,1 millones de dólares; la conservación de la paridad de coste con la piña
+convencional, que solo la transición orgánica compromete; y la reversibilidad de la inversión,
+esto es, cuánto se pierde si hay que dar marcha atrás.
+
+Los **criterios estratégicos y de mercado** miden lo que cada opción hace con el problema. El
+primero es la visibilidad ante el consumidor final, única vía para que alguien pague la
+diferencia. El segundo es la durabilidad de la ventaja, es decir, cuánto protege la opción frente
+a la imitación. El tercero es el riesgo que la opción introduce en las relaciones comerciales
+vigentes y, por tanto, en el flujo de caja corriente.
+
+Los **criterios organizativos y humanos** atienden a la capacidad real de ejecución. Renegociar la
+cartera completa exigiría una fuerza comercial que la empresa no tiene desplegada en Estados
+Unidos, y volver a cambiar el modelo productivo reabriría la rotación de agrónomos e ingenieros
+que ya se sufrió al adoptar el esquema libre de pesticidas.
+
+El último criterio es de **coherencia con el propósito**. La empresa ha construido su identidad
+sobre la idea de una sostenibilidad accesible y no de lujo; una opción que solo funcione con un
+sobreprecio del 61 % es, en sus propios términos, una contradicción.
+
+Quedan fuera, en cambio, criterios que no discriminan: la calidad del fruto, la solidez del
+sistema productivo o la disponibilidad de certificaciones son idénticas en las cuatro opciones y,
+por tanto, no ayudan a elegir.
+
+### Cómo discrimina cada criterio
+
+Tabla de contraste que **no va al informe** — sirve para verificar que ningún criterio incumple la
+regla y para responder en el turno de preguntas.
+
+| Criterio | Op. 1 marca ajena | Op. 2 selectivo | Op. 3 universal | Op. 4 orgánico |
+|---|---|---|---|---|
+| Coste anual sobre el margen | 0 | 0,8 M | 3,1 M | No cuantificable |
+| Paridad de coste | Intacta | Intacta | Intacta | **Comprometida** |
+| Reversibilidad | Total | Alta | Baja | **Nula** |
+| Visibilidad ante el consumidor | Nula | Parcial | Máxima | Alta, en categoría ajena |
+| Durabilidad frente a la imitación | Nula | Media | Alta | Media |
+| Riesgo sobre la caja corriente | Nulo | Bajo | **Alto** | Medio |
+| Capacidad de ejecución comercial | Suficiente | Suficiente | **Insuficiente** | Suficiente |
+| Estabilidad del equipo técnico | Intacta | Intacta | Intacta | **En riesgo** |
+| Coherencia con el propósito | Neutra | Alta | Alta | **Contradictoria** |
+
+Ninguna fila es plana: los nueve criterios discriminan.
+
+### Nota sobre el formato
+
+La guía recomienda para este apartado «frases resaltadas con viñetas de topos». Se ha mantenido la
+prosa por coherencia con el resto del informe, marcando en negrita el nombre de cada familia para
+que el lector localice los grupos de un vistazo. **Convertirlo a viñetas es inmediato si el tutor
+prefiere la forma literal de la guía.**
+
 ### Decisiones de redacción
 
 - **Orden.** Se ordenan por alcance del cambio, de menor a mayor, y así se declara en el texto de
