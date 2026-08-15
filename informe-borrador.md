@@ -96,14 +96,18 @@ distinguir el síntoma del problema en sí · un solo problema principal que arr
 con sus relaciones de causalidad · definir es «poner límites»: decir también qué no es el problema
 · defecto más común: mirar la situación desde todos los ángulos sin comprometerse con ninguno.*
 
-### Texto definitivo — 6 líneas, 85 palabras
+### Texto definitivo — 6 líneas, 91 palabras
 
-El problema no es de producto ni de coste: ambos están resueltos. PCC ha construido un atributo
-que solo el consumidor final puede valorar y lo comercializa por un canal —transnacionales y
-grandes mayoristas— cuyo modelo consiste precisamente en borrar al productor. Sin acceso a ese
-consumidor, la piña libre de pesticidas no tiene quien la pague: el vacío de categoría y la
-confusión del comprador son consecuencia de esa distancia, no su causa. Y mientras la decisión se
-aplaza, una ventaja imitable pierde valor.
+El problema es de posicionamiento comercial, no productivo: PCC Fresh resolvió el reto técnico
+—piña libre de pesticidas al coste de la convencional—, pero no lo ha traducido en valor
+reconocible. Ocurre porque el mercado solo reconoce dos categorías, convencional y orgánica, y
+porque la empresa vende bajo marca ajena, invisible ante el consumidor. La consecuencia: ocho
+años de inversión sin ingreso diferencial y una ventaja que se diluirá en cuanto la competencia
+la replique. La urgencia la marca 2026, entre la incertidumbre arancelaria y la floración masiva
+prevista para julio.
+
+**Estructura del párrafo**, que responde en orden a las preguntas de la guía: qué pasa (frase 1) ·
+por qué pasa (frase 2) · con qué consecuencias (frase 3) · con qué urgencia (frase 4).
 
 ### Síntomas frente al problema
 
