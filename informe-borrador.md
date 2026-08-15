@@ -113,6 +113,60 @@ por qué pasa (frase 2) · con qué consecuencias (frase 3) · con qué urgencia
 ventaja competitiva, rentabilidad—, sin frases telegráficas ni dos puntos enumerativos. Es el
 registro que se mantiene en el resto del informe.
 
+## 4. Presentación, análisis y evaluación de opciones
+
+*Requisito de la guía: exponer las opciones razonables y viables · frases breves · expresar sus
+limitaciones (temporales, financieras, de personal) · agruparlas en ventajas y desventajas ·
+numerarlas · resaltarlas con un diseño apropiado · las opciones son variables que pueden
+controlarse y hasta cuantificarse · sin opciones claras no hay posibilidad de decidir.*
+
+### Texto de entrada — 3 líneas
+
+El caso plantea tres opciones; el análisis del canal permite formular una cuarta. Las cuatro son
+razonables y viables, y se presentan ordenadas por el alcance del cambio que exigen sobre el
+modelo actual. El coste anual estimado procede del dimensionado recogido en el Anexo 1.
+
+### Tabla de opciones
+
+| # | Opción | Ventaja principal | Limitación principal | Coste anual |
+|---|---|---|---|---|
+| 1 | **Continuidad en marca del distribuidor** | Ingresos ciertos y crecimiento inmediato con clientes ya activos | La empresa sigue invisible y la ventaja técnica se diluye al ser replicada | — |
+| 2 | **Co-branding selectivo en el canal especializado** | Construye marca ante el consumidor sin tensionar la cartera actual | Alcance limitado; depende del éxito de la alianza con HoneyBear | 0,8 M USD |
+| 3 | **Co-branding universal al precio de la convencional** | Lidera la creación de la categoría; máxima exposición de marca | Tensa la relación con las transnacionales y absorbe la mitad del margen | 3,1 M USD |
+| 4 | **Transición a producción orgánica certificada** | Categoría ya reconocida, con sobreprecio medio del 61 % | Tres años de conversión, nueva inversión en I+D y pérdida de la paridad de coste | No cuantificable |
+
+### Texto de cierre — 3 líneas
+
+La opción 4 es la única que no admite cuantificación con la información disponible, y eso es en sí
+mismo un dato: obliga a comprometer el activo que sostiene todo el modelo —la paridad de coste—
+sin poder anticipar el resultado. Las tres primeras, en cambio, se mueven dentro del sistema
+productivo ya construido.
+
+### Decisiones de redacción
+
+- **Orden.** Se ordenan por alcance del cambio, de menor a mayor, y así se declara en el texto de
+  entrada. La guía pide numerarlas «según su importancia»; ordenarlas por importancia colocaría la
+  opción propia en primer lugar y anticiparía la decisión antes del apartado de criterios.
+  *(Decisión revisable si el tutor lee esa regla en sentido estricto.)*
+- **La cuarta opción.** Es la aportación propia del informe y responde al criterio 8 de evaluación,
+  creatividad para generar soluciones y alternativas. Nace del cálculo del Anexo 1: si el
+  co-branding cuesta 3,1 millones sobre el volumen completo y 0,8 sobre el canal especializado, la
+  disyuntiva del caso entre imponerlo a todos o no imponerlo a nadie es falsa.
+- **Limitaciones.** Se recogen las tres familias que pide la guía: financiera (coste anual),
+  temporal (tres años de conversión orgánica) y comercial (dependencia de HoneyBear, tensión con
+  las transnacionales).
+- **DAFO.** La guía la sugiere para casos complejos. Se descarta en el informe por espacio —una
+  matriz ocupa media carilla que no tenemos— y se reserva como diapositiva de apoyo para la
+  defensa, donde sí aporta.
+
+### Pendiente de verificar
+
+- [ ] El plazo de **tres años de conversión** a producción orgánica. Es el periodo estándar de los
+      reglamentos estadounidense y europeo (36 meses), pero conviene citarlo con fuente antes de
+      afirmarlo en el informe.
+- [ ] El **25 % del volumen** que sustenta el coste de 0,8 M USD de la opción 2 sale del Anexo 2,
+      todavía sin construir. Si la segmentación arroja otro porcentaje, esta tabla se actualiza.
+
 ### Síntomas frente al problema
 
 La guía advierte de que el síntoma es «señal o indicio de algo que está sucediendo» y no el
