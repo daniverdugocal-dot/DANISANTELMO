@@ -193,6 +193,58 @@ Quedan excluidos, por no discriminar entre alternativas, la calidad del fruto, l
 sistema productivo y la disponibilidad de certificaciones, atributos que las cuatro opciones
 comparten por igual.
 
+## 6. Elección justificada de una opción
+
+*Requisito de la guía: es una de las partes más importantes del informe · analizar, explicar,
+interpretar y deducir con corrección lógica · no basta la paráfrasis ni el comentario de los datos
+· no dejar los cálculos sin interpretar · expresar lo cierto como cierto y lo hipotético solo como
+probable · consta de elección justificada, **rechazo justificado de las otras**, y resumen de las
+consecuencias financieras y de otro tipo, cuyos pormenores van a los anexos · fórmulas de
+causa-efecto: «dado el dato/hecho A, deducimos que…, porque…» y «si aplicamos el criterio A,
+entonces sucederá que…».*
+
+> **Juego de alternativas vigente** (tres, según la redacción del apartado de opciones):
+> 1. Co-branding propio al mismo precio que la piña convencional — **opción elegida**
+> 2. Continuidad en marca blanca del distribuidor — rechazada
+> 3. Transición hacia la certificación orgánica — rechazada
+
+### 6.1 Rechazo justificado de las otras — 258 palabras · 85 mm (0,34 carilla)
+
+El rechazo de las alternativas descartadas se deduce de la aplicación de los criterios expuestos.
+
+La continuidad en marca blanca se descarta porque no supera el criterio estratégico. Si se
+mantiene el esquema vigente, la empresa conserva ingresos ciertos, pero permanece sin acceso al
+consumidor final y su atributo diferencial continúa sin remuneración. Dado que la ventaja es
+replicable —la competencia opera bajo el mismo marco regulatorio y con proveedores tecnológicos
+equivalentes—, cada campaña sin construir marca reduce el valor del activo desarrollado durante
+ocho años. La alternativa no resuelve el problema identificado, sino que lo posterga con un coste
+de oportunidad creciente: su bajo riesgo inmediato se convierte, a medio plazo, en el riesgo
+mayor.
+
+La transición hacia la certificación orgánica se descarta por razones económicas y de propósito.
+Si se aplica el criterio de conservación de la paridad de coste, la alternativa lo incumple de
+forma directa: eliminar el 40 % de fertilizantes nitrogenados sintéticos y el 18 % de herbicidas
+reduce los rendimientos y compromete la única ventaja que hoy permite competir en precio. A ello
+se añaden un horizonte de conversión de tres años y una nueva inversión en investigación y
+desarrollo, en un contexto de mercado que exige respuesta inmediata. Desde el criterio de
+coherencia, además, la contradicción es de fondo: el Grupo ha construido su identidad sobre una
+sostenibilidad accesible, mientras que la categoría orgánica opera con un sobreprecio medio del
+61 % que excluye por definición al consumidor masivo. Adoptarla resolvería el problema de
+categoría al precio de renunciar al propósito.
+
+### Aviso sobre la coherencia con el Anexo 1
+
+La opción elegida —co-branding con presencia visible **en el empaque de todos los clientes**—
+implica aplicar el sello al 100 % del volumen, y el Anexo 1 cifra ese despliegue en **3,1 millones
+de dólares anuales, en torno a la mitad del margen operativo estimado**. Tal como está redactada,
+la elección entra en conflicto con el propio anexo.
+
+La salida no es cambiar de opción, sino precisar **cómo se ejecuta**: se decide el co-branding
+propio y se despliega por fases, comenzando por el canal especializado —0,8 millones el primer
+año, a través de la alianza con HoneyBear— y extendiéndolo al resto de la cartera a medida que la
+categoría gane reconocimiento. Así la decisión mantiene el alcance estratégico que la justifica y
+el número del Anexo 1 pasa de ser una objeción a ser el argumento del calendario del Anexo 4.
+
 ### Cómo discrimina cada criterio
 
 Tabla de contraste que **no va al informe** — sirve para verificar que ningún criterio incumple la
