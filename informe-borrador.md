@@ -165,35 +165,33 @@ valorar opciones · formulación breve, mensurable al menos por comparación, y 
 problema y las opciones · la guía ilustra además una forma «plástica» de evaluar: el cubo de
 impacto, riesgo e incertidumbre.*
 
-### Texto definitivo — 310 palabras · 109 mm de los 247 útiles (0,44 carilla)
+### Texto definitivo — 276 palabras · 102 mm de los 247 útiles (0,41 carilla)
 
-Un criterio solo lo es si discrimina entre las opciones planteadas; los que las valoran a todas
-por igual se han descartado. Se agrupan en cuatro familias y se aplican en el Anexo 3, donde cada
-opción se pondera en términos de impacto, riesgo e incertidumbre.
+La evaluación de las alternativas estratégicas debe realizarse a partir de criterios que permitan
+valorar su capacidad para transformar la ventaja técnica de PCC Fresh en una ventaja competitiva
+sostenible. Dado que la decisión afectará al posicionamiento, la rentabilidad y el desarrollo
+futuro de la empresa, los criterios se agrupan en tres dimensiones principales, y solo se retienen
+aquellos que permiten distinguir unas opciones de otras.
 
-Los **criterios económicos** son tres: el coste anual que cada opción detrae del margen operativo,
-que va de cero a 3,1 millones de dólares; la conservación de la paridad de coste con la piña
-convencional, que solo la transición orgánica compromete; y la reversibilidad de la inversión,
-esto es, cuánto se pierde si hay que dar marcha atrás.
+Desde una perspectiva económica, resulta prioritario valorar el coste anual que cada alternativa
+detrae del margen operativo, la conservación de la paridad de coste con la piña convencional
+—activo sobre el que descansa todo el modelo—, la capacidad de generar ingresos sostenibles a
+medio y largo plazo y el grado de reversibilidad de la inversión comprometida.
 
-Los **criterios estratégicos y de mercado** miden lo que cada opción hace con el problema. El
-primero es la visibilidad ante el consumidor final, única vía para que alguien pague la
-diferencia. El segundo es la durabilidad de la ventaja, es decir, cuánto protege la opción frente
-a la imitación. El tercero es el riesgo que la opción introduce en las relaciones comerciales
-vigentes y, por tanto, en el flujo de caja corriente.
+En el ámbito estratégico y de mercado, se valorará la visibilidad que cada opción otorga ante el
+consumidor final, único agente capaz de remunerar el atributo diferencial; la protección que
+ofrece frente a la imitación de una ventaja construida durante ocho años; el acceso a nuevos
+clientes y canales; y la reducción de la dependencia respecto de los grandes distribuidores.
 
-Los **criterios organizativos y humanos** atienden a la capacidad real de ejecución. Renegociar la
-cartera completa exigiría una fuerza comercial que la empresa no tiene desplegada en Estados
-Unidos, y volver a cambiar el modelo productivo reabriría la rotación de agrónomos e ingenieros
-que ya se sufrió al adoptar el esquema libre de pesticidas.
+Por último, desde una perspectiva organizativa y humana, se tendrá en cuenta la alineación de cada
+opción con el propósito de sostenibilidad accesible del Grupo Los Nacientes, su viabilidad de
+ejecución con los recursos comerciales actualmente disponibles, el impacto sobre unas relaciones
+comerciales de las que depende el flujo de caja corriente y la capacidad de consolidar el
+conocimiento y el compromiso del equipo técnico.
 
-El último criterio es de **coherencia con el propósito**. La empresa ha construido su identidad
-sobre la idea de una sostenibilidad accesible y no de lujo; una opción que solo funcione con un
-sobreprecio del 61 % es, en sus propios términos, una contradicción.
-
-Quedan fuera, en cambio, criterios que no discriminan: la calidad del fruto, la solidez del
-sistema productivo o la disponibilidad de certificaciones son idénticas en las cuatro opciones y,
-por tanto, no ayudan a elegir.
+Quedan excluidos, por no discriminar entre alternativas, la calidad del fruto, la solidez del
+sistema productivo y la disponibilidad de certificaciones, atributos que las cuatro opciones
+comparten por igual.
 
 ### Cómo discrimina cada criterio
 
