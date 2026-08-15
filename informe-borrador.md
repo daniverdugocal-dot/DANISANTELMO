@@ -120,43 +120,42 @@ limitaciones (temporales, financieras, de personal) · agruparlas en ventajas y 
 numerarlas · resaltarlas con un diseño apropiado · las opciones son variables que pueden
 controlarse y hasta cuantificarse · sin opciones claras no hay posibilidad de decidir.*
 
-### Texto definitivo — 309 palabras · media carilla (129 mm de los 247 útiles)
+### Texto definitivo — 330 palabras · 118 mm de los 247 útiles (0,48 carilla)
 
 El caso plantea tres opciones y el análisis del canal permite formular una cuarta. Se presentan
-ordenadas por el alcance del cambio que exigen sobre el modelo actual, con el coste anual estimado
-en el Anexo 1.
+ordenadas por el alcance del cambio que exigen sobre el modelo actual, y su coste anual estimado
+procede del Anexo 1.
 
-**1. Continuidad en la marca del distribuidor.** Mantener el esquema actual y cobrar una prima
-solo a quien solicite la certificación.
+La primera consiste en continuar bajo la marca del distribuidor, cobrando una prima solo a quien
+solicite la certificación. Asegura ingresos ciertos y crecimiento inmediato sin inversión alguna,
+pero mantiene a la empresa invisible ante el consumidor y deja que la ventaja técnica se diluya en
+cuanto la competencia la replique.
 
-- *Ventajas:* ingresos ciertos, crecimiento inmediato y ninguna inversión adicional.
-- *Limitaciones:* la empresa sigue invisible y la ventaja se diluye al ser replicada.
+La segunda propone desplegar el sello CERO™ únicamente en el canal especializado, a partir de la
+alianza con HoneyBear, allí donde el atributo se percibe y se paga. Cuesta unos 0,8 millones de
+dólares anuales, construye marca ante el consumidor final sin tensionar la cartera actual y
+resulta reversible si el mercado no responde; a cambio, su alcance inicial es reducido y depende
+del éxito de un solo socio.
 
-**2. Co-branding selectivo en el canal especializado.** Desplegar el sello CERO™ donde el atributo
-se percibe y se paga, a partir de la alianza con HoneyBear. Coste: 0,8 millones de dólares
-anuales.
+La tercera exige el co-branding a toda la cartera, actual y futura, manteniendo el precio de la
+piña convencional. Situaría a PCC Fresh como creadora de la categoría y le daría la máxima
+exposición posible, pero absorbe cerca de la mitad del margen operativo —3,1 millones anuales— y
+tensiona la relación con las transnacionales, de las que depende buena parte del flujo de caja.
 
-- *Ventajas:* construye marca ante el consumidor sin tensionar la cartera actual, y es reversible.
-- *Limitaciones:* alcance inicial reducido y dependencia de un solo socio.
+La cuarta supone abandonar el esquema libre de pesticidas para obtener la certificación orgánica.
+Daría acceso a una categoría ya reconocida, con un sobreprecio medio del 61 %, pero requiere tres
+años de conversión, nueva inversión en I+D y rendimientos menores, y sacrifica la paridad de coste
+conquistada en ocho años.
 
-**3. Co-branding universal al precio de la convencional.** Condicionar toda venta, actual y futura,
-a la presencia del sello junto a la marca del cliente. Coste: 3,1 millones de dólares anuales.
+Solo esta última no admite cuantificación con la información disponible, y esa imposibilidad es en
+sí misma un dato: obliga a comprometer el activo sobre el que descansa todo el modelo sin poder
+anticipar el resultado. Las tres primeras operan dentro del sistema ya construido y difieren solo
+en el alcance que se dé a la marca propia.
 
-- *Ventajas:* sitúa a PCC Fresh como creadora de la categoría, con la máxima exposición posible.
-- *Limitaciones:* absorbe la mitad del margen y tensiona a las transnacionales, de las que depende
-  la caja.
-
-**4. Transición a la producción orgánica certificada.** Abandonar el esquema libre de pesticidas e
-invertir en la certificación orgánica.
-
-- *Ventajas:* categoría ya reconocida por el consumidor, con un sobreprecio medio del 61 %.
-- *Limitaciones:* tres años de conversión, nueva I+D, menores rendimientos y pérdida de la paridad
-  de coste.
-
-Solo la última no admite cuantificación con la información disponible, y esa imposibilidad es en sí
-misma un dato: exige comprometer el activo sobre el que descansa todo el modelo —la paridad de
-coste— sin poder anticipar el resultado. Las tres primeras operan dentro del sistema ya construido
-y difieren solo en el alcance que se dé a la marca propia.
+**Estructura interna constante en los cuatro párrafos**: en qué consiste la opción, sus ventajas y,
+tras la conjunción adversativa, sus limitaciones. La agrupación que pide la guía se mantiene, pero
+dentro de la prosa. La numeración se resuelve con ordinales —la primera, la segunda, la tercera,
+la cuarta— en lugar de con dígitos y viñetas.
 
 ### Decisiones de redacción
 
