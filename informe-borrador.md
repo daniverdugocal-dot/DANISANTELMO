@@ -515,3 +515,81 @@ ninguno es nuevo:
 | A partir de HoneyBear | Única alianza ya negociada; esfuerzo por áreas |
 | Extensión condicionada al reconocimiento | Criterio de reversibilidad |
 | Sin cambios productivos | Criterio de conservación de la paridad de coste |
+
+### 7.2 Plan de acción
+
+*Requisito de la guía: secuenciación temporal · corto plazo = urgente, fácil de ejecutar y
+necesario para el medio plazo; medio plazo = dependiente del corto, complejo, más lento · debe
+contestar qué hacer, cómo, con qué medios y restricciones, qué consecuencias, qué ventajas y
+riesgos, si genera nuevos problemas, si realmente resuelve el problema, en qué plazos y quién debe
+actuar · equilibrio entre generalidades y detalle excesivo · el desarrollo puede ir al anexo.*
+
+#### Texto para el cuerpo — 318 palabras · 111 mm (0,45 carilla)
+
+El plan se ordena en dos horizontes: las acciones de corto plazo son urgentes, ejecutables con los
+medios actuales y condición necesaria de las siguientes; las de medio plazo dependen de sus
+resultados.
+
+En el corto plazo, y antes de las ferias de julio de 2026 en Monterrey, debe cerrarse el acuerdo
+con HoneyBear que da acceso a Sprouts Farmers Market, con un compromiso de volumen próximo a 1,6
+millones de cajas anuales, equivalente al 25 % de la producción. En paralelo, el área de
+operaciones ha de adaptar la línea de empaque para incorporar la banda individual y la
+trazabilidad por cliente, con un coste de 0,50 dólares por caja y 0,8 millones de dólares anuales
+sobre ese volumen. Marketing debe sustituir el argumentario técnico por un mensaje único dirigido
+al consumidor, respaldado por las certificaciones Kiwa, Rainforest Alliance y GlobalGAP. Y ante la
+floración masiva prevista para julio, el volumen con sello ha de concentrarse en el canal
+especializado, menos expuesto que el mayorista a la caída de precios.
+
+El objetivo del primer ejercicio es cerrar dos acuerdos adicionales de co-branding antes de
+diciembre de 2026 y alcanzar un crecimiento de volumen del 13 %, umbral en el que la inversión
+queda compensada.
+
+En el medio plazo, y condicionada al cumplimiento de ese umbral, la extensión alcanzará el 50 %
+del volumen en 2028, con un coste de 1,6 millones anuales y un umbral de compensación del 26 %.
+Exige negociar con un primer distribuidor mayorista sobre el caso de éxito ya demostrado,
+registrar la marca CERO™ en los mercados de destino y replicar el esquema en la Unión Europea, que
+absorbe el 40 % de las exportaciones costarricenses.
+
+La revisión es anual. Si el umbral no se alcanza, el despliegue se detiene sin pérdida del sistema
+productivo ni de las relaciones comerciales vigentes, de modo que el plan no introduce riesgos
+nuevos: acota los existentes.
+
+#### Borrador del Anexo 4
+
+*Leyenda: despliegue temporal de la decisión propuesta, con el responsable, el desembolso previsto
+y el indicador de seguimiento de cada hito. Los costes proceden del Anexo 1; los importes de 2027
+y 2028 quedan condicionados al cumplimiento del indicador del ejercicio anterior.*
+
+| Plazo | Acción | Responsable | Coste | Indicador |
+|---|---|---|---|---|
+| Jun 2026 | Cierre del acuerdo con HoneyBear y acceso a Sprouts | Dirección PCC Fresh EE. UU. | — | Contrato firmado y volumen comprometido |
+| Jun 2026 | Adaptación de la línea de empaque: banda individual y trazabilidad por cliente | Operaciones | 0,8 M USD/año | Cajas con sello sobre cajas exportadas |
+| Jul 2026 | Presentación de CERO™ en las ferias de Monterrey | Comercial y marketing | — | Contactos cualificados y acuerdos abiertos |
+| Jul 2026 | Concentración del volumen con sello en el canal especializado ante la floración masiva | Comercial | — | Precio medio obtenido frente al mayorista |
+| Sep 2026 | Sustitución del argumentario técnico por el mensaje de consumidor | Marketing | — | Mensaje único validado y material desplegado |
+| Dic 2026 | Dos acuerdos adicionales de co-branding | Comercial | — | Acuerdos firmados |
+| Dic 2026 | **Revisión anual y decisión de continuidad** | Dirección del Grupo | — | Crecimiento de volumen ≥ 13 % |
+| 2027 | Negociación con el primer distribuidor mayorista | Dirección PCC Fresh EE. UU. | — | Sello aceptado en caja y colilla |
+| 2027 | Registro de CERO™ en los mercados de destino | Dirección del Grupo | — | Marca registrada en EE. UU. y UE |
+| 2028 | Extensión del co-branding al 50 % del volumen | Comercial y operaciones | 1,6 M USD/año | 50 % del volumen con sello |
+| 2028 | Réplica del esquema en la Unión Europea | Dirección PCC Fresh | — | Primer acuerdo europeo cerrado |
+
+#### Preguntas de la guía, contestadas
+
+| Pregunta | Dónde |
+|---|---|
+| ¿Qué hacer, cómo y con qué medios? | Acciones de corto plazo, con área responsable |
+| ¿Qué consecuencias? | Apartados 6.2, 6.3 y 6.4 |
+| ¿Ventajas y riesgos? | Umbral de compensación y revisión anual |
+| ¿Genera nuevos problemas? | Párrafo final: no, porque es reversible |
+| ¿Resuelve el problema? | Sí: sitúa la marca ante el consumidor, que es el diagnóstico del apartado 3 |
+| ¿En qué plazos? | Junio y julio de 2026, diciembre de 2026, 2027 y 2028 |
+| ¿Quién debe actuar? | Dirección de PCC Fresh, comercial, marketing, operaciones y dirección del Grupo |
+
+#### Cifras del despliegue por tramos
+
+| Tramo | Volumen con sello | Coste anual | Umbral de compensación |
+|---|---|---|---|
+| 25 % (2026-2027) | 1,56 M cajas | 0,78 M USD | +13,0 % de volumen |
+| 50 % (2028) | 3,12 M cajas | 1,56 M USD | +26,0 % de volumen |
+| 100 % (no propuesto) | 6,25 M cajas | 3,13 M USD | +51,7 % de volumen |
