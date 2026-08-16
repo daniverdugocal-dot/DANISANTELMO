@@ -46,37 +46,50 @@ pendiente y hay un reloj corriendo.
 
 ## 2. Resumen ejecutivo
 
-*Requisito de la guía: triple objetivo —visión global de lo esencial, ayudar a decidir qué leer y
-dar respuesta concisa a cinco preguntas— · breve, comprensible, preciso, objetivo y fácil de leer
-· oraciones breves y descriptivas, aunque no telegráficas · anticipar el contenido esencial, nada
-de detalles · suscitar interés y causar buena impresión · **extensión de 150 a 200 palabras** según
-la nota al pie 17 · se elabora una vez redactado todo el informe y se coloca al comienzo.*
+*Requisito de la guía: visión global de lo esencial · ayudar a decidir qué leer · contestar
+problema, opciones, criterios, decisión y plan, e importancia para la empresa · breve, preciso,
+objetivo y fácil de leer · nada de detalles · **5-6 líneas** según la tabla del orden de
+elaboración · se escribe una vez redactado todo el informe y se coloca al comienzo.*
 
-### Texto definitivo — 194 palabras · 13 líneas
+### Texto definitivo — 91 palabras · 6 líneas
 
-PCC Fresh, división del Grupo Los Nacientes, ha logrado producir piña libre de pesticidas al mismo
-coste que la convencional, pero no consigue que el mercado reconozca ni remunere ese atributo: su
-fruta no encaja en las categorías comerciales existentes y se vende bajo la marca de los
-distribuidores, lo que la mantiene invisible ante el consumidor final. Se valoran tres
-alternativas —co-branding propio al precio de la piña convencional, continuidad en marca blanca y
-transición a la certificación orgánica— con criterios económicos, estratégicos y organizativos. Se
-descarta la marca blanca porque posterga el problema y deja la ventaja expuesta a la imitación, y
-la vía orgánica porque compromete la paridad de coste y contradice el propósito de sostenibilidad
-accesible del Grupo. Se propone, por tanto, implantar el co-branding bajo la marca CERO™, sin
-sobreprecio y por fases: durante la campaña 2026-2027 sobre el canal especializado, a partir de la
-alianza con HoneyBear y con un coste de 0,8 millones de dólares anuales, y con su extensión al
-resto de la cartera condicionada al reconocimiento efectivo de la categoría. La decisión permite
-construir marca propia sin comprometer el margen ni las relaciones comerciales vigentes.
+PCC Fresh, división del Grupo Los Nacientes, produce piña libre de pesticidas al mismo coste que
+la convencional, pero la vende bajo marca ajena y el mercado no reconoce ni remunera esa
+diferencia. La dirección valora tres alternativas: co-branding propio, continuidad en marca blanca
+y transición a la certificación orgánica. Se descartan las dos últimas por posponer el problema y
+por comprometer la paridad de coste. Se decide implantar el sello CERO™ en co-branding, sin
+sobreprecio y por fases, comenzando en 2026 por el canal especializado de la mano de HoneyBear.
 
-### Respuesta a las cinco preguntas de la guía
+### Los cinco elementos, por frase
 
-| Pregunta | Dónde se contesta |
+| Elemento | Frase |
 |---|---|
-| ¿Cuál es el problema principal? | Frase 1: atributo no reconocido ni remunerado, e invisibilidad bajo marca ajena |
-| ¿Qué opciones se presentan? | Frase 2: las tres, enumeradas |
-| ¿Con qué criterios se valoran? | Frase 2: económicos, estratégicos y organizativos |
-| ¿Qué decisión y qué plan de acción? | Frases 4 y 5: co-branding CERO™ por fases, con fecha, canal y coste |
-| ¿Qué importancia tiene para la empresa? | Frase 6: marca propia sin comprometer margen ni relaciones |
+| Contexto | 1 — piña libre de pesticidas al coste de la convencional |
+| Protagonistas | 1 y 2 — PCC Fresh, el Grupo Los Nacientes y su dirección |
+| Problema | 1 — marca ajena, diferencia no reconocida ni remunerada |
+| Alternativas | 2 — las tres, enumeradas |
+| Decisión adoptada | 3 y 4 — descarte de dos y elección de la primera, con fase y socio |
+
+### Versión larga descartada — 194 palabras
+
+Se conserva por si el tutor confirma que manda la nota al pie 17 (150-200 palabras) en lugar de
+las 5-6 líneas de la tabla. Añade los criterios de valoración, el motivo concreto de cada descarte,
+el coste de 0,8 millones y el cierre sobre la importancia para la empresa.
+
+> PCC Fresh, división del Grupo Los Nacientes, ha logrado producir piña libre de pesticidas al
+> mismo coste que la convencional, pero no consigue que el mercado reconozca ni remunere ese
+> atributo: su fruta no encaja en las categorías comerciales existentes y se vende bajo la marca de
+> los distribuidores, lo que la mantiene invisible ante el consumidor final. Se valoran tres
+> alternativas —co-branding propio al precio de la piña convencional, continuidad en marca blanca y
+> transición a la certificación orgánica— con criterios económicos, estratégicos y organizativos.
+> Se descarta la marca blanca porque posterga el problema y deja la ventaja expuesta a la
+> imitación, y la vía orgánica porque compromete la paridad de coste y contradice el propósito de
+> sostenibilidad accesible del Grupo. Se propone, por tanto, implantar el co-branding bajo la marca
+> CERO™, sin sobreprecio y por fases: durante la campaña 2026-2027 sobre el canal especializado, a
+> partir de la alianza con HoneyBear y con un coste de 0,8 millones de dólares anuales, y con su
+> extensión al resto de la cartera condicionada al reconocimiento efectivo de la categoría. La
+> decisión permite construir marca propia sin comprometer el margen ni las relaciones comerciales
+> vigentes.
 
 ## 3. Identificación del problema planteado
 
