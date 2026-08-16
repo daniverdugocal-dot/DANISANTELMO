@@ -524,35 +524,23 @@ contestar qué hacer, cómo, con qué medios y restricciones, qué consecuencias
 riesgos, si genera nuevos problemas, si realmente resuelve el problema, en qué plazos y quién debe
 actuar · equilibrio entre generalidades y detalle excesivo · el desarrollo puede ir al anexo.*
 
-#### Texto para el cuerpo — 318 palabras · 111 mm (0,45 carilla)
+#### Texto para el cuerpo — 138 palabras · 8 líneas
 
-El plan se ordena en dos horizontes: las acciones de corto plazo son urgentes, ejecutables con los
-medios actuales y condición necesaria de las siguientes; las de medio plazo dependen de sus
-resultados.
+El plan se despliega en dos horizontes y su desarrollo figura en el Anexo 4. Antes de julio de
+2026 debe cerrarse el acuerdo con HoneyBear, adaptarse la línea de empaque al sellado individual y
+presentarse la marca CERO™ en las ferias de Monterrey. Hasta diciembre, el esfuerzo se concentra
+en el canal especializado —el 25 % del volumen, 0,8 millones de dólares anuales— con el objetivo
+de firmar dos acuerdos adicionales y crecer un 13 %, umbral que compensa la inversión. Superado
+ese umbral, durante 2027 se negocia con el primer distribuidor mayorista y se registra la marca en
+los mercados de destino; en 2028 el co-branding alcanza el 50 % del volumen y el esquema se
+replica en la Unión Europea. La revisión es anual y el despliegue se detiene si el umbral no se
+cumple.
 
-En el corto plazo, y antes de las ferias de julio de 2026 en Monterrey, debe cerrarse el acuerdo
-con HoneyBear que da acceso a Sprouts Farmers Market, con un compromiso de volumen próximo a 1,6
-millones de cajas anuales, equivalente al 25 % de la producción. En paralelo, el área de
-operaciones ha de adaptar la línea de empaque para incorporar la banda individual y la
-trazabilidad por cliente, con un coste de 0,50 dólares por caja y 0,8 millones de dólares anuales
-sobre ese volumen. Marketing debe sustituir el argumentario técnico por un mensaje único dirigido
-al consumidor, respaldado por las certificaciones Kiwa, Rainforest Alliance y GlobalGAP. Y ante la
-floración masiva prevista para julio, el volumen con sello ha de concentrarse en el canal
-especializado, menos expuesto que el mayorista a la caída de precios.
-
-El objetivo del primer ejercicio es cerrar dos acuerdos adicionales de co-branding antes de
-diciembre de 2026 y alcanzar un crecimiento de volumen del 13 %, umbral en el que la inversión
-queda compensada.
-
-En el medio plazo, y condicionada al cumplimiento de ese umbral, la extensión alcanzará el 50 %
-del volumen en 2028, con un coste de 1,6 millones anuales y un umbral de compensación del 26 %.
-Exige negociar con un primer distribuidor mayorista sobre el caso de éxito ya demostrado,
-registrar la marca CERO™ en los mercados de destino y replicar el esquema en la Unión Europea, que
-absorbe el 40 % de las exportaciones costarricenses.
-
-La revisión es anual. Si el umbral no se alcanza, el despliegue se detiene sin pérdida del sistema
-productivo ni de las relaciones comerciales vigentes, de modo que el plan no introduce riesgos
-nuevos: acota los existentes.
+**Por qué se ha reducido.** La guía pide aquí un **resumen de la secuenciación temporal**, no el
+plan completo: el desarrollo va al anexo. La versión anterior, de 318 palabras, explicaba además
+el porqué de cada acción y quién la ejecuta, contenido que ya está repartido entre el apartado de
+esfuerzo por áreas y el Anexo 4. Este párrafo conserva solo la línea del tiempo: cinco hitos, tres
+cifras y una condición de continuidad.
 
 #### Borrador del Anexo 4
 
