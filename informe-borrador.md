@@ -524,23 +524,67 @@ contestar qué hacer, cómo, con qué medios y restricciones, qué consecuencias
 riesgos, si genera nuevos problemas, si realmente resuelve el problema, en qué plazos y quién debe
 actuar · equilibrio entre generalidades y detalle excesivo · el desarrollo puede ir al anexo.*
 
-#### Texto para el cuerpo — 138 palabras · 8 líneas
+#### Texto para el cuerpo — 551 palabras · 176 mm (0,71 carilla)
 
-El plan se despliega en dos horizontes y su desarrollo figura en el Anexo 4. Antes de julio de
-2026 debe cerrarse el acuerdo con HoneyBear, adaptarse la línea de empaque al sellado individual y
-presentarse la marca CERO™ en las ferias de Monterrey. Hasta diciembre, el esfuerzo se concentra
-en el canal especializado —el 25 % del volumen, 0,8 millones de dólares anuales— con el objetivo
-de firmar dos acuerdos adicionales y crecer un 13 %, umbral que compensa la inversión. Superado
-ese umbral, durante 2027 se negocia con el primer distribuidor mayorista y se registra la marca en
-los mercados de destino; en 2028 el co-branding alcanza el 50 % del volumen y el esquema se
-replica en la Unión Europea. La revisión es anual y el despliegue se detiene si el umbral no se
-cumple.
+La ejecución debe concentrarse inicialmente en Estados Unidos y desarrollarse en cuatro fases,
+priorizando la rapidez comercial sin comprometer la rentabilidad ni las relaciones con los
+distribuidores. El desarrollo con responsables e indicadores figura en el Anexo 4.
 
-**Por qué se ha reducido.** La guía pide aquí un **resumen de la secuenciación temporal**, no el
-plan completo: el desarrollo va al anexo. La versión anterior, de 318 palabras, explicaba además
-el porqué de cada acción y quién la ejecuta, contenido que ya está repartido entre el apartado de
-esfuerzo por áreas y el Anexo 4. Este párrafo conserva solo la línea del tiempo: cinco hitos, tres
-cifras y una condición de continuidad.
+**Fase 1. Cerrar el modelo comercial — abril-mayo 2026.** PCC Fresh debe negociar con HoneyBear y
+con sus principales distribuidores la incorporación del sello CERO™ junto a la marca del comprador
+en colilla y caja, manteniendo el precio de la piña convencional. La cesión de espacio de marca no
+se exige: se compra. A cambio del sello, el primer cliente que acepte recibirá exclusividad de
+categoría durante seis meses y prioridad de suministro en la ventana de escasez posterior a la
+floración de julio, cuando el mercado se tensione. El objetivo es un acuerdo firmado antes de
+junio, con HoneyBear como piloto, y una política de uso del sello que fije tamaño, posición y
+mensaje en el empaque de terceros.
+
+**Fase 2. Lanzamiento y validación — junio-julio 2026.** Las ferias de Monterrey deben servir para
+acuñar la categoría, no para explicar el sistema productivo. PCC no venderá «piña libre de
+pesticidas» —una expresión que obliga al consumidor a pensar en pesticidas—, sino una categoría
+propia, *Clean-Grown*, bajo el claim **«cero residuos, cero sobreprecio»**. La demostración será
+física y verificable: junto a la fruta, el informe de análisis de residuos emitido por Kiwa, y en
+cada banda un código QR que enlaza con un vídeo de cuarenta segundos de la finca y con la
+trazabilidad del lote. Ninguna presentación mencionará biodigestores, microalgas ni hongos
+entomopatógenos. El objetivo es obtener los primeros pedidos bajo co-branding.
+
+**Fase 3. Implantación y expansión — agosto-diciembre 2026.** Validado el modelo, el co-branding
+se extiende priorizando a los clientes con mayor exposición al consumidor sensible a la salud y la
+sostenibilidad, y utilizando sus resultados como referencia para negociar con los demás. La
+sobreoferta prevista para julio se convierte en palanca: mientras el precio mayorista cae, PCC
+ofrecerá contratos de volumen con sello a precio estable, más atractivos que el mercado spot. La
+medición será semanal y de rotación en tienda, no solo de cajas facturadas. El objetivo del
+ejercicio es alcanzar dos acuerdos adicionales, el 25 % del volumen con sello y un crecimiento del
+13 %.
+
+**Fase 4. Consolidación y escalado — enero-junio 2027.** Con los resultados del primer semestre,
+la dirección decidirá qué clientes y mercados permiten escalar con mayor rentabilidad, hasta
+convertir el co-branding en el estándar comercial de PCC y alcanzar el 50 % del volumen en 2028.
+En paralelo se registrarán la marca CERO™ y la denominación de categoría en Estados Unidos y la
+Unión Europea, y se replicará el esquema en el mercado europeo. La expansión quedará siempre
+vinculada al margen por cliente: no se crecerá en volumen a costa de destruirlo.
+
+El seguimiento corresponde al director de PCC Fresh en Estados Unidos, con revisión mensual de la
+dirección del Grupo. Los indicadores son el número de distribuidores con CERO™, el volumen bajo
+co-branding, el porcentaje de producción con marca visible, el coste y el margen por caja, la
+rotación en el punto de venta y la tasa de repetición de pedidos. La empresa no medirá así si
+vende más piña, sino si ha convertido su ventaja productiva en una ventaja comercial reconocida.
+
+#### Las cinco aportaciones creativas y de dónde salen
+
+| Aportación | Problema del caso que resuelve |
+|---|---|
+| **Claim «cero residuos, cero sobreprecio»** | La paradoja terminológica: «libre de pesticidas» nombra lo que se quiere eliminar. El claim convierte el nombre CERO™ en una promesa doble y sitúa el precio, que es la noticia real, en el mismo plano que la pureza |
+| **Categoría propia *Clean-Grown*** | El vacío de categoría: si no existe casilla, se crea una en lugar de heredar el término técnico del certificador |
+| **Contrapartida al distribuidor** (exclusividad de seis meses y prioridad de suministro) | La resistencia a ceder espacio de marca: se deja de pedir y se pasa a intercambiar |
+| **Informe de residuos y QR de trazabilidad** | La confusión que genera explicar el sistema productivo, y a la vez la acusación de greenwashing: se sustituye el discurso técnico por evidencia comprobable |
+| **La floración de julio como palanca de negociación** | La amenaza de sobreoferta se convierte en el argumento para vender contratos a precio estable |
+
+**Nota de rigor sobre el claim.** Se dice «cero residuos» y no «cero pesticidas» porque la
+certificación de Kiwa acredita ausencia de residuos, mientras que el sistema aún emplea un 40 % de
+fertilizante nitrogenado sintético y un 18 % de herbicida en fase inicial. La formulación es
+literalmente cierta y, por tanto, defendible frente a cualquier acusación de greenwashing. Es un
+matiz que conviene llevar preparado para el turno de preguntas.
 
 #### Borrador del Anexo 4
 
