@@ -479,3 +479,37 @@ consumidor que nunca llega a ver el nombre del productor.
   relación con los distribuidores actuales.
 - **Cuándo:** decisión en la primavera de 2026, antes de las ferias de julio en Monterrey y de la
   respuesta pendiente a HoneyBear.
+
+## 7. Conclusión
+
+### 7.1 Decisión / propuesta final
+
+*Requisito de la guía: declaración clara, corta y concisa de lo que debe hacer el protagonista ·
+redactar con lógica, realismo y prudencia, sobre hechos y datos ya estudiados · es un grave error
+proponer algo que no sea consecuencia de lo ya analizado.*
+
+**Versión recomendada — 5 líneas, 70 palabras**
+
+La dirección del Grupo Los Nacientes debe implantar el co-branding propio bajo la marca CERO™
+manteniendo el precio de la piña convencional, y desplegarlo por fases: durante la campaña
+2026-2027 sobre el canal especializado, a partir de la alianza con HoneyBear, y desde 2028 sobre
+el resto de la cartera, condicionada la extensión al reconocimiento efectivo de la categoría. Ni
+el precio de venta ni el sistema productivo se modifican.
+
+**Versión comprimida — 3 líneas, 42 palabras**
+
+PCC Fresh debe convertir su ventaja técnica en marca: implantar el sello CERO™ en co-branding, al
+precio de la piña convencional, comenzando por el canal especializado en la campaña 2026-2027 y
+extendiéndolo al resto de la cartera cuando la categoría esté reconocida.
+
+**Comprobación de trazabilidad.** Cada elemento de la decisión procede de un apartado anterior y
+ninguno es nuevo:
+
+| Elemento de la decisión | De dónde viene |
+|---|---|
+| Co-branding propio bajo CERO™ | Alternativa 1, la elegida |
+| Sin sobreprecio | Definición de la alternativa y criterio de coherencia con el propósito |
+| Por fases, empezando por el canal especializado | Umbral de compensación del 13 % frente al 50 % (consecuencias financieras) |
+| A partir de HoneyBear | Única alianza ya negociada; esfuerzo por áreas |
+| Extensión condicionada al reconocimiento | Criterio de reversibilidad |
+| Sin cambios productivos | Criterio de conservación de la paridad de coste |
