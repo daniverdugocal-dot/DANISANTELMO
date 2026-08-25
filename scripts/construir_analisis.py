@@ -1,7 +1,7 @@
 """
 ALCOPALET (DTI-1399) — Análisis completo del caso.
 
-Un libro, siete hojas, todas con la misma estructura:
+Un libro, diez hojas, todas con la misma estructura:
     TÍTULO DE BLOQUE  ->  para qué sirve (a todo el ancho)  ->  los números
 
 Cada hoja es autónoma: repite los datos del caso que necesita en vez de
@@ -34,27 +34,30 @@ F_BIEN = PatternFill("solid", fgColor="E2EFDA")
 F_CLAVE = PatternFill("solid", fgColor="FFF2CC")
 F_HIP = PatternFill("solid", fgColor="FFFF00")
 
-_f = Side(style="thin", color="BFBFBF")
-BOR = Border(left=_f, right=_f, top=_f, bottom=_f)
+_s = Side(style="thin", color="BFBFBF")
+BOR = Border(left=_s, right=_s, top=_s, bottom=_s)
 
 EUR = '#,##0 "€";(#,##0) "€";"-"'
 EU2 = '#,##0.00 "€";(#,##0.00) "€";"-"'
+EU3 = '#,##0.000 "€";(#,##0.000) "€";"-"'
 PCT = '0.0%;(0.0%);"-"'
 NUM = '#,##0;(#,##0);"-"'
 NU2 = '#,##0.00;(#,##0.00);"-"'
 MUL = '0.00"x"'
 
-ANCHOS = {"A": 50, "B": 17, "C": 13, "D": 42}
-ANCHO_TXT = 122
+ANCHOS = {"A": 50, "B": 17, "C": 15, "D": 15, "E": 40}
+ANCHO_TXT = 130
+
+# Constantes del caso usadas para precalcular literales
+DIAS = 242
+CMO = 38000
+MOD_MANUAL = CMO * 8 / (500 * DIAS)          # 2,5124 €/palet
+MOD_LINEA = CMO * 2 / (65 * 0.75 * 8 * DIAS)  # 0,8053 €/palet
 
 
 class Hoja:
-    """Envoltorio que lleva la cuenta de filas y aplica el estilo común."""
-
     def __init__(self, wb, nombre, titulo, subtitulo):
         self.ws = wb.create_sheet(nombre)
-        self.nombre = nombre
-        self.f = 1
         ws = self.ws
         ws.sheet_view.showGridLines = False
         for col, w in ANCHOS.items():
@@ -63,31 +66,30 @@ class Hoja:
         ws["A1"].font = TIT
         ws["A2"] = subtitulo
         ws["A2"].font = SUB
-        ws.merge_cells("A2:D2")
+        ws.merge_cells("A2:E2")
         ws.row_dimensions[2].height = 12.5 * (len(subtitulo) // ANCHO_TXT + 1) + 4
         self.f = 4
         ws.freeze_panes = "A4"
 
-    # ---------------------------------------------------------------- bloques
     def barra(self, texto, etiqueta=None):
         ws, f = self.ws, self.f
         ws.cell(f, 1, texto).font = SEC
-        for c in range(1, 5):
+        for c in range(1, 6):
             ws.cell(f, c).fill = F_SEC
         if etiqueta:
-            c = ws.cell(f, 4, etiqueta)
+            c = ws.cell(f, 5, etiqueta)
             c.font = Font(name=FUENTE, size=9, bold=True, color="FFFFFF")
             c.alignment = Alignment(horizontal="right")
         self.f += 1
 
-    def explicar(self, texto):
+    def explicar(self, texto, relleno=F_EXP):
         ws, f = self.ws, self.f
         c = ws.cell(f, 1, texto)
         c.font = EXP
         c.alignment = Alignment(wrap_text=True, vertical="top")
-        ws.merge_cells(start_row=f, start_column=1, end_row=f, end_column=4)
-        for col in range(1, 5):
-            ws.cell(f, col).fill = F_EXP
+        ws.merge_cells(start_row=f, start_column=1, end_row=f, end_column=5)
+        for col in range(1, 6):
+            ws.cell(f, col).fill = relleno
         ws.row_dimensions[f].height = 12.5 * (len(texto) // ANCHO_TXT + 1) + 5
         self.f += 1
 
@@ -98,29 +100,30 @@ class Hoja:
             c.font = CAB
             c.fill = F_CAB
             c.alignment = Alignment(horizontal="left" if i == 0 else "center",
-                                    wrap_text=True)
+                                    wrap_text=True, vertical="center")
             c.border = BOR
+        ws.row_dimensions[f].height = 26
         self.f += 1
 
-    def fila(self, etiqueta, valor="", fmt=EUR, fuente=NEG, col3=None, col3fmt=PCT,
-             nota=None, relleno=None, grande=None):
-        """Devuelve el número de fila escrita."""
+    def fila(self, etiqueta, *valores, fmt=EUR, fuente=NEG, nota=None,
+             relleno=None, grande=None, fmts=None):
+        """valores van a las columnas B, C, D...  nota a la columna E."""
         ws, f = self.ws, self.f
         ws.cell(f, 1, etiqueta).font = TOT if (relleno or grande) else ETI
-        if valor != "":
-            c = ws.cell(f, 2, valor)
+        for i, v in enumerate(valores):
+            if v is None or v == "":
+                continue
+            c = ws.cell(f, 2 + i, v)
             c.font = grande if grande else (TOT if relleno else fuente)
-            c.number_format = fmt
-        if col3 is not None:
-            c = ws.cell(f, 3, col3)
-            c.font = TOT if relleno else NEG
-            c.number_format = col3fmt
+            c.number_format = (fmts[i] if fmts else fmt)
+            if i > 0:
+                c.alignment = Alignment(horizontal="center")
         if nota:
-            n = ws.cell(f, 4, nota)
+            n = ws.cell(f, 5, nota)
             n.font = MINI
             n.alignment = Alignment(wrap_text=True, vertical="center")
         if relleno:
-            for col in range(1, 5):
+            for col in range(1, 6):
                 ws.cell(f, col).fill = relleno
         self.f += 1
         return f
@@ -130,7 +133,7 @@ class Hoja:
         c = ws.cell(f, 1, ("• " if vinieta else "") + txt)
         c.font = ETI
         c.alignment = Alignment(wrap_text=True, vertical="top")
-        ws.merge_cells(start_row=f, start_column=1, end_row=f, end_column=4)
+        ws.merge_cells(start_row=f, start_column=1, end_row=f, end_column=5)
         ws.row_dimensions[f].height = 12.5 * (len(txt) // ANCHO_TXT + 1) + 6
         self.f += 1
 
@@ -142,87 +145,147 @@ wb = Workbook()
 wb.remove(wb.active)
 
 # ══════════════════════════════════════════════════════════════════════════
-# HOJA 0 — GUÍA
+# 0. GUÍA Y RECOMENDACIÓN
 # ══════════════════════════════════════════════════════════════════════════
-g = Hoja(wb, "0. Guía", "ALCOPALET — Guía del análisis",
+g = Hoja(wb, "0. Guía", "ALCOPALET — Guía y recomendación",
          "Caso DTI-1399 · Programa Lydes 2026 · Instituto Internacional San Telmo. "
-         "Empieza por aquí: esta hoja dice qué hay en cada una de las demás y cómo leerlas.")
+         "Empieza por aquí: la recomendación, por qué, y qué hay en cada hoja.")
+
+g.barra("LA RECOMENDACIÓN EN UNA FRASE")
+g.explicar("COMPRAR LA MÁQUINA HOY, SIN EL TRÁILER. NO FIRMAR PERSÁN A 10 €. VOLVER A LA MESA "
+           "CON TRES PALANCAS: precio, especificación de la madera y plazo de cobro. "
+           "Son dos decisiones distintas que el caso presenta como una sola, y tienen plazos "
+           "distintos: el fabricante de la máquina pide respuesta HOY, mientras que el "
+           "contrato de Persán todavía es un borrador sin firmar.", F_CLAVE)
+g.hueco()
+
+g.barra("POR QUÉ COMPRAR LA MÁQUINA")
+g.cabecera(["Razón", "Dato", "", "", "Explicación"])
+g.fila("NO es por capacidad", 0.810, fmt=PCT, fuente=TOT,
+       nota="La fábrica está al 81%. Sobran 40.876 palets/año sin invertir un euro. "
+            "El argumento de Esteban («no llegamos») no se sostiene con sus propios números.")
+g.fila("Es por FLEXIBILIDAD", 6.0, fmt=NU2, fuente=TOT,
+       nota="Horas de parada por cambio de formato en la línea de 2019, frente a menos de "
+            "media hora en el robot. Alcopalet gana dinero en series especiales (114×114 de "
+            "Don Simón, exigencias de Tetra Pak). Con 6 horas de parada, una serie corta es "
+            "inviable; con media hora, es negocio.")
+g.fila("Es por riesgo de mano de obra", 5.76, fmt=NU2, fuente=TOT,
+       nota="Operarios manuales equivalentes que sustituye. El caso dice que la mano de obra "
+            "es «cada vez más difícil de gestionar y contratar», y menciona absentismo los "
+            "lunes. La máquina reduce esa dependencia estructural.")
+g.fila("Y porque es barata", 40000, fmt=EUR, fuente=TOT,
+       nota="Sobre un beneficio de 279.364 €. Apuesta pequeña con mucho valor de opción. "
+            "Comprada SOLA (sin tráiler), el leasing baja de 48.000 € a 9.618 €/año.")
+g.hueco()
+
+g.barra("POR QUÉ NO FIRMAR A 10 €")
+g.cabecera(["Razón", "Dato", "", "", "Explicación"])
+g.fila("Pierde dinero en cada palet", -0.55, fmt=EU2, fuente=BIG,
+       nota="Margen de contribución real por unidad, con el coste de mano de obra ponderado. "
+            "Ningún volumen lo arregla: cuantos más palets, más se pierde.")
+g.fila("Pierde incluso SIN mano de obra", -0.10, fmt=EU2, fuente=BIG,
+       nota="Aunque el operario fuese gratis, el precio no cubre madera + transporte + "
+            "variables (8,27 + 0,53 + 1,30 = 10,10 €). Este es el argumento definitivo: "
+            "el problema no es la productividad, es el precio.")
+g.fila("El precio de equilibrio está muy por encima", 12.17, fmt=EU2, fuente=BIG,
+       nota="Frente a los 10 € ofrecidos. Faltan 2,17 € por unidad solo para no perder.")
+g.fila("Y el riesgo de la madera es todo tuyo", 0.827, fmt=PCT, fuente=BIG,
+       nota="Peso de la madera sobre el precio de venta. El contrato fija el precio 5 años "
+            "pero no lleva cláusula de revisión de materia prima.")
+g.fila("Coste de equivocarse", -944383, fmt=EUR, fuente=BIG,
+       nota="Impacto acumulado a 5 años. Perder a Persán cuesta una oportunidad; firmarlo "
+            "cuesta casi un millón de euros.", relleno=F_MAL)
+g.hueco()
+
+g.barra("LOS TÉRMINOS DEL CONTRATO IDEAL", "→ hoja 6")
+g.explicar("La pregunta útil no es «¿firmo o no?» sino «¿en qué condiciones sí?». Hay tres "
+           "palancas, no una. Pedir 12,17 € a secas es difícil; combinar las tres es una "
+           "negociación ganable.")
+g.cabecera(["Variable", "Hoy", "Mínimo", "Objetivo", "Por qué"])
+g.fila("Precio por palet", 10.00, 12.17, 12.50, fmt=EU2, fuente=TOT,
+       nota="El mínimo es el equilibrio exacto. Por debajo, el contrato destruye valor.")
+g.fila("Coste de la madera", 8.27, 8.00, 7.50, fmt=EU2, fuente=TOT,
+       nota="LA PALANCA QUE NADIE MIRA. Los 8,27 € son el estándar Tetra Pak (madera seca, "
+            "blanca, lijada, sin astillas), nacido de un incidente de moho en una aduana "
+            "china. Persán fabrica detergentes en Sevilla: casi con seguridad no necesita "
+            "esa calidad. Re-especificar el palet es más fácil que subir el precio.")
+g.fila("Plazo de cobro (días)", 180, 120, 90, fmt=NUM, fuente=TOT,
+       nota="Cada día de aplazamiento inmoviliza caja al 7,5%. Pasar de 180 a 90 libera la "
+            "mitad del circulante.")
+g.fila("Cláusula de revisión de la madera", "NO", "Anual", "Anual", fmt=NUM, fuente=TOT,
+       fmts=[NUM, NUM, NUM],
+       nota="Innegociable. Sin ella, cinco años de riesgo de materia prima a cargo de Alcopalet.")
+g.fila("Retén exigido (palets)", 1000, 1000, 500, fmt=NUM, fuente=TOT,
+       nota="O que el coste de mantenerlo se repercuta en el precio.")
+g.fila("Duración (años)", 5, 3, 3, fmt=NUM, fuente=TOT,
+       nota="Menos años = menos exposición a un precio que se puede quedar obsoleto.")
+g.hueco()
+g.cabecera(["Resultado según lo que se consiga", "Impacto anual", "", "", "Lectura"])
+g.fila("Contrato actual (10 €, madera 8,27, 180 días)", -191398, fmt=EUR, fuente=TOT,
+       nota="Destruye valor", relleno=F_MAL)
+g.fila("Mínimo aceptable (12,17 €, madera 8,27, 180 días)", -3321, fmt=EUR, fuente=TOT,
+       nota="Ni gana ni pierde. No merece la pena por sí solo", relleno=F_CLAVE)
+g.fila("Objetivo realista (12,50 €, madera 8,27, 90 días)", 46085, fmt=EUR, fuente=TOT,
+       nota="Solo con precio y plazo", relleno=F_BIEN)
+g.fila("CONTRATO IDEAL (12,50 €, madera 7,50, 90 días)", 115443, fmt=EUR, fuente=VERDE,
+       nota="Las tres palancas juntas. Este es el objetivo de la negociación", relleno=F_BIEN)
+g.hueco()
 
 g.barra("CÓMO SE LEE ESTE LIBRO")
-g.explicar("Todas las hojas tienen la misma estructura: una banda azul con el título del "
-           "bloque, debajo una línea gris que explica PARA QUÉ sirve ese cálculo, y después "
-           "los números. Se lee de arriba abajo, como un documento. No hace falta saltar "
-           "entre hojas.")
-g.cabecera(["Código de color", "", "", "Qué significa"])
-for etiqueta, nota in [
-    ("Texto AZUL", "Dato tomado literalmente del enunciado o de sus anexos. No lo he tocado."),
-    ("Texto NEGRO", "Resultado calculado con fórmula. Si cambias un dato azul, esto se recalcula."),
-    ("Fondo AMARILLO", "Hipótesis MÍA, no dada por el caso. Es lo que hay que declarar y defender."),
+g.explicar("Todas las hojas tienen la misma estructura: banda azul con el título del bloque, "
+           "debajo una línea gris que explica PARA QUÉ sirve ese cálculo, y después los "
+           "números. Se lee de arriba abajo, como un documento.")
+g.cabecera(["Código de color", "", "", "", "Qué significa"])
+for et, nota in [
+    ("Texto AZUL", "Dato tomado literalmente del enunciado o de sus anexos."),
+    ("Texto NEGRO", "Resultado calculado con fórmula. Si cambias un dato azul, se recalcula."),
+    ("Fondo AMARILLO", "Hipótesis MÍA, no dada por el caso. Hay que declararla y defenderla."),
     ("Fondo VERDE", "Comprobación que cuadra, o resultado favorable."),
     ("Fondo ROJO", "Número que revela un problema."),
 ]:
-    g.fila(etiqueta, "", EUR, NEG, None, PCT, nota)
-g.hueco()
-
-g.barra("LOS CINCO NÚMEROS QUE DECIDEN EL CASO")
-g.explicar("Todo el análisis se reduce a esto. Cada cifra está calculada en la hoja que se "
-           "indica, donde puedes ver de dónde sale.")
-g.cabecera(["Número", "Valor", "Hoja", "Qué significa"])
-g.fila("Margen de contribución del negocio", 0.2717, PCT, AZUL, "1", NUM,
-       "De cada euro vendido quedan 27 céntimos tras pagar madera, transporte y variables.",
-       F_CLAVE)
-g.fila("Margen de contribución de Persán", -0.52, EU2, AZUL, "2", NUM,
-       "NEGATIVO. Cada palet vendido a Persán pierde 52 céntimos antes de costes fijos.",
-       F_MAL)
-g.fila("Utilización actual de la fábrica", 0.810, PCT, AZUL, "3", NUM,
-       "La fábrica NO está llena: sobran casi 41.000 palets/año de capacidad.", F_CLAVE)
-g.fila("Precio de equilibrio de Persán", 12.17, EU2, AZUL, "4", NUM,
-       "Por debajo de este precio el contrato destruye valor, con máquina o sin ella.",
-       F_CLAVE)
-g.fila("Caja operativa real de 2025", -60555, EUR, AZUL, "1", NUM,
-       "Frente a 279.364 € de beneficio contable. No hay caja para repartir ni para invertir.",
-       F_MAL)
+    g.fila(et, nota=nota)
 g.hueco()
 
 g.barra("QUÉ HAY EN CADA HOJA")
-g.cabecera(["Hoja", "", "", "Contenido y para qué sirve"])
+g.cabecera(["Hoja", "", "", "", "Contenido y pregunta que responde"])
 for hoja, desc in [
-    ("1. Cuenta de resultados",
-     "El Anexo 1 reordenado por comportamiento (fijo/variable), la conversión del beneficio "
-     "en caja y el punto muerto. Responde: ¿cuánto deja cada venta y hay dinero disponible?"),
-    ("2. Escandallo",
-     "El Anexo 3 recalculado. Aquí aparece el margen negativo de Persán y el peso de la "
-     "madera. Responde: ¿cuánto cuesta de verdad un palet?"),
-    ("3. Capacidad",
-     "Capacidad anual de cada sistema de fabricación. El caso da datos por hora y por "
-     "jornada pero nunca el total. Responde: ¿cabe Persán en la fábrica?"),
-    ("4. Contrato Persán",
-     "Cuenta de resultados del contrato, circulante por el cobro a 180 días, precio de "
-     "equilibrio y sensibilidad. Responde: ¿cuánto cuesta firmar?"),
-    ("5. El robot",
-     "La máquina analizada POR SEPARADO del contrato. Responde: ¿la compro aunque no firme?"),
-    ("6. Las opciones",
-     "Las cinco alternativas comparadas en resultado, caja y criterios cualitativos. "
-     "Responde: ¿qué hago?"),
+    ("1. Datos del caso", "Todo el enunciado y los tres anexos en un solo sitio, con su origen."),
+    ("2. Costes y equilibrio", "Fijos frente a variables, punto muerto, apalancamiento y caja. "
+                               "¿Cuánto deja cada venta y hay dinero disponible?"),
+    ("3. Margen por líneas", "Margen de contribución de palet nuevo, usado y Persán, con las "
+                             "DOS definiciones. ¿Qué línea gana dinero de verdad?"),
+    ("4. Capacidad", "Capacidad oficial (90%) y realista (85/80/75%), y coste medio ponderado "
+                     "de fabricar las 90.000. ¿Cabe Persán y a qué coste real?"),
+    ("5. Contrato Persán", "Qué hace falta para servirlo, costes fijos adicionales e impacto "
+                           "anual. ¿Cuánto cuesta firmar?"),
+    ("6. Contrato ideal", "Los términos que habría que negociar y qué se gana con cada uno."),
+    ("7. Inversión máquina", "VAN, TIR y plazo de recuperación según a qué se dedique."),
+    ("8. Escenarios", "Las cinco alternativas comparadas en resultado, caja y criterios."),
+    ("9. Anexos informe", "Los cuatro anexos que llevaría al documento final, y qué va en cada uno."),
 ]:
-    g.fila(hoja, "", EUR, NEG, None, PCT, desc)
+    g.fila(hoja, nota=desc)
 g.hueco()
 
 g.barra("MIS HIPÓTESIS (esto NO lo dice el caso)")
-g.explicar("Son las cuatro cosas que he tenido que suponer. Van marcadas en amarillo allí "
-           "donde se usan. Hay que declararlas en el informe: el jurado valora más una "
-           "hipótesis explícita que un número sin origen.")
-g.cabecera(["Hipótesis", "Valor usado", "", "Por qué y qué pasa si falla"])
-g.fila("Precio renegociado objetivo con Persán", 12.50, EU2, NEG, None, PCT,
-       "Por encima del equilibrio de 12,17 €. Si Persán no acepta, el contrato no interesa.",
-       F_HIP)
-g.fila("Plazo de cobro renegociado", 90, NUM, NEG, None, PCT,
-       "La mitad de los 180 días pactados. Libera la mitad del circulante.", F_HIP)
-g.fila("% de mano de obra liberada que se monetiza", 0.00, PCT, NEG, None, PCT,
-       "Esteban NO quiere despidos. Si nadie se reasigna, el ahorro del robot es cero.",
-       F_HIP)
-g.fila("Importe del dividendo planteado", 200000, EUR, NEG, None, PCT,
-       "El caso no dice cuánto cuesta la casa. Cifra de trabajo.", F_HIP)
+g.explicar("Cinco cosas que he tenido que suponer. Van marcadas en amarillo donde se usan. "
+           "Hay que declararlas en el informe: el jurado valora más una hipótesis explícita "
+           "que un número sin origen.")
+g.cabecera(["Hipótesis", "Valor", "", "", "Por qué y qué pasa si falla"])
+g.fila("Rendimiento realista de la máquina", 0.80, fmt=PCT, fuente=TOT, relleno=F_HIP,
+       nota="El caso dice 90%, pero es la estimación de quien quiere comprarla. La línea de "
+            "2019 se compró y rinde al 75%. Si el robot rinde al 80%, no llega a las 90.000 "
+            "y hay que completarlas con otra línea, más cara.")
+g.fila("Coste de la madera re-especificada", 7.50, fmt=EU2, fuente=TOT, relleno=F_HIP,
+       nota="Supone que Persán acepta un palet estándar en vez del estándar Tetra Pak. Es "
+            "la hipótesis más rentable y también la más incierta: hay que contrastarla con "
+            "el cliente antes de prometerla.")
+g.fila("Precio renegociado objetivo", 12.50, fmt=EU2, fuente=TOT, relleno=F_HIP,
+       nota="Por encima del equilibrio de 12,17 €. Si Persán no pasa de 11 €, no interesa.")
+g.fila("Plazo de cobro renegociado (días)", 90, fmt=NUM, fuente=TOT, relleno=F_HIP,
+       nota="La mitad de lo pactado. Es lo más fácil de conseguir de las tres palancas.")
+g.fila("% de mano de obra liberada que se monetiza", 0.00, fmt=PCT, fuente=TOT, relleno=F_HIP,
+       nota="Esteban NO quiere despidos. Si nadie se reasigna, el ahorro del robot es cero. "
+            "Es la hipótesis más conservadora posible, a propósito.")
 g.hueco()
 
 g.barra("ADVERTENCIAS DE HONESTIDAD")
@@ -230,7 +293,10 @@ for t in [
     "El coste del circulante es una aproximación (saldo medio × tipo de interés), no un "
     "estado de tesorería. El caso no da balance, así que se ignoran clientes y proveedores.",
     "El caso no dice si hay demanda para llenar la capacidad del robot a precio de mercado. "
-    "Con la fábrica al 81%, hoy la restricción es la demanda, no la capacidad.",
+    "Con la fábrica al 81%, hoy la restricción es la demanda, no la capacidad. Es la mayor "
+    "debilidad del argumento del coste de oportunidad.",
+    "Que Persán acepte un palet de menor especificación es una hipótesis razonable pero NO "
+    "verificada. Si el cliente exige la misma calidad, esa palanca desaparece.",
     "El Anexo 3 publica un coste manual de 12,36 €; la suma exacta de sus componentes da "
     "12,37 €. Diferencia de redondeo, sin efecto en las conclusiones.",
     "La mano de obra del escandallo (646.000 €) no coincide con la partida de personal de "
@@ -240,819 +306,1019 @@ for t in [
     g.texto(t)
 
 # ══════════════════════════════════════════════════════════════════════════
-# HOJA 1 — CUENTA DE RESULTADOS
+# 1. DATOS DEL CASO
 # ══════════════════════════════════════════════════════════════════════════
-h = Hoja(wb, "1. Cuenta resultados", "1. La cuenta de resultados de 2025",
-         "Responde a dos preguntas: ¿cuánto deja realmente cada venta? y ¿hay dinero "
-         "disponible para invertir y para repartir?")
+d = Hoja(wb, "1. Datos del caso", "1. Todos los datos del caso, en un solo sitio",
+         "Cada cifra con su origen. Todo lo que aparece en azul en las demás hojas sale de aquí.")
 
-h.barra("LA CUENTA TAL COMO LA DA EL CASO (Anexo 1)")
-h.explicar("Los subtotales están calculados con fórmula en vez de copiados, para comprobar "
-           "que cuadran con lo publicado. Es control de calidad, no análisis.")
-h.cabecera(["Concepto", "Importe 2025", "% s/ventas", "Comentario"])
+d.barra("A. PARÁMETROS DE CÁLCULO")
+d.cabecera(["Dato", "Valor", "", "", "De dónde sale"])
+r_mes = d.fila("Meses productivos al año", 11, fmt=NUM, fuente=AZUL,
+               nota="Nota final del Anexo 3")
+r_dm = d.fila("Días productivos al mes", 22, fmt=NUM, fuente=AZUL,
+              nota="Nota final del Anexo 3")
+d.fila("DÍAS PRODUCTIVOS AL AÑO", f"=B{r_mes}*B{r_dm}", fmt=NUM, fuente=TOT,
+       relleno=F_TOT, nota="11 × 22 = 242")
+d.fila("Horas por jornada", 8, fmt=NUM, fuente=AZUL,
+       nota="Turno único 7:00-15:00. Esteban descarta turnos de tarde y noche")
+d.fila("Coste medio de mano de obra (€/año)", 38000, fmt=EUR, fuente=AZUL,
+       nota="Sueldos y cotizaciones. Apartado (d)")
+d.fila("Coste medio de despido (€)", 30000, fmt=EUR, fuente=AZUL,
+       nota="Elevado por la antigüedad. Apartado (d). No se usa: no hacen falta despidos")
+d.fila("Tipo de interés de la financiación", 0.075, fmt=PCT, fuente=AZUL, nota="Apartado (c)")
+d.hueco()
 
-r_ven = h.fila("VENTAS NETAS", 4585267, EUR, AZUL, None, PCT, None, F_TOT)
-h.ws.cell(r_ven, 3, f"=B{r_ven}/$B${r_ven}").number_format = PCT
-h.ws.cell(r_ven, 3).font = TOT
+d.barra("B. EL CONTRATO DE PERSÁN")
+d.cabecera(["Dato", "Valor", "", "", "De dónde sale"])
+d.fila("Volumen anual comprometido (palets)", 90000, fmt=NUM, fuente=AZUL, nota="Borrador")
+d.fila("Precio de venta unitario", 10.00, fmt=EU2, fuente=AZUL,
+       nota="FIJO durante los 5 años, sin cláusula de revisión")
+d.fila("Duración (años)", 5, fmt=NUM, fuente=AZUL)
+d.fila("Plazo de cobro (días)", 180, fmt=NUM, fuente=AZUL, nota="Pago a 180 días")
+d.fila("Retén permanente exigido (palets)", 1000, fmt=NUM, fuente=AZUL,
+       nota="Dos camiones en nave para servir en menos de 24 h")
+d.hueco()
+
+d.barra("C. LOS TRES SISTEMAS DE FABRICACIÓN")
+d.cabecera(["Dato", "Línea 2019", "Manual", "Robot nuevo", "Comentario"])
+d.fila("Capacidad nominal", 65, 500, 400, fmt=NUM, fuente=AZUL,
+       nota="Línea: palets/hora. Manual y robot: palets/jornada")
+d.fila("Rendimiento considerado", 0.75, 1.00, 0.90, fmt=PCT, fuente=AZUL,
+       nota="La línea de 2019 al 75% por mantenimiento complejo; el robot al 90% según Esteban")
+d.fila("Operarios necesarios", 2, 8, 1, fmt=NUM, fuente=AZUL)
+d.fila("Cambio de formato (horas)", 6, "", 0.42, fmt=NU2, fuente=AZUL,
+       nota="6 HORAS frente a 25 minutos. La diferencia decisiva")
+d.fila("Inversión", 360000, "", 40000, fmt=EUR, fuente=AZUL,
+       nota="La línea de 2019 costó 360.000 € y se amortiza a 10 años")
+d.hueco()
+
+d.barra("D. LÍNEA DE PALET USADO (Palet Ojeda)")
+d.cabecera(["Dato", "Valor", "", "", "Comentario"])
+d.fila("Operarios", 7, fmt=NUM, fuente=AZUL)
+d.fila("Productividad (palets/persona/día)", 155, fmt=NUM, fuente=AZUL)
+d.fila("Techo logístico (palets/mes)", 30000, fmt=NUM, fuente=AZUL,
+       nota="Límite por FALTA DE ESPACIO, no por falta de demanda. Clave del caso")
+d.hueco()
+
+d.barra("E. INVERSIONES ADICIONALES SI SE FIRMA PERSÁN")
+d.cabecera(["Concepto", "Importe", "", "", "De dónde sale"])
+d.fila("Alquiler campa (€/mes)", 5000, fmt=EUR, fuente=AZUL, nota="Terreno colindante. Apartado (a)")
+d.fila("Nuevo tráiler y remolque", 150000, fmt=EUR, fuente=AZUL,
+       nota="La logística ya está saturada. Apartado (b). SOLO hace falta para Persán")
+d.fila("Leasing máquina + camión (€/mes)", 4000, fmt=EUR, fuente=AZUL,
+       nota="Cuota conjunta de los dos activos. Apartado (c)")
+d.hueco()
+
+d.barra("F. CUENTA DE RESULTADOS 2025 (Anexo 1)")
+d.cabecera(["Concepto", "Importe", "", "", "Comentario"])
+for et, v, nota in [
+    ("Ventas netas", 4585267, None),
+    ("Variación de existencias", 376062, "Ingreso contable, pero NO es caja"),
+    ("Aprovisionamientos", -3068506, "COMPRAS del ejercicio, no consumo"),
+    ("Gastos de personal — Producción", -481660, None),
+    ("Gastos de transporte", -268218, "2 camiones, ya al 100% de su capacidad"),
+    ("Gastos de personal — Estructura", -311292, None),
+    ("Otros costes de explotación", -378979, "60% es palet nuevo; varían con el volumen"),
+    ("Amortización", -36143, None),
+    ("Gastos financieros", -44046, "Al 7,5% implican unos 587.000 € de deuda"),
+    ("Impuestos", -93121, None),
+    ("RESULTADO NETO", 279364, None),
+]:
+    d.fila(et, v, fmt=EUR, fuente=AZUL, nota=nota,
+           relleno=F_TOT if et.isupper() else None)
+d.hueco()
+
+d.barra("G. LÍNEAS DE NEGOCIO (Anexo 2) Y ESCANDALLO (Anexo 3)")
+d.cabecera(["Concepto", "Palet nuevo", "Palet usado", "Persán", "Comentario"])
+d.fila("Ventas netas", 2645224, 1940042, "", fmt=EUR, fuente=AZUL)
+d.fila("Resultado neto", 158882, 120482, "", fmt=EUR, fuente=AZUL)
+d.fila("Unidades vendidas", 174504, 260330, 90000, fmt=NUM, fuente=AZUL)
+d.fila("Ingreso medio (€/palet)", 15.16, 7.45, 10.00, fmt=EU2, fuente=AZUL)
+d.fila("Materia prima (€/palet)", 8.27, 4.80, 8.27, fmt=EU2, fuente=AZUL,
+       nota="IDÉNTICA en manual y Persán: el robot no abarata la madera")
+d.fila("Mano de obra directa (€/palet)", 2.18, 1.02, 0.42, fmt=EU2, fuente=AZUL,
+       nota="La de Persán supone 90.000 ud con 1 operario. Ver hoja 4: no es realista")
+d.fila("Transporte (€/palet)", 0.62, 0.62, 0.53, fmt=EU2, fuente=AZUL)
+d.fila("Otros costes variables (€/palet)", 1.30, 0.58, 1.30, fmt=EU2, fuente=AZUL)
+
+# ══════════════════════════════════════════════════════════════════════════
+# 2. COSTES Y EQUILIBRIO
+# ══════════════════════════════════════════════════════════════════════════
+h = Hoja(wb, "2. Costes y equilibrio", "2. Costes fijos, variables y punto de equilibrio",
+         "Reordena la cuenta de resultados por comportamiento en vez de por naturaleza. "
+         "Es el cálculo que permite juzgar un pedido nuevo.")
+
+h.barra("LA CUENTA TAL COMO LA DA EL CASO")
+h.explicar("Los subtotales se calculan con fórmula en vez de copiarlos, para comprobar que "
+           "cuadran con lo publicado. Es control de calidad, no análisis.")
+h.cabecera(["Concepto", "Importe 2025", "% s/ventas", "", "Comentario"])
+_rv = h.f
+r_ven = h.fila("VENTAS NETAS", 4585267, f"=B{_rv}/$B${_rv}", fmt=EUR, fuente=AZUL,
+               relleno=F_TOT, fmts=[EUR, PCT])
 
 
 def pyg(et, val, nota=None):
-    return h.fila(et, val, EUR, AZUL, f"=B{h.f}/$B${r_ven}", PCT, nota)
+    return h.fila(et, val, f"=B{h.f}/$B${r_ven}", fmt=EUR, fuente=AZUL, nota=nota,
+                  fmts=[EUR, PCT])
 
 
 r_vex = pyg("Variación de existencias", 376062, "Ingreso contable, pero NO es caja")
 r_apr = pyg("Aprovisionamientos", -3068506, "Son COMPRAS, no consumo")
-r_mb = h.fila("MARGEN BRUTO", f"=SUM(B{r_ven}:B{r_apr})", EUR, TOT,
-              f"=B{h.f}/$B${r_ven}", PCT, None, F_TOT)
+r_mb = h.fila("MARGEN BRUTO", f"=SUM(B{r_ven}:B{r_apr})", f"=B{h.f}/$B${r_ven}",
+              fmt=EUR, fuente=TOT, relleno=F_TOT, fmts=[EUR, PCT])
 r_pp = pyg("Gastos de personal — Producción", -481660)
-r_tr = pyg("Gastos de transporte", -268218, "2 camiones, ya al 100% de capacidad")
+r_tr = pyg("Gastos de transporte", -268218)
 r_pe = pyg("Gastos de personal — Estructura", -311292)
-r_oc = pyg("Otros costes de explotación", -378979, "60% es palet nuevo; varían con el volumen")
-r_ebda = h.fila("EBITDA", f"=B{r_mb}+SUM(B{r_pp}:B{r_oc})", EUR, TOT,
-                f"=B{h.f}/$B${r_ven}", PCT, None, F_TOT)
-r_am = pyg("Amortización", -36143, "Línea de 2019: 360.000 € a 10 años")
-r_ebit = h.fila("EBIT", f"=B{r_ebda}+B{r_am}", EUR, TOT, f"=B{h.f}/$B${r_ven}",
-                PCT, None, F_TOT)
-r_gf = pyg("Gastos financieros", -44046, "Al 7,5% implican ~587.000 € de deuda")
-r_bai = h.fila("RESULTADO ANTES DE IMPUESTOS", f"=B{r_ebit}+B{r_gf}", EUR, TOT,
-               f"=B{h.f}/$B${r_ven}", PCT, None, F_TOT)
+r_oc = pyg("Otros costes de explotación", -378979)
+r_ebda = h.fila("EBITDA", f"=B{r_mb}+SUM(B{r_pp}:B{r_oc})", f"=B{h.f}/$B${r_ven}",
+                fmt=EUR, fuente=TOT, relleno=F_TOT, fmts=[EUR, PCT])
+r_am = pyg("Amortización", -36143)
+r_ebit = h.fila("EBIT", f"=B{r_ebda}+B{r_am}", f"=B{h.f}/$B${r_ven}", fmt=EUR,
+                fuente=TOT, relleno=F_TOT, fmts=[EUR, PCT])
+r_gf = pyg("Gastos financieros", -44046)
+r_bai = h.fila("RESULTADO ANTES DE IMPUESTOS", f"=B{r_ebit}+B{r_gf}", f"=B{h.f}/$B${r_ven}",
+               fmt=EUR, fuente=TOT, relleno=F_TOT, fmts=[EUR, PCT])
 r_imp = pyg("Impuestos", -93121)
-r_rn = h.fila("RESULTADO NETO", f"=B{r_bai}+B{r_imp}", EUR, TOT,
-              f"=B{h.f}/$B${r_ven}", PCT, None, F_TOT)
+r_rn = h.fila("RESULTADO NETO", f"=B{r_bai}+B{r_imp}", f"=B{h.f}/$B${r_ven}", fmt=EUR,
+              fuente=TOT, relleno=F_TOT, fmts=[EUR, PCT])
 h.hueco()
 
-h.barra("REORDENAR LA CUENTA: COSTES FIJOS FRENTE A VARIABLES", "→ VA AL INFORME")
+h.barra("SEPARAR COSTES FIJOS DE VARIABLES", "→ VA AL INFORME")
 h.explicar("El caso ordena los gastos por naturaleza (personal, transporte, otros). Para "
            "decidir sobre un pedido NUEVO eso no sirve: hay que reordenarlos por "
            "comportamiento, es decir, cuáles crecen si fabricas más y cuáles se pagan igual. "
            "Lo que queda tras pagar los variables es el margen de contribución, y ese es el "
-           "único criterio válido para juzgar el contrato de Persán. Fíjate en que al final "
-           "reconstruye el EBITDA exacto del Anexo 1: la reordenación es indiscutible.")
-h.cabecera(["Concepto", "Importe", "% s/ventas", "Comentario"])
+           "único criterio válido para juzgar el contrato. Al final reconstruye el EBITDA "
+           "exacto del Anexo 1: la reordenación es indiscutible.")
+h.cabecera(["Concepto", "Importe", "% s/ventas", "", "Comentario"])
+r_cons = h.fila("Consumo real de materia prima", f"=-B{r_apr}-B{r_vex}", f"=B{h.f}/B{r_ven}",
+                fmt=EUR, fmts=[EUR, PCT], nota="Compras menos lo que quedó en el almacén")
+h.fila("Transporte", f"=-B{r_tr}", f"=B{h.f}/B{r_ven}", fmt=EUR, fmts=[EUR, PCT])
+h.fila("Otros costes de explotación", f"=-B{r_oc}", f"=B{h.f}/B{r_ven}", fmt=EUR,
+       fmts=[EUR, PCT])
+r_cv = h.fila("TOTAL COSTES VARIABLES", f"=SUM(B{h.f-3}:B{h.f-1})", f"=B{h.f}/B{r_ven}",
+              fmt=EUR, fuente=TOT, relleno=F_TOT, fmts=[EUR, PCT],
+              nota="Crecen si se fabrica más")
+r_mc = h.fila("MARGEN DE CONTRIBUCIÓN", f"=B{r_ven}-B{r_cv}", f"=B{h.f}/B{r_ven}", fmt=EUR,
+              fuente=TOT, relleno=F_BIEN, fmts=[EUR, PCT],
+              nota="De cada euro vendido quedan 27 céntimos")
+h.fila("Personal de producción", f"=-B{r_pp}", f"=B{h.f}/B{r_ven}", fmt=EUR, fmts=[EUR, PCT],
+       nota="Se trata como FIJO: Esteban no quiere despidos")
+h.fila("Personal de estructura", f"=-B{r_pe}", f"=B{h.f}/B{r_ven}", fmt=EUR, fmts=[EUR, PCT])
+r_cf = h.fila("TOTAL COSTES FIJOS", f"=B{h.f-2}+B{h.f-1}", f"=B{h.f}/B{r_ven}", fmt=EUR,
+              fuente=TOT, relleno=F_TOT, fmts=[EUR, PCT], nota="Se pagan se fabrique o no")
+h.fila("EBITDA reconstruido", f"=B{r_mc}-B{r_cf}", f"=B{h.f}/B{r_ven}", fmt=EUR, fuente=TOT,
+       fmts=[EUR, PCT])
+h.fila("Diferencia con el EBITDA del Anexo 1", f"=B{h.f-1}-B{r_ebda}", fmt=EUR, fuente=TOT,
+       relleno=F_BIEN, nota="Cuadra al euro")
+h.hueco()
 
-r_cons = h.fila("Consumo real de materia prima", f"=-B{r_apr}-B{r_vex}", EUR, NEG,
-                f"=B{h.f}/B{r_ven}", PCT, "Compras menos lo que quedó en el almacén")
-h.fila("Transporte", f"=-B{r_tr}", EUR, NEG, f"=B{h.f}/B{r_ven}", PCT)
-h.fila("Otros costes de explotación", f"=-B{r_oc}", EUR, NEG, f"=B{h.f}/B{r_ven}", PCT)
-r_cv = h.fila("TOTAL COSTES VARIABLES", f"=SUM(B{h.f-3}:B{h.f-1})", EUR, TOT,
-              f"=B{h.f}/B{r_ven}", PCT, "Crecen si se fabrica más", F_TOT)
-r_mc = h.fila("MARGEN DE CONTRIBUCIÓN", f"=B{r_ven}-B{r_cv}", EUR, TOT,
-              f"=B{h.f}/B{r_ven}", PCT, "De cada euro vendido quedan 27 céntimos", F_BIEN)
-h.fila("Personal de producción", f"=-B{r_pp}", EUR, NEG, f"=B{h.f}/B{r_ven}", PCT,
-       "Se trata como FIJO: Esteban no quiere despidos")
-h.fila("Personal de estructura", f"=-B{r_pe}", EUR, NEG, f"=B{h.f}/B{r_ven}", PCT)
-r_cf = h.fila("TOTAL COSTES FIJOS", f"=B{h.f-2}+B{h.f-1}", EUR, TOT,
-              f"=B{h.f}/B{r_ven}", PCT, "Se pagan se fabrique o no", F_TOT)
-h.fila("EBITDA reconstruido", f"=B{r_mc}-B{r_cf}", EUR, TOT, f"=B{h.f}/B{r_ven}", PCT)
-h.fila("Diferencia con el EBITDA del Anexo 1", f"=B{h.f-1}-B{r_ebda}", EUR, TOT, None,
-       PCT, "Cuadra al euro", F_BIEN)
+h.barra("PUNTO DE EQUILIBRIO", "→ VA AL INFORME")
+h.explicar("Cuánto puede caer la facturación antes de entrar en pérdidas. Sirve para dos "
+           "cosas opuestas y ambas útiles: demuestra que la empresa está sana HOY, lo que da "
+           "credibilidad, y demuestra que Persán empeora las dos variables a la vez, porque "
+           "sube los costes fijos en 108.000 € y encima aporta margen negativo.")
+h.cabecera(["Concepto", "Importe", "", "", "Comentario"])
+r_ratio = h.fila("Ratio de margen de contribución", f"=B{r_mc}/B{r_ven}", fmt=PCT, fuente=TOT)
+h.fila("Punto de equilibrio (EBITDA = 0)", f"=B{r_cf}/B{r_ratio}", fmt=EUR,
+       nota="Ventas necesarias para no perder caja")
+r_pm = h.fila("PUNTO DE EQUILIBRIO (resultado = 0)",
+              f"=(B{r_cf}-B{r_am}-B{r_gf})/B{r_ratio}", fmt=EUR, fuente=TOT, relleno=F_TOT,
+              nota="Ventas necesarias para no entrar en pérdidas")
+h.fila("Ventas reales 2025", f"=B{r_ven}", fmt=EUR)
+h.fila("MARGEN DE SEGURIDAD", f"=(B{r_ven}-B{r_pm})/B{r_ven}", fmt=PCT, fuente=TOT,
+       relleno=F_BIEN, grande=VERDE, nota="Puede caer un 30% antes de perder dinero")
+h.fila("Apalancamiento operativo", f"=B{r_mc}/B{r_ebda}", fmt=MUL, fuente=TOT,
+       nota="1% menos de margen mueve el EBITDA un 2,75%. Los errores de precio se amplifican")
+h.hueco()
+h.cabecera(["Efecto de Persán sobre el equilibrio", "Antes", "Después", "", "Comentario"])
+h.fila("Costes fijos", f"=B{r_cf}", f"=B{r_cf}+108000", fmt=EUR, fuente=TOT,
+       nota="Campa 60.000 € + leasing 48.000 €")
+h.fila("Punto de equilibrio", f"=B{r_pm}", f"=(B{r_cf}+108000-B{r_am}-B{r_gf})/B{r_ratio}",
+       fmt=EUR, fuente=TOT, relleno=F_MAL,
+       nota="Sube casi 400.000 € de facturación necesaria, y el contrato no aporta margen")
 h.hueco()
 
 h.barra("¿CUÁNTA CAJA GENERÓ REALMENTE LA EMPRESA?", "→ VA AL INFORME")
 h.explicar("Hay dos peticiones de dinero sobre la mesa: la casa de los fundadores y los "
            "643.000 € que exige Persán el primer año. La respuesta no está en el beneficio, "
-           "está aquí. Alcopalet compró 376.062 € más de madera de la que consumió: eso es "
+           "está aquí. Alcopalet compró 376.062 € más de madera de la que consumió: es "
            "beneficio contable que salió del banco y sigue en el almacén.")
-h.cabecera(["Concepto", "Importe", "", "Comentario"])
-h.fila("EBITDA", f"=B{r_ebda}")
-h.fila("(−) Aumento de existencias", f"=-B{r_vex}", EUR, NEG, None, PCT,
-       "Madera comprada que aún no se ha vendido")
-h.fila("(−) Gastos financieros", f"=B{r_gf}")
-h.fila("(−) Impuestos", f"=B{r_imp}")
-r_caja = h.fila("CAJA OPERATIVA APROXIMADA", f"=SUM(B{h.f-4}:B{h.f-1})", EUR, TOT, None,
-                PCT, "NEGATIVA, con 279.364 € de beneficio", F_MAL, grande=BIG)
-h.fila("Resultado neto contable", f"=B{r_rn}")
-h.fila("BRECHA entre beneficio y caja", f"=B{r_rn}-B{r_caja}", EUR, TOT, None, PCT,
-       "El beneficio está en el almacén, no en el banco", F_MAL)
-h.hueco()
-
-h.barra("PUNTO MUERTO Y APALANCAMIENTO", "→ VA AL INFORME")
-h.explicar("Mide el colchón: cuánto puede caer la facturación antes de entrar en pérdidas. "
-           "Sirve para dos cosas opuestas y ambas útiles. Demuestra que la empresa está sana "
-           "HOY, lo que te da credibilidad ante el jurado. Y demuestra que Persán empeora las "
-           "dos variables a la vez: sube los costes fijos en 108.000 € (campa y leasing) y "
-           "encima aporta margen negativo.")
-h.cabecera(["Concepto", "Importe", "", "Comentario"])
-r_ratio = h.fila("Ratio de margen de contribución", f"=B{r_mc}/B{r_ven}", PCT, TOT)
-h.fila("Punto muerto (EBITDA = 0)", f"=B{r_cf}/B{r_ratio}", EUR, NEG, None, PCT,
-       "Ventas necesarias para no perder caja")
-r_pm = h.fila("PUNTO MUERTO (resultado = 0)", f"=(B{r_cf}-B{r_am}-B{r_gf})/B{r_ratio}",
-              EUR, TOT, None, PCT, "Ventas necesarias para no entrar en pérdidas", F_TOT)
-h.fila("Ventas reales 2025", f"=B{r_ven}")
-h.fila("MARGEN DE SEGURIDAD", f"=(B{r_ven}-B{r_pm})/B{r_ven}", PCT, TOT, None, PCT,
-       "Puede caer un 30% antes de perder dinero", F_BIEN, grande=VERDE)
-h.fila("Apalancamiento operativo", f"=B{r_mc}/B{r_ebda}", MUL, TOT, None, PCT,
-       "1% menos de margen mueve el EBITDA un 2,75%")
-h.hueco()
-
-h.barra("COMPROBACIÓN: ¿CUADRA EL ANEXO 1 CON EL ANEXO 3?", "no va al informe")
-h.explicar("Esto no se publica. Es lo que te autoriza a usar el escandallo del Anexo 3 sin "
-           "que nadie te lo discuta. Si alguien dice que los anexos del caso no cuadran, "
-           "esta es la respuesta.")
-h.cabecera(["Concepto", "Importe", "", "Comentario"])
-h.fila("Consumo real calculado desde el Anexo 1", f"=B{r_cons}")
-h.fila("Materia prima según el Anexo 3", 2692732, EUR, AZUL, None, PCT,
-       "8,27 € × 174.504 nuevos + 4,80 € × 260.330 usados")
-h.fila("DESVIACIÓN", f"=B{h.f-2}-B{h.f-1}", EUR, TOT, None, PCT,
-       "288 € sobre 2,7 millones: los anexos son coherentes", F_BIEN)
-h.hueco()
-
-h.barra("ENDEUDAMIENTO IMPLÍCITO", "turno de preguntas")
-h.explicar("El caso no da balance, pero los gastos financieros divididos por el tipo del "
-           "banco reconstruyen la deuda aproximada. Es tu respuesta si te preguntan «¿y no "
-           "puede financiarlo el banco?».")
-h.cabecera(["Concepto", "Importe", "", "Comentario"])
-r_tipo = h.fila("Tipo de interés del banco", 0.075, PCT, AZUL)
-r_deuda = h.fila("Deuda implícita", f"=-B{r_gf}/B{r_tipo}", EUR, TOT)
-h.fila("Deuda / EBITDA — HOY", f"=B{r_deuda}/B{r_ebda}", MUL, TOT, None, PCT,
-       "Por debajo de 2x: el banco presta sin problema", F_BIEN)
-h.fila("Deuda estimada TRAS firmar Persán", f"=B{r_deuda}+190000+454356", EUR, NEG, None,
-       PCT, "+190.000 leasing +454.356 circulante a 180 días")
-h.fila("EBITDA estimado TRAS Persán", f"=B{r_ebda}-154800", EUR, NEG, None, PCT,
-       "−46.800 margen −60.000 campa −48.000 leasing")
-h.fila("Deuda / EBITDA — TRAS PERSÁN", f"=B{h.f-2}/B{h.f-1}", MUL, TOT, None, PCT,
-       "Por encima de 4x el banco empieza a poner condiciones", F_MAL, grande=BIG)
+h.cabecera(["Concepto", "Importe", "", "", "Comentario"])
+h.fila("EBITDA", f"=B{r_ebda}", fmt=EUR)
+h.fila("(−) Aumento de existencias", f"=-B{r_vex}", fmt=EUR, nota="Madera comprada sin vender")
+h.fila("(−) Gastos financieros", f"=B{r_gf}", fmt=EUR)
+h.fila("(−) Impuestos", f"=B{r_imp}", fmt=EUR)
+r_caja = h.fila("CAJA OPERATIVA APROXIMADA", f"=SUM(B{h.f-4}:B{h.f-1})", fmt=EUR, fuente=TOT,
+                relleno=F_MAL, grande=BIG, nota="NEGATIVA, con 279.364 € de beneficio")
+h.fila("BRECHA entre beneficio y caja", f"=B{r_rn}-B{r_caja}", fmt=EUR, fuente=TOT,
+       relleno=F_MAL, nota="El beneficio está en el almacén, no en el banco")
 
 # ══════════════════════════════════════════════════════════════════════════
-# HOJA 2 — ESCANDALLO
+# 3. MARGEN POR LÍNEAS
 # ══════════════════════════════════════════════════════════════════════════
-e = Hoja(wb, "2. Escandallo", "2. El escandallo: cuánto cuesta un palet",
-         "El Anexo 3 recalculado componente a componente. Aquí aparece el hallazgo central "
-         "del caso: el contrato de Persán tiene margen NEGATIVO.")
+m = Hoja(wb, "3. Margen por líneas", "3. Margen de contribución por líneas de negocio",
+         "Cuánto deja realmente cada tipo de palet. Con DOS definiciones, porque la respuesta "
+         "cambia según se considere la mano de obra fija o variable.")
 
-e.barra("EL ESCANDALLO DEL ANEXO 3, RECALCULADO")
-e.explicar("El caso publica el coste total de cada palet. Aquí se vuelve a sumar componente "
-           "a componente en vez de copiarlo, para verificar que la suma da lo que dice. Lo "
-           "importante es la última fila: el margen de contribución, que es lo que deja cada "
-           "palet tras pagar lo que ese palet consume.")
-e.cabecera(["Concepto de coste (€/palet)", "Manual actual", "Palet usado", "Proyecto Persán"])
+m.barra("POR QUÉ HAY DOS DEFINICIONES")
+m.explicar("El escandallo del Anexo 3 trata la mano de obra como un coste variable, y por eso "
+           "la resta al calcular el margen. Pero Esteban dice expresamente que NO quiere "
+           "despidos: un coste que no se puede eliminar no es variable, es fijo. Las dos "
+           "lecturas son legítimas y conviene enseñar ambas. La segunda —sin mano de obra— "
+           "es la que da el argumento más demoledor contra Persán.")
+m.hueco()
 
-fila_ing = e.f
-for etiqueta, v1, v2, v3, nota in [
-    ("Ingreso medio", 15.16, 7.45, 10.00, None),
-    ("Materia prima (madera y clavos)", 8.27, 4.80, 8.27, None),
-    ("Mano de obra directa", 2.18, 1.02, 0.42, None),
-    ("Transporte", 0.62, 0.62, 0.53, None),
-    ("Otros costes variables", 1.30, 0.58, 1.30, None),
+m.barra("DEFINICIÓN 1: MARGEN CON MANO DE OBRA (como el Anexo 3)")
+m.cabecera(["Concepto (€/palet)", "Palet nuevo", "Palet usado", "Persán", "Comentario"])
+fi = m.f
+m.fila("Ingreso medio", 15.16, 7.45, 10.00, fmt=EU2, fuente=AZUL)
+m.fila("(−) Materia prima", 8.27, 4.80, 8.27, fmt=EU2, fuente=AZUL)
+m.fila("(−) Mano de obra directa", 2.18, 1.02, 0.42, fmt=EU2, fuente=AZUL)
+m.fila("(−) Transporte", 0.62, 0.62, 0.53, fmt=EU2, fuente=AZUL)
+m.fila("(−) Otros variables", 1.30, 0.58, 1.30, fmt=EU2, fuente=AZUL)
+r_c1 = m.fila("COSTE TOTAL", f"=SUM(B{fi+1}:B{fi+4})", f"=SUM(C{fi+1}:C{fi+4})",
+              f"=SUM(D{fi+1}:D{fi+4})", fmt=EU2, fuente=TOT, relleno=F_TOT)
+r_m1 = m.fila("MARGEN CON MANO DE OBRA", f"=B{fi}-B{r_c1}", f"=C{fi}-C{r_c1}",
+              f"=D{fi}-D{r_c1}", fmt=EU2, fuente=TOT, relleno=F_TOT)
+m.fila("Unidades vendidas", 174504, 260330, 90000, fmt=NUM, fuente=AZUL)
+r_t1 = m.fila("CONTRIBUCIÓN TOTAL (€/año)", f"=B{r_m1}*B{m.f-1}", f"=C{r_m1}*C{m.f-1}",
+              f"=D{r_m1}*D{m.f-1}", fmt=EUR, fuente=TOT, relleno=F_TOT)
+m.hueco()
+
+m.barra("DEFINICIÓN 2: MARGEN SIN MANO DE OBRA (mano de obra como coste fijo)", "→ VA AL INFORME")
+m.explicar("Si la plantilla se paga igual se fabrique o no —que es lo que implica «no quiero "
+           "despidos»—, el margen relevante para aceptar un pedido es este. Fíjate en la "
+           "columna de Persán.")
+m.cabecera(["Concepto (€/palet)", "Palet nuevo", "Palet usado", "Persán", "Comentario"])
+fi2 = m.f
+m.fila("Ingreso medio", f"=B{fi}", f"=C{fi}", f"=D{fi}", fmt=EU2)
+m.fila("(−) Materia prima", f"=B{fi+1}", f"=C{fi+1}", f"=D{fi+1}", fmt=EU2)
+m.fila("(−) Transporte", f"=B{fi+3}", f"=C{fi+3}", f"=D{fi+3}", fmt=EU2)
+m.fila("(−) Otros variables", f"=B{fi+4}", f"=C{fi+4}", f"=D{fi+4}", fmt=EU2)
+r_c2 = m.fila("COSTE SIN MANO DE OBRA", f"=SUM(B{fi2+1}:B{fi2+3})",
+              f"=SUM(C{fi2+1}:C{fi2+3})", f"=SUM(D{fi2+1}:D{fi2+3})", fmt=EU2,
+              fuente=TOT, relleno=F_TOT)
+r_m2 = m.fila("MARGEN SIN MANO DE OBRA", f"=B{fi2}-B{r_c2}", f"=C{fi2}-C{r_c2}",
+              f"=D{fi2}-D{r_c2}", fmt=EU2, fuente=TOT, relleno=F_TOT)
+m.explicar("ESTE ES EL ARGUMENTO DEFINITIVO CONTRA EL CONTRATO: aunque el operario del robot "
+           "fuese GRATIS, Persán seguiría perdiendo 10 céntimos por palet. El precio de 10 € "
+           "no cubre ni la madera (8,27) más el transporte (0,53) más los variables (1,30), "
+           "que suman 10,10 €. El problema no es la productividad ni la tecnología: es el "
+           "precio.", F_MAL)
+m.hueco()
+
+m.barra("COMPROBACIÓN CONTRA LA CUENTA DE RESULTADOS", "no va al informe")
+m.explicar("El margen sin mano de obra, multiplicado por las unidades, debe reproducir el "
+           "margen de contribución que sale de la cuenta de resultados (hoja 2).")
+m.cabecera(["Concepto", "Palet nuevo", "Palet usado", "TOTAL", "Comentario"])
+r_tot2 = m.fila("Contribución sin mano de obra (€/año)", f"=B{r_m2}*B{r_t1-1}",
+                f"=C{r_m2}*C{r_t1-1}", f"=B{m.f}+C{m.f}", fmt=EUR, fuente=TOT, relleno=F_TOT)
+m.fila("Margen de contribución de la hoja 2", "", "", 1245626, fmt=EUR, fuente=AZUL)
+m.fila("DESVIACIÓN", "", "", f"=D{r_tot2}-D{m.f-1}", fmt=EUR, fuente=TOT, relleno=F_BIEN,
+       nota="Menos de 900 € sobre 1,2 millones: los dos caminos llevan al mismo sitio")
+m.hueco()
+
+m.barra("LA LECTURA")
+for t in [
+    "El palet usado deja 1,45 € por unidad sin contar mano de obra, frente a 4,97 € del "
+    "nuevo. Pero el usado necesita 7 operarios para 260.330 palets y el nuevo necesita 10 "
+    "para 174.504: por persona, el usado rinde más del doble en unidades.",
+    "La línea de palet usado está bloqueada por ESPACIO, no por demanda. Y el espacio "
+    "cuesta 5.000 €/mes, el mismo alquiler que se plantea para el retén de Persán.",
+    "Persán es la única de las tres columnas con margen negativo, en las dos definiciones. "
+    "No es un pedido de margen bajo: es un pedido que resta.",
 ]:
-    ws = e.ws
-    f = e.f
-    ws.cell(f, 1, etiqueta).font = ETI
-    for col, val in ((2, v1), (3, v2), (4, v3)):
-        c = ws.cell(f, col, val)
-        c.font = AZUL
-        c.number_format = EU2
-        c.alignment = Alignment(horizontal="center")
-    e.f += 1
-
-fila_coste = e.f
-ws = e.ws
-ws.cell(fila_coste, 1, "COSTE TOTAL POR PALET").font = TOT
-for col in (2, 3, 4):
-    L = chr(64 + col)
-    c = ws.cell(fila_coste, col, f"=SUM({L}{fila_ing+1}:{L}{fila_coste-1})")
-    c.font = TOT
-    c.number_format = EU2
-    c.alignment = Alignment(horizontal="center")
-    c.fill = F_TOT
-ws.cell(fila_coste, 1).fill = F_TOT
-e.f += 1
-
-fila_margen = e.f
-ws.cell(fila_margen, 1, "MARGEN DE CONTRIBUCIÓN POR PALET").font = TOT
-for col in (2, 3, 4):
-    L = chr(64 + col)
-    c = ws.cell(fila_margen, col, f"={L}{fila_ing}-{L}{fila_coste}")
-    c.font = BIG if col == 4 else TOT
-    c.number_format = EU2
-    c.alignment = Alignment(horizontal="center")
-    c.fill = F_MAL if col == 4 else F_BIEN
-ws.cell(fila_margen, 1).fill = F_TOT
-e.f += 1
-
-e.fila("Margen sobre el precio de venta",
-       f"=B{fila_margen}/B{fila_ing}", PCT, NEG, None, PCT)
-ws = e.ws
-for col in (3, 4):
-    L = chr(64 + col)
-    c = ws.cell(e.f - 1, col, f"={L}{fila_margen}/{L}{fila_ing}")
-    c.font = NEG
-    c.number_format = PCT
-    c.alignment = Alignment(horizontal="center")
-e.hueco()
-
-e.barra("LO QUE ESTO SIGNIFICA")
-e.explicar("Un margen de contribución negativo quiere decir que el palet no cubre ni "
-           "siquiera lo que consume al fabricarse: madera, mano de obra, transporte y "
-           "variables. No es un contrato de margen bajo, es un contrato que pierde dinero "
-           "en cada unidad. Y por eso NINGÚN volumen lo arregla: cuantos más palets se "
-           "fabriquen, más se pierde. Tampoco lo arregla ninguna máquina, porque lo que "
-           "domina el coste es la madera, no la mano de obra.")
-e.cabecera(["Concepto", "Valor", "", "Comentario"])
-e.fila("Peso de la madera sobre el precio Persán", f"=D{fila_ing+1}/D{fila_ing}", PCT, TOT,
-       None, PCT, "La madera se come el 83% del precio de venta", F_MAL, grande=BIG)
-e.fila("Peso de la madera sobre el precio actual", f"=B{fila_ing+1}/B{fila_ing}", PCT, NEG,
-       None, PCT, "En el negocio normal la madera es el 55%")
-e.fila("Descuento de Persán sobre el precio medio",
-       f"=D{fila_ing}/B{fila_ing}-1", PCT, TOT, None, PCT,
-       "Persán paga un 34% menos que el cliente medio de palet nuevo", F_MAL)
-e.fila("Ahorro de mano de obra del robot (€/palet)",
-       f"=B{fila_ing+2}-D{fila_ing+2}", EU2, NEG, None, PCT,
-       "El robot ahorra 1,76 €/palet de mano de obra...")
-e.fila("Sobrecoste de vender a Persán (€/palet)",
-       f"=B{fila_ing}-D{fila_ing}", EU2, TOT, None, PCT,
-       "...pero el precio cede 5,16 €. El ahorro no compensa ni de lejos", F_MAL)
-e.hueco()
-
-e.barra("EL RIESGO QUE NADIE HA PUESTO EN EL CONTRATO")
-e.explicar("El contrato fija el precio de venta durante CINCO AÑOS pero no fija el precio de "
-           "la madera, que es el 83% de ese precio. Todo el riesgo de inflación lo asume "
-           "Alcopalet. Esta tabla muestra qué pasa con el margen unitario si la madera sube.")
-e.cabecera(["Si la madera sube...", "Coste por palet", "Margen por palet", "Pérdida anual (90.000 ud)"])
-for infl in (0.00, 0.05, 0.10, 0.15, 0.20):
-    ws = e.ws
-    f = e.f
-    c = ws.cell(f, 1, infl)
-    c.font = AZUL
-    c.number_format = PCT
-    c = ws.cell(f, 2, f"=$D${fila_ing+1}*(1+A{f})+$D${fila_ing+2}+$D${fila_ing+3}+$D${fila_ing+4}")
-    c.font = NEG
-    c.number_format = EU2
-    c.alignment = Alignment(horizontal="center")
-    c = ws.cell(f, 3, f"=$D${fila_ing}-B{f}")
-    c.font = NEG
-    c.number_format = EU2
-    c.alignment = Alignment(horizontal="center")
-    c = ws.cell(f, 4, f"=C{f}*90000")
-    c.font = TOT
-    c.number_format = EUR
-    c.alignment = Alignment(horizontal="center")
-    e.f += 1
-e.explicar("Conclusión: un contrato a precio fijo sobre una materia prima volátil traslada "
-           "todo el riesgo al fabricante. Si se firma, debe llevar cláusula de revisión "
-           "anual del precio de la madera.")
-e.hueco()
-
-e.barra("COMPROBACIÓN CONTRA LA CUENTA DE RESULTADOS", "no va al informe")
-e.explicar("Si el escandallo multiplicado por las unidades vendidas reproduce las partidas "
-           "del Anexo 1, es que el escandallo es fiable. Estas cuatro líneas son tu defensa "
-           "si alguien cuestiona los datos.")
-e.cabecera(["Partida", "Según escandallo", "Según Anexo 1", "Diferencia"])
-UN, UU = 174504, 260330
-for etiqueta, comp, anexo1 in [
-    ("Materia prima", f"=B{fila_ing+1}*{UN}+C{fila_ing+1}*{UU}", 2692444),
-    ("Transporte", f"=B{fila_ing+3}*{UN}+C{fila_ing+3}*{UU}", 268218),
-    ("Otros costes variables", f"=B{fila_ing+4}*{UN}+C{fila_ing+4}*{UU}", 378979),
-]:
-    ws = e.ws
-    f = e.f
-    ws.cell(f, 1, etiqueta).font = ETI
-    c = ws.cell(f, 2, comp); c.font = NEG; c.number_format = EUR
-    c = ws.cell(f, 3, anexo1); c.font = AZUL; c.number_format = EUR
-    c = ws.cell(f, 4, f"=B{f}-C{f}"); c.font = TOT; c.number_format = EUR
-    e.f += 1
-e.explicar("Las tres cuadran con desviaciones de menos del 0,5%. La cuarta partida, la mano "
-           "de obra, NO cuadra con el Anexo 1 (646.000 € frente a 481.660 €), pero sí cuadra "
-           "exactamente con la plantilla real: 10 operarios en palet nuevo y 7 en usado, a "
-           "38.000 € cada uno. Es una diferencia de clasificación contable, no un error.")
+    m.texto(t)
 
 # ══════════════════════════════════════════════════════════════════════════
-# HOJA 3 — CAPACIDAD
+# 4. CAPACIDAD
 # ══════════════════════════════════════════════════════════════════════════
-c = Hoja(wb, "3. Capacidad", "3. ¿Cabe Persán en la fábrica?",
+c = Hoja(wb, "4. Capacidad", "4. Capacidad real y coste de fabricar las 90.000",
          "El caso da rendimientos por hora y por jornada, pero nunca la capacidad anual. "
-         "Sin ella no se puede saber si el contrato es viable ni si la máquina hace falta.")
-
-c.barra("DATOS DE PARTIDA (del enunciado)")
-c.cabecera(["Dato", "Valor", "", "De dónde sale"])
-r_meses = c.fila("Meses productivos al año", 11, NUM, AZUL, None, PCT, "Nota final del Anexo 3")
-r_dmes = c.fila("Días productivos al mes", 22, NUM, AZUL, None, PCT, "Nota final del Anexo 3")
-r_dias = c.fila("DÍAS PRODUCTIVOS AL AÑO", f"=B{r_meses}*B{r_dmes}", NUM, TOT, None, PCT,
-                "11 × 22 = 242 días", F_TOT)
-r_horas = c.fila("Horas por jornada", 8, NUM, AZUL, None, PCT,
-                 "Turno único 7:00-15:00. Esteban descarta tarde y noche")
-c.hueco()
+         "Y da por hecho que el robot fabrica las 90.000 unidades. Ninguna de las dos cosas "
+         "es evidente.")
 
 c.barra("CAPACIDAD ANUAL DE CADA SISTEMA")
-c.explicar("Aquí se convierte el rendimiento que da el caso en palets al año. Es el cálculo "
-           "que permite responder si el contrato cabe o no.")
-c.cabecera(["Sistema de fabricación", "Palets/día", "Palets/año", "Cómo se calcula"])
-
-ws = c.ws
-f = c.f
-ws.cell(f, 1, "Línea automática (2019)").font = ETI
-cc = ws.cell(f, 2, f"=65*0.75*B{r_horas}"); cc.font = NEG; cc.number_format = NUM
-cc = ws.cell(f, 3, f"=B{f}*B{r_dias}"); cc.font = TOT; cc.number_format = NUM
-ws.cell(f, 4, "65 palets/h × 75% rendimiento × 8 h").font = MINI
-r_linea = f
-c.f += 1
-
-f = c.f
-ws.cell(f, 1, "Fabricación manual").font = ETI
-cc = ws.cell(f, 2, 500); cc.font = AZUL; cc.number_format = NUM
-cc = ws.cell(f, 3, f"=B{f}*B{r_dias}"); cc.font = TOT; cc.number_format = NUM
-ws.cell(f, 4, "500 palets/día entre 8 operarios = 62,5 cada uno").font = MINI
-r_manual = f
-c.f += 1
-
-f = c.f
-ws.cell(f, 1, "CAPACIDAD ACTUAL TOTAL").font = TOT
-cc = ws.cell(f, 3, f"=C{r_linea}+C{r_manual}"); cc.font = TOT; cc.number_format = NUM
-for col in range(1, 5):
-    ws.cell(f, col).fill = F_TOT
-r_capact = f
-c.f += 1
-
-f = c.f
-ws.cell(f, 1, "Robot nuevo (si se compra)").font = ETI
-cc = ws.cell(f, 2, "=400*0.9"); cc.font = NEG; cc.number_format = NUM
-cc = ws.cell(f, 3, f"=B{f}*B{r_dias}"); cc.font = TOT; cc.number_format = NUM
-ws.cell(f, 4, "400 palets/jornada × 90% rendimiento, 1 operario").font = MINI
-r_robot = f
-c.f += 1
+c.explicar("Convierte el rendimiento que da el caso en palets al año. Es lo que permite "
+           "responder si el contrato cabe en la fábrica.")
+c.cabecera(["Sistema", "Palets/día", "Días/año", "Palets/año", "Cómo se calcula"])
+_rl = c.f
+r_lin = c.fila("Línea automática (2019)", "=65*0.75*8", 242, f"=B{_rl}*C{_rl}", fmt=NUM,
+               fmts=[NUM, NUM, NUM], nota="65 palets/h × 75% × 8 h de jornada")
+_rm = c.f
+r_man = c.fila("Fabricación manual", 500, 242, f"=B{_rm}*C{_rm}", fmt=NUM, fuente=AZUL,
+               fmts=[NUM, NUM, NUM], nota="500/día entre 8 operarios = 62,5 cada uno")
+r_cap = c.fila("CAPACIDAD ACTUAL TOTAL", "", "", f"=D{r_lin}+D{r_man}", fmt=NUM, fuente=TOT,
+               relleno=F_TOT)
 c.hueco()
 
 c.barra("EL DATO QUE CAMBIA LA CONVERSACIÓN", "→ VA AL INFORME")
 c.explicar("Esteban dice «no llegamos» y por eso urge la máquina. Pero sus propios números "
-           "dicen otra cosa: la fábrica está al 81%. Hay casi 41.000 palets al año de "
-           "capacidad ociosa que se pueden fabricar hoy sin invertir un euro. El argumento "
-           "de que la máquina es imprescindible por capacidad no se sostiene.")
-c.cabecera(["Concepto", "Palets/año", "", "Comentario"])
-r_prod = c.fila("Producción real de palet nuevo en 2025", 174504, NUM, AZUL, None, PCT,
-                "Anexo 2")
-c.fila("Capacidad teórica actual", f"=C{r_capact}", NUM, NEG)
-c.fila("GRADO DE UTILIZACIÓN", f"=B{r_prod}/B{c.f-1}", PCT, TOT, None, PCT,
-       "La fábrica NO está llena", F_CLAVE, grande=BIG)
-c.fila("Capacidad ociosa disponible hoy", f"=B{c.f-2}-B{r_prod}", NUM, TOT, None, PCT,
-       "Se puede fabricar esto sin invertir nada", F_CLAVE)
+           "dicen otra cosa: la fábrica está al 81%. Hay casi 41.000 palets al año que se "
+           "pueden fabricar hoy sin invertir un euro. El argumento de que la máquina es "
+           "imprescindible POR CAPACIDAD no se sostiene. Hay que comprarla, pero por otras "
+           "razones.")
+c.cabecera(["Concepto", "Palets/año", "", "", "Comentario"])
+r_prod = c.fila("Producción real de palet nuevo 2025", 174504, fmt=NUM, fuente=AZUL,
+                nota="Anexo 2")
+c.fila("Capacidad teórica actual", f"=D{r_cap}", fmt=NUM)
+c.fila("GRADO DE UTILIZACIÓN", f"=B{r_prod}/B{c.f-1}", fmt=PCT, fuente=TOT, relleno=F_CLAVE,
+       grande=BIG, nota="La fábrica NO está llena")
+c.fila("Capacidad ociosa disponible hoy", f"=B{c.f-2}-B{r_prod}", fmt=NUM, fuente=TOT,
+       relleno=F_CLAVE, nota="Se puede fabricar esto sin invertir nada")
 c.hueco()
 
-c.barra("¿LLEGA EL ROBOT A CUBRIR PERSÁN?")
-c.explicar("El Anexo 3 calcula la mano de obra de Persán dividiendo 38.000 € entre 90.000 "
-           "unidades. Es decir, da por supuesto que el robot fabrica las 90.000. Conviene "
-           "comprobarlo, porque no es así.")
-c.cabecera(["Concepto", "Palets/año", "", "Comentario"])
-r_rcap = c.fila("Capacidad anual del robot", f"=C{r_robot}", NUM, NEG)
-r_pers = c.fila("Compromiso con Persán", 90000, NUM, AZUL, None, PCT, "90 mil unidades/año")
-c.fila("DIFERENCIA", f"=B{r_rcap}-B{r_pers}", NUM, TOT, None, PCT,
-       "El robot se queda CORTO: no llega al compromiso", F_MAL, grande=BIG)
-c.fila("Déficit en % del compromiso", f"=B{c.f-1}/B{r_pers}", PCT, TOT, None, PCT,
-       "Habría que completarlo con las otras líneas o con días extra", F_MAL)
+c.barra("CAPACIDAD DE LA MÁQUINA: OFICIAL FRENTE A REALISTA", "→ VA AL INFORME")
+c.explicar("El 90% de rendimiento es la estimación de Esteban, que es quien quiere comprar la "
+           "máquina. Conviene contrastarlo: la línea de 2019 también se compró con "
+           "expectativas y hoy se considera al 75%. Además el robot lo lleva UN SOLO "
+           "operario, y el caso menciona absentismo los lunes: si falta esa persona, la "
+           "máquina para. Esta tabla muestra qué pasa con cada supuesto.")
+c.cabecera(["Rendimiento", "Palets/día", "Palets/año", "Déficit vs 90.000", "Lectura"])
+fila_rend = c.f
+for rend, nota in [
+    (0.90, "OFICIAL. Lo que dice el caso. Aun así NO llega a las 90.000"),
+    (0.85, "Prudente. Faltarían 7.720 unidades"),
+    (0.80, "REALISTA en el primer año, con curva de aprendizaje"),
+    (0.75, "Pesimista: el mismo rendimiento que la línea de 2019"),
+]:
+    f = c.f
+    ws = c.ws
+    cc = ws.cell(f, 1, rend); cc.font = AZUL; cc.number_format = PCT
+    cc = ws.cell(f, 2, f"=400*A{f}"); cc.font = NEG; cc.number_format = NUM
+    cc.alignment = Alignment(horizontal="center")
+    cc = ws.cell(f, 3, f"=B{f}*242"); cc.font = TOT; cc.number_format = NUM
+    cc.alignment = Alignment(horizontal="center")
+    cc = ws.cell(f, 4, f"=C{f}-90000"); cc.font = TOT; cc.number_format = NUM
+    cc.alignment = Alignment(horizontal="center")
+    cc.fill = F_MAL
+    ws.cell(f, 5, nota).font = MINI
+    ws.cell(f, 5).alignment = Alignment(wrap_text=True, vertical="center")
+    c.f += 1
+c.explicar("Conclusión: EN NINGÚN ESCENARIO el robot cubre por sí solo las 90.000 unidades. "
+           "Ni siquiera con el 90% oficial. Y el Anexo 3 calcula la mano de obra dividiendo "
+           "38.000 € entre 90.000 unidades, es decir, DA POR HECHO que sí las cubre. Esa "
+           "hipótesis está mal y encarece el contrato.", F_MAL)
+c.hueco()
+
+c.barra("COSTE MEDIO PONDERADO DE FABRICAR LAS 90.000", "→ VA AL INFORME")
+c.explicar("Si el robot no llega, el resto hay que fabricarlo con otra línea, y cada línea "
+           "tiene un coste de mano de obra distinto por palet. El coste real de servir a "
+           "Persán es la media ponderada de las dos fuentes. Se completa con la línea de "
+           "2019, que es la más barata de las dos disponibles.")
+c.cabecera(["Coste de mano de obra por sistema", "€/palet", "", "", "Cómo se calcula"])
+r_mman = c.fila("Fabricación manual", round(MOD_MANUAL, 4), fmt=EU3, fuente=TOT,
+                nota="38.000 € × 8 operarios ÷ (500 × 242 días)")
+r_mlin = c.fila("Línea automática 2019", round(MOD_LINEA, 4), fmt=EU3, fuente=TOT,
+                nota="38.000 € × 2 operarios ÷ 94.380 palets")
+c.hueco()
+c.cabecera(["Rendimiento del robot", "Robot (ud)", "Resto (ud)", "MOD ponderada", "Comentario"])
+fila_pond = c.f
+for i, rend in enumerate((0.90, 0.85, 0.80, 0.75)):
+    f = c.f
+    ws = c.ws
+    fr = fila_rend + i
+    cc = ws.cell(f, 1, f"=A{fr}"); cc.font = NEG; cc.number_format = PCT
+    cc = ws.cell(f, 2, f"=MIN(C{fr},90000)"); cc.font = NEG; cc.number_format = NUM
+    cc.alignment = Alignment(horizontal="center")
+    cc = ws.cell(f, 3, f"=90000-B{f}"); cc.font = NEG; cc.number_format = NUM
+    cc.alignment = Alignment(horizontal="center")
+    cc = ws.cell(f, 4, f"=(38000+C{f}*$B${r_mlin})/90000")
+    cc.font = TOT; cc.number_format = EU3
+    cc.alignment = Alignment(horizontal="center")
+    cc.fill = F_CLAVE
+    ws.cell(f, 5, "El robot cuesta 38.000 € (1 operario) haga las unidades que haga; "
+                  "el resto se paga a 0,805 €/palet").font = MINI
+    ws.cell(f, 5).alignment = Alignment(wrap_text=True, vertical="center")
+    c.f += 1
+c.hueco()
+
+c.cabecera(["Coste unitario real de Persán", "MOD ponderada", "Coste total", "Margen a 10 €",
+            "Impacto anual"])
+for i, rend in enumerate((0.90, 0.85, 0.80, 0.75)):
+    f = c.f
+    ws = c.ws
+    fp = fila_pond + i
+    cc = ws.cell(f, 1, f"=A{fp}"); cc.font = NEG; cc.number_format = PCT
+    cc = ws.cell(f, 2, f"=D{fp}"); cc.font = NEG; cc.number_format = EU3
+    cc.alignment = Alignment(horizontal="center")
+    cc = ws.cell(f, 3, f"=8.27+B{f}+0.53+1.3"); cc.font = TOT; cc.number_format = EU3
+    cc.alignment = Alignment(horizontal="center")
+    cc = ws.cell(f, 4, f"=10-C{f}"); cc.font = TOT; cc.number_format = EU3
+    cc.alignment = Alignment(horizontal="center")
+    cc.fill = F_MAL
+    cc = ws.cell(f, 5, f"=D{f}*90000"); cc.font = TOT; cc.number_format = EUR
+    cc.alignment = Alignment(horizontal="center")
+    cc.fill = F_MAL
+    c.f += 1
+c.explicar("El Anexo 3 dice que Persán cuesta 10,52 € y pierde 0,52 € por palet. Con el coste "
+           "de mano de obra correctamente ponderado, incluso en el escenario OFICIAL del 90% "
+           "el coste es 10,548 € y la pérdida 0,548 €. En el escenario realista del 80%, la "
+           "pérdida sube a 0,635 € por palet. El contrato es peor de lo que el propio caso "
+           "presenta.", F_MAL)
 c.hueco()
 
 c.barra("¿CABE PERSÁN EN LA FÁBRICA?")
-c.cabecera(["Escenario", "Capacidad", "Demanda total", "¿Encaja?"])
-for etiqueta, cap, dem, nota in [
-    ("Sin robot, sin Persán", f"=C{r_capact}", f"=B{r_prod}", None),
-    ("Sin robot, CON Persán", f"=C{r_capact}", f"=B{r_prod}+B{r_pers}", None),
-    ("Con robot, CON Persán", f"=C{r_capact}+C{r_robot}", f"=B{r_prod}+B{r_pers}", None),
+c.cabecera(["Escenario", "Capacidad", "Demanda total", "Holgura", "¿Encaja?"])
+for et, cap, dem in [
+    ("Sin robot, sin Persán", f"=D{r_cap}", f"=B{r_prod}"),
+    ("Sin robot, CON Persán", f"=D{r_cap}", f"=B{r_prod}+90000"),
+    ("Con robot al 90%, CON Persán", f"=D{r_cap}+C{fila_rend}", f"=B{r_prod}+90000"),
+    ("Con robot al 80%, CON Persán", f"=D{r_cap}+C{fila_rend+2}", f"=B{r_prod}+90000"),
 ]:
-    ws = c.ws
     f = c.f
-    ws.cell(f, 1, etiqueta).font = ETI
+    ws = c.ws
+    ws.cell(f, 1, et).font = ETI
     cc = ws.cell(f, 2, cap); cc.font = NEG; cc.number_format = NUM
+    cc.alignment = Alignment(horizontal="center")
     cc = ws.cell(f, 3, dem); cc.font = NEG; cc.number_format = NUM
-    cc = ws.cell(f, 4, f'=IF(B{f}>=C{f},"SÍ, cabe","NO cabe")')
-    cc.font = TOT
+    cc.alignment = Alignment(horizontal="center")
+    cc = ws.cell(f, 4, f"=B{f}-C{f}"); cc.font = TOT; cc.number_format = NUM
+    cc.alignment = Alignment(horizontal="center")
+    cc = ws.cell(f, 5, f'=IF(D{f}>=0,"SÍ","NO")'); cc.font = TOT
     cc.alignment = Alignment(horizontal="center")
     c.f += 1
-c.explicar("Conclusión: si se firma Persán hace falta capacidad nueva sí o sí, porque la "
-           "actual se queda corta en unas 49.000 unidades. Pero si NO se firma, la máquina "
-           "no hace falta por capacidad. Son dos conclusiones distintas y conviene no "
-           "mezclarlas.")
 c.hueco()
 
 c.barra("LA OPORTUNIDAD QUE EL CASO NO SEÑALA", "→ VA AL INFORME")
 c.explicar("La línea de palet usado está limitada a 30.000 unidades al mes por FALTA DE "
            "ESPACIO, no por falta de demanda. Y la campa que habría que alquilar para el "
            "retén de Persán cuesta 5.000 €/mes. Es decir: el mismo alquiler que se plantea "
-           "para un contrato que pierde dinero desbloquearía una línea que sí gana dinero.")
-c.cabecera(["Concepto", "Palets/año", "", "Comentario"])
-r_usa = c.fila("Producción actual de palet usado", 260330, NUM, AZUL, None, PCT, "Anexo 2")
-r_techo = c.fila("Techo logístico", "=30000*12", NUM, NEG, None, PCT, "30.000/mes por falta de espacio")
-r_rec = c.fila("RECORRIDO DISPONIBLE", f"=B{r_techo}-B{r_usa}", NUM, TOT, None, PCT,
-               "Se puede crecer esto si se resuelve el espacio", F_BIEN)
-c.fila("Margen de contribución por palet usado", 0.43, EU2, AZUL, None, PCT, "Anexo 3")
-c.fila("Contribución adicional posible", f"=B{r_rec}*B{c.f-1}", EUR, TOT, None, PCT,
-       "No cubre por sí sola los 60.000 €/año de la campa, pero reparte su coste", F_BIEN)
-c.fila("Operarios necesarios para llegar al techo",
-       f"=B{r_techo}/(B{r_dias}*155)", NU2, NEG, None, PCT,
-       "Hoy hay 7. Harían falta unos 2,6 más")
-c.explicar("Y aquí encaja la pieza que falta: el robot libera personal de palet nuevo, y esta "
-           "línea necesita personal. Esteban no quiere despedir a nadie; no haría falta.")
+           "para un contrato que pierde dinero desbloquearía una línea que gana dinero.")
+c.cabecera(["Concepto", "Valor", "", "", "Comentario"])
+r_usa = c.fila("Producción actual de palet usado", 260330, fmt=NUM, fuente=AZUL, nota="Anexo 2")
+r_tec = c.fila("Techo logístico", "=30000*12", fmt=NUM, nota="30.000/mes por falta de espacio")
+r_rec = c.fila("RECORRIDO DISPONIBLE", f"=B{r_tec}-B{r_usa}", fmt=NUM, fuente=TOT,
+               relleno=F_BIEN)
+c.fila("Contribución adicional (sin mano de obra)", f"=B{r_rec}*1.45", fmt=EUR, fuente=TOT,
+       relleno=F_BIEN, nota="A 1,45 €/palet. Cubre con holgura los 60.000 € de la campa")
+c.fila("Operarios necesarios para llegar al techo", f"=B{r_tec}/(242*155)", fmt=NU2,
+       nota="Hoy hay 7. Harían falta unos 2,6 más, que el robot puede liberar")
 
 # ══════════════════════════════════════════════════════════════════════════
-# HOJA 4 — CONTRATO PERSÁN
+# 5. CONTRATO PERSÁN
 # ══════════════════════════════════════════════════════════════════════════
-p = Hoja(wb, "4. Contrato Persán", "4. Cuánto cuesta firmar el contrato",
+p = Hoja(wb, "5. Contrato Persán", "5. Qué hace falta para servir a Persán y cuánto cuesta",
          "90.000 unidades/año · 10 €/unidad FIJO durante 5 años · cobro a 180 días · "
          "retén permanente de 1.000 palets en nave.")
 
-p.barra("DATOS DEL CONTRATO Y COSTES ASOCIADOS")
-p.cabecera(["Dato", "Valor", "", "De dónde sale"])
-r_vol = p.fila("Volumen anual comprometido", 90000, NUM, AZUL, None, PCT, "Borrador del contrato")
-r_pre = p.fila("Precio de venta unitario", 10.00, EU2, AZUL, None, PCT, "FIJO durante 5 años")
-r_cu = p.fila("Coste variable unitario", 10.52, EU2, AZUL, None, PCT, "Anexo 3, hoja 2")
-r_cobro = p.fila("Plazo de cobro", 180, NUM, AZUL, None, PCT, "Pago a 180 días")
-r_int = p.fila("Tipo de interés del banco", 0.075, PCT, AZUL, None, PCT, "Apartado (c)")
-r_campa = p.fila("Alquiler de la campa (€/año)", "=5000*12", EUR, NEG, None, PCT,
-                 "5.000 €/mes por el terreno colindante")
-r_leas = p.fila("Leasing máquina + camión (€/año)", "=4000*12", EUR, NEG, None, PCT,
-                "4.000 €/mes por los dos activos")
-r_ret = p.fila("Retén permanente exigido (palets)", 1000, NUM, AZUL, None, PCT,
-               "Dos camiones en nave para servir en menos de 24 h")
+p.barra("QUÉ SE NECESITARÍA SI SE FIRMA", "→ VA AL INFORME")
+p.explicar("Antes de mirar el resultado, conviene listar todo lo que el contrato obliga a "
+           "poner encima de la mesa. No es solo la máquina.")
+p.cabecera(["Necesidad", "Importe / cantidad", "", "", "Detalle"])
+p.fila("1. Capacidad productiva", 90000, fmt=NUM, fuente=TOT,
+       nota="El robot cubre 87.120 al 90% (77.440 al 80%). El resto hay que completarlo con "
+            "la línea de 2019, que tiene holgura.")
+p.fila("2. Personal", 1, fmt=NUM, fuente=TOT,
+       nota="Un operario nuevo para la máquina (38.000 €/año). NO hacen falta despidos: la "
+            "capacidad extra se necesita igualmente.")
+p.fila("3. Espacio: campa", 60000, fmt=EUR, fuente=TOT,
+       nota="5.000 €/mes para almacenar el retén de 1.000 palets que exige el cliente.")
+p.fila("4. Logística: tercer camión", 150000, fmt=EUR, fuente=TOT,
+       nota="Los 2 actuales están al 100%. Solo hace falta por el retén de Persán.")
+p.fila("5. Leasing (máquina + camión)", 48000, fmt=EUR, fuente=TOT,
+       nota="4.000 €/mes durante 5 años. Si se compra SOLO la máquina, baja a 9.618 €/año.")
+p.fila("6. Circulante a financiar", 454356, fmt=EUR, fuente=TOT, relleno=F_MAL,
+       nota="443.836 € de cobro a 180 días + 10.520 € del retén inmovilizado.")
+p.fila("7. Compra adicional de madera", 744300, fmt=EUR, fuente=TOT, relleno=F_MAL,
+       nota="90.000 × 8,27 €. Supone un 52% MÁS de compra de madera de palet nuevo, a un "
+            "único proveedor gallego. Riesgo de suministro que el caso no menciona.")
+p.fila("8. Caja necesaria el primer año", -643232, fmt=EUR, fuente=BIG, relleno=F_MAL,
+       nota="Frente a una caja operativa de −60.555 € en 2025.")
+p.hueco()
+
+p.barra("COSTES FIJOS ADICIONALES QUE GENERA EL CONTRATO")
+p.cabecera(["Concepto", "€/año", "", "", "Comentario"])
+r_campa = p.fila("Alquiler de la campa", "=5000*12", fmt=EUR, nota="5.000 €/mes")
+r_leas = p.fila("Leasing de máquina y camión", "=4000*12", fmt=EUR, nota="4.000 €/mes")
+r_cfad = p.fila("TOTAL COSTES FIJOS ADICIONALES", f"=B{r_campa}+B{r_leas}", fmt=EUR,
+                fuente=TOT, relleno=F_TOT,
+                nota="Sube los costes fijos de la empresa un 13,6%")
 p.hueco()
 
 p.barra("LA CUENTA DE RESULTADOS DEL CONTRATO", "→ VA AL INFORME")
-p.explicar("Esto es lo que aporta el contrato al resultado de la empresa, año a año. Fíjate "
-           "en que el margen de contribución ya es negativo ANTES de sumar la campa y el "
-           "leasing: el contrato no cubre ni lo que consume fabricarlo.")
-p.cabecera(["Concepto", "Importe anual", "", "Comentario"])
-p.fila("Ingresos", f"=B{r_vol}*B{r_pre}", EUR, NEG, None, PCT, "90.000 × 10 €")
-p.fila("(−) Costes variables", f"=-B{r_vol}*B{r_cu}", EUR, NEG, None, PCT, "90.000 × 10,52 €")
-r_mcp = p.fila("MARGEN DE CONTRIBUCIÓN", f"=B{p.f-2}+B{p.f-1}", EUR, TOT, None, PCT,
-               "Negativo antes de cualquier coste fijo", F_MAL)
-p.fila("(−) Alquiler de la campa", f"=-B{r_campa}")
-p.fila("(−) Leasing", f"=-B{r_leas}")
-r_sub = p.fila("SUBTOTAL", f"=B{r_mcp}+B{p.f-2}+B{p.f-1}", EUR, TOT, None, PCT, None, F_TOT)
+p.explicar("Lo que aporta el contrato al resultado de la empresa, año a año. Se usa el coste "
+           "unitario REAL de 10,548 € (mano de obra ponderada, hoja 4), no los 10,52 € del "
+           "Anexo 3.")
+p.cabecera(["Concepto", "Importe anual", "", "", "Comentario"])
+r_vol = p.fila("Volumen (palets)", 90000, fmt=NUM, fuente=AZUL)
+r_pre = p.fila("Precio unitario", 10.00, fmt=EU2, fuente=AZUL)
+r_cu = p.fila("Coste unitario real", 10.548, fmt=EU3, fuente=NEG,
+              nota="Con mano de obra ponderada al 90% de rendimiento. Ver hoja 4")
+p.fila("Ingresos", f"=B{r_vol}*B{r_pre}", fmt=EUR)
+p.fila("(−) Costes variables", f"=-B{r_vol}*B{r_cu}", fmt=EUR)
+r_mcp = p.fila("MARGEN DE CONTRIBUCIÓN", f"=B{p.f-2}+B{p.f-1}", fmt=EUR, fuente=TOT,
+               relleno=F_MAL, nota="Negativo antes de cualquier coste fijo")
+p.fila("(−) Costes fijos adicionales", f"=-B{r_cfad}", fmt=EUR, nota="Campa + leasing")
+r_sub = p.fila("SUBTOTAL", f"=B{r_mcp}+B{p.f-1}", fmt=EUR, fuente=TOT, relleno=F_TOT)
 p.hueco()
 
 p.barra("EL COSTE OCULTO: COBRAR A 180 DÍAS")
-p.explicar("Persán paga a seis meses. Eso significa que Alcopalet tiene permanentemente "
-           "medio año de facturación de ese cliente sin cobrar, y ese dinero hay que "
-           "financiarlo al 7,5%. El escandallo no lo recoge, pero es un coste real.")
-p.cabecera(["Concepto", "Importe", "", "Comentario"])
-r_cxc = p.fila("Dinero pendiente de cobro (media)", f"=B{r_vol}*B{r_pre}*B{r_cobro}/365",
-               EUR, NEG, None, PCT, "Ingresos × 180/365")
-r_stock = p.fila("Retén inmovilizado, a coste", f"=B{r_ret}*B{r_cu}", EUR, NEG, None, PCT,
-                 "1.000 palets que hay que tener siempre en nave")
-r_circ = p.fila("CIRCULANTE TOTAL INMOVILIZADO", f"=B{r_cxc}+B{r_stock}", EUR, TOT, None,
-                PCT, "Dinero de Alcopalet atrapado en el contrato", F_TOT)
-r_cfin = p.fila("Coste financiero anual", f"=-B{r_circ}*B{r_int}", EUR, TOT, None, PCT,
-                "Al 7,5%", F_MAL)
+p.explicar("Persán paga a seis meses. Alcopalet tendría permanentemente medio año de "
+           "facturación de ese cliente sin cobrar, y ese dinero hay que financiarlo al 7,5%. "
+           "El escandallo no lo recoge, pero es un coste real.")
+p.cabecera(["Concepto", "Importe", "", "", "Comentario"])
+r_cxc = p.fila("Pendiente de cobro (media)", f"=B{r_vol}*B{r_pre}*180/365", fmt=EUR,
+               nota="Ingresos × 180/365")
+r_stk = p.fila("Retén inmovilizado, a coste", f"=1000*B{r_cu}", fmt=EUR,
+               nota="1.000 palets siempre en nave")
+r_cir = p.fila("CIRCULANTE TOTAL", f"=B{r_cxc}+B{r_stk}", fmt=EUR, fuente=TOT, relleno=F_TOT)
+r_cfin = p.fila("Coste financiero anual", f"=-B{r_cir}*0.075", fmt=EUR, fuente=TOT,
+                relleno=F_MAL, nota="Al 7,5%")
 p.hueco()
 
-p.barra("EL RESULTADO FINAL", "→ VA AL INFORME")
-p.cabecera(["Concepto", "Importe", "", "Comentario"])
-r_imp_tot = p.fila("IMPACTO ANUAL DEL CONTRATO", f"=B{r_sub}+B{r_cfin}", EUR, TOT, None,
-                   PCT, "Lo que resta al resultado de la empresa cada año", F_MAL, grande=BIG)
-p.fila("Resultado neto actual de la empresa", 279364, EUR, AZUL, None, PCT, "Anexo 1")
-p.fila("En % del resultado actual", f"=B{r_imp_tot}/B{p.f-1}", PCT, TOT, None, PCT,
-       "Se lleva por delante dos tercios del beneficio de TODA la empresa", F_MAL)
-p.fila("Impacto acumulado a 5 años", f"=B{r_imp_tot}*5", EUR, TOT, None, PCT,
-       "El contrato dura 5 años sin revisión de precio", F_MAL)
-p.fila("Resultado de la empresa tras firmar", f"=279364+B{r_imp_tot}", EUR, TOT, None, PCT,
-       "La empresa quedaría al borde de las pérdidas")
+p.barra("IMPACTO ANUAL", "→ VA AL INFORME")
+p.cabecera(["Concepto", "Importe", "", "", "Comentario"])
+r_imp = p.fila("IMPACTO ANUAL DEL CONTRATO", f"=B{r_sub}+B{r_cfin}", fmt=EUR, fuente=TOT,
+               relleno=F_MAL, grande=BIG, nota="Lo que resta al resultado cada año")
+p.fila("Resultado neto actual de la empresa", 279364, fmt=EUR, fuente=AZUL, nota="Anexo 1")
+p.fila("En % del resultado actual", f"=B{r_imp}/B{p.f-1}", fmt=PCT, fuente=TOT, relleno=F_MAL,
+       nota="Se lleva por delante dos tercios del beneficio de TODA la empresa")
+p.fila("Impacto acumulado a 5 años", f"=B{r_imp}*5", fmt=EUR, fuente=TOT, relleno=F_MAL,
+       nota="El contrato dura 5 años sin revisión de precio")
+p.fila("Resultado de la empresa tras firmar", f"=279364+B{r_imp}", fmt=EUR, fuente=TOT,
+       nota="La empresa quedaría al borde de las pérdidas")
 p.hueco()
 
-p.barra("¿A CUÁNTO HABRÍA QUE VENDER? EL PRECIO DE EQUILIBRIO", "→ VA AL INFORME")
-p.explicar("Si el problema es el precio, la pregunta útil no es «¿firmo o no?» sino «¿a "
-           "partir de qué precio interesa?». Estos cuatro niveles responden eso. El tercero "
-           "es el importante: es el precio que hace que el contrato no reste ni sume.")
-p.cabecera(["Nivel de cobertura", "Precio mínimo", "Subida necesaria", "Qué cubre"])
-r_be1 = p.fila("1. Solo los costes variables", f"=B{r_cu}", EU2, NEG,
-               f"=B{p.f}/B{r_pre}-1", PCT, "Madera, mano de obra, transporte y variables")
-r_be2 = p.fila("2. + campa y leasing", f"=B{r_cu}+(B{r_campa}+B{r_leas})/B{r_vol}", EU2,
-               NEG, f"=B{p.f}/B{r_pre}-1", PCT, "Añade los costes fijos que obliga a asumir")
-r_be3 = p.fila("3. + coste del circulante",
-               f"=(B{r_vol}*B{r_cu}+B{r_campa}+B{r_leas})/(B{r_vol}*(1-B{r_cobro}/365*B{r_int}))",
-               EU2, TOT, f"=B{p.f}/B{r_pre}-1", PCT,
-               "PRECIO DE EQUILIBRIO REAL. Por debajo, el contrato destruye valor",
-               F_CLAVE, grande=BIG)
-p.fila("4. + margen igual al del negocio actual", f"=B{r_be2}+2.79", EU2, NEG,
-       f"=B{p.f}/B{r_pre}-1", PCT, "Para que Persán sea tan rentable como el resto")
+p.barra("PRECIO DE EQUILIBRIO", "→ VA AL INFORME")
+p.explicar("Si el problema es el precio, la pregunta útil es «¿a partir de qué precio "
+           "interesa?». El tercer nivel es el importante: el precio que hace que el contrato "
+           "no reste ni sume.")
+p.cabecera(["Nivel de cobertura", "Precio mínimo", "Subida necesaria", "", "Qué cubre"])
+p.fila("1. Solo costes variables", f"=B{r_cu}", f"=B{p.f}/B{r_pre}-1", fmt=EU2,
+       fmts=[EU2, PCT], nota="Madera, mano de obra, transporte y variables")
+r_be2 = p.fila("2. + campa y leasing", f"=B{r_cu}+B{r_cfad}/B{r_vol}",
+               f"=B{p.f}/B{r_pre}-1", fmt=EU2, fmts=[EU2, PCT],
+               nota="Añade los costes fijos que obliga a asumir")
+p.fila("3. + coste del circulante",
+       f"=(B{r_vol}*B{r_cu}+B{r_cfad})/(B{r_vol}*(1-180/365*0.075))",
+       f"=B{p.f}/B{r_pre}-1", fmt=EU2, fmts=[EU2, PCT], fuente=TOT, relleno=F_CLAVE,
+       grande=BIG, nota="PRECIO DE EQUILIBRIO REAL")
+p.fila("4. + margen igual al negocio actual", f"=B{r_be2}+2.79", f"=B{p.f}/B{r_pre}-1",
+       fmt=EU2, fmts=[EU2, PCT], nota="Para que Persán sea tan rentable como el resto")
 p.hueco()
 
-p.barra("SENSIBILIDAD: PRECIO NEGOCIADO FRENTE A PRECIO DE LA MADERA")
+p.barra("SENSIBILIDAD: PRECIO FRENTE A COSTE DE LA MADERA")
 p.explicar("Las dos variables que de verdad mueven el resultado. Cada celda es el impacto "
-           "anual del contrato. Los números en rojo son pérdidas. Sirve para saber hasta "
-           "dónde hay que negociar y qué pasa si la madera se encarece.")
-
+           "anual del contrato en euros.")
 ws = p.ws
 f = p.f
 ws.cell(f, 1, "Madera ↓ / Precio →").font = CAB
 ws.cell(f, 1).fill = F_CAB
-precios = [10.00, 11.00, 12.00, 12.50, 13.00]
+precios = [10.00, 11.00, 12.00, 12.50]
 for i, pr in enumerate(precios):
     cc = ws.cell(f, 2 + i, pr)
-    cc.font = CAB
-    cc.fill = F_CAB
-    cc.number_format = EU2
-    cc.alignment = Alignment(horizontal="center")
-    cc.border = BOR
+    cc.font = CAB; cc.fill = F_CAB; cc.number_format = EU2
+    cc.alignment = Alignment(horizontal="center"); cc.border = BOR
 fila_prec = f
 p.f += 1
-
-MADERA_BASE = 8.27
-NO_MADERA = 0.42 + 0.53 + 1.30
-for infl in (0.00, 0.05, 0.10, 0.15):
+NO_MADERA = 0.448 + 0.53 + 1.30
+for mad in (8.27, 7.75, 7.50, 7.00):
     f = p.f
-    cc = ws.cell(f, 1, infl)
-    cc.font = CAB
-    cc.fill = F_CAB
-    cc.number_format = PCT
+    cc = ws.cell(f, 1, mad)
+    cc.font = CAB; cc.fill = F_CAB; cc.number_format = EU2
     cc.alignment = Alignment(horizontal="center")
-    for i, _ in enumerate(precios):
+    for i in range(len(precios)):
         L = chr(66 + i)
-        formula = (f"=$B${r_vol}*({L}${fila_prec}-({MADERA_BASE}*(1+$A{f})+{NO_MADERA}))"
-                   f"-$B${r_campa}-$B${r_leas}"
-                   f"-({L}${fila_prec}*$B${r_vol}*$B${r_cobro}/365+$B${r_ret}*$B${r_cu})*$B${r_int}")
+        formula = (f"=90000*({L}${fila_prec}-($A{f}+{NO_MADERA}))-$B${r_cfad}"
+                   f"-({L}${fila_prec}*90000*180/365+1000*($A{f}+{NO_MADERA}))*0.075")
         cc = ws.cell(f, 2 + i, formula)
-        cc.font = NEG
-        cc.number_format = EUR
-        cc.border = BOR
+        cc.font = NEG; cc.number_format = EUR; cc.border = BOR
         cc.alignment = Alignment(horizontal="center")
     p.f += 1
-p.explicar("Lectura: con el precio actual de 10 € el contrato pierde dinero incluso si la "
-           "madera no sube nada. Hace falta llegar a unos 12,17 € solo para no perder. Y si "
-           "la madera sube un 10%, ni siquiera 13 € bastan.")
+p.explicar("Lectura: con el precio actual de 10 € el contrato pierde dinero aunque la madera "
+           "baje a 7 €. Y con la madera actual de 8,27 € hace falta llegar a unos 12,17 € "
+           "solo para no perder. La combinación de las dos palancas es lo que hace viable el "
+           "contrato.")
 
 # ══════════════════════════════════════════════════════════════════════════
-# HOJA 5 — EL ROBOT
+# 6. CONTRATO IDEAL
 # ══════════════════════════════════════════════════════════════════════════
-r = Hoja(wb, "5. El robot", "5. La máquina, como decisión independiente",
-         "El caso presenta máquina y contrato como una sola decisión. Separarlos es la clave "
-         "del análisis: la tecnología puede ser buena aunque el contrato no lo sea.")
+i = Hoja(wb, "6. Contrato ideal", "6. Qué habría que negociar con Persán",
+         "La pregunta correcta no es «¿firmo o no?» sino «¿en qué condiciones sí?». "
+         "Hay tres palancas, y ninguna por separado basta.")
 
-r.barra("COMPARATIVA DE LOS TRES SISTEMAS")
-r.explicar("Antes de hablar de dinero conviene ver qué compra realmente la máquina. Y lo que "
-           "compra no es sobre todo capacidad: es FLEXIBILIDAD.")
-r.cabecera(["Indicador", "Manual", "Línea 2019", "Robot nuevo"])
-ws = r.ws
-for etiqueta, v1, v2, v3, fmt in [
-    ("Palets por jornada", 500, "=65*0.75*8", "=400*0.9", NUM),
-    ("Operarios necesarios", 8, 2, 1, NUM),
-    ("Cambio de formato (horas)", "—", 6, "=25/60", NU2),
-    ("Mantenimiento", "—", "Complejo y constante", "Solo limpieza diaria", None),
+i.barra("LAS TRES PALANCAS")
+i.explicar("Casi todo el mundo va a discutir el precio. El precio es solo una de tres, y "
+           "probablemente la más difícil. La segunda —la especificación de la madera— es la "
+           "que el caso deja servida sin decirlo.")
+i.cabecera(["Palanca", "Hoy", "Objetivo", "Ganancia anual", "Por qué es negociable"])
+i.fila("1. Precio por palet", 10.00, 12.50, 213172, fmt=EU2, fmts=[EU2, EU2, EUR],
+       fuente=TOT, nota="90.000 × 2,50 € menos el mayor coste de circulante. Es la palanca "
+                        "más difícil: Persán ha negociado durante meses.")
+i.fila("2. Coste de la madera", 8.27, 7.50, 69300, fmt=EU2, fmts=[EU2, EU2, EUR],
+       fuente=TOT, nota="LA QUE NADIE MIRA. Los 8,27 € son el estándar Tetra Pak: madera "
+                        "gallega premium, seca, blanca, lijada y sin astillas, nacido de un "
+                        "incidente de moho en una aduana china. Persán fabrica detergentes "
+                        "en Sevilla y sus palets no cruzan aduanas asiáticas.")
+i.fila("3. Plazo de cobro (días)", 180, 90, 16638, fmt=NUM, fmts=[NUM, NUM, EUR],
+       fuente=TOT, nota="La más fácil de conseguir. Reduce a la mitad el circulante "
+                        "inmovilizado y su coste financiero.")
+i.hueco()
+
+i.barra("CLÁUSULAS QUE NO SON NEGOCIABLES")
+i.cabecera(["Cláusula", "", "", "", "Por qué"])
+i.fila("Revisión anual del precio ligada al coste de la madera", relleno=F_CLAVE,
+       nota="INNEGOCIABLE. La madera es el 83% del precio de venta y el contrato dura 5 años. "
+            "Sin esta cláusula, Alcopalet asume todo el riesgo de materia prima. Una subida "
+            "del 10% cuesta 74.430 €/año.")
+i.fila("Volumen mínimo garantizado con penalización", relleno=F_CLAVE,
+       nota="Si Alcopalet invierte 190.000 € y alquila una campa por el contrato, necesita "
+            "certeza de que las 90.000 unidades se van a pedir de verdad.")
+i.fila("Reducir el retén de 1.000 a 500 palets, o repercutir su coste", relleno=F_CLAVE,
+       nota="El retén es stock inmovilizado que financia Alcopalet para dar un servicio "
+            "premium. O se reduce, o se cobra.")
+i.fila("Duración de 3 años en vez de 5, con revisión", relleno=F_CLAVE,
+       nota="Menos exposición a un precio que puede quedar obsoleto. Y da una segunda "
+            "oportunidad de negociación.")
+i.hueco()
+
+i.barra("QUÉ SE CONSIGUE CON CADA COMBINACIÓN", "→ VA AL INFORME")
+i.explicar("El impacto anual del contrato según lo que se logre en la negociación. Es la "
+           "tabla que hay que llevar a la reunión con Persán.")
+i.cabecera(["Escenario de negociación", "Precio", "Madera", "Cobro (días)", "Impacto anual"])
+COSTE_NM = 0.448 + 0.53 + 1.30  # MOD ponderada + transporte + otros variables
+for et, pr, mad, dias, relleno in [
+    ("Contrato actual, tal como está", 10.00, 8.27, 180, F_MAL),
+    ("Solo se consigue el plazo de cobro", 10.00, 8.27, 90, F_MAL),
+    ("Solo se consigue re-especificar la madera", 10.00, 7.50, 180, F_MAL),
+    ("MÍNIMO ACEPTABLE (equilibrio)", 12.17, 8.27, 180, F_CLAVE),
+    ("Objetivo realista: precio y plazo", 12.50, 8.27, 90, F_BIEN),
+    ("CONTRATO IDEAL: las tres palancas", 12.50, 7.50, 90, F_BIEN),
+    ("Ambicioso: las tres al máximo", 13.00, 7.00, 90, F_BIEN),
 ]:
-    f = r.f
-    ws.cell(f, 1, etiqueta).font = ETI
-    for col, val in ((2, v1), (3, v2), (4, v3)):
-        cc = ws.cell(f, col, val)
-        cc.font = AZUL if not (isinstance(val, str) and val.startswith("=")) else NEG
-        if fmt and not isinstance(val, str):
-            cc.number_format = fmt
-        elif fmt and isinstance(val, str) and val.startswith("="):
-            cc.number_format = fmt
-        cc.alignment = Alignment(horizontal="center")
-    r.f += 1
-f = r.f
-ws.cell(f, 1, "Productividad (palets/operario/día)").font = TOT
-for col in (2, 3, 4):
-    L = chr(64 + col)
-    cc = ws.cell(f, col, f"={L}{r.f-4}/{L}{r.f-3}")
-    cc.font = TOT
-    cc.number_format = NU2
+    f = i.f
+    ws = i.ws
+    ws.cell(f, 1, et).font = TOT if et.isupper() or "IDEAL" in et else ETI
+    cc = ws.cell(f, 2, pr); cc.font = NEG; cc.number_format = EU2
     cc.alignment = Alignment(horizontal="center")
-    cc.fill = F_TOT
-ws.cell(f, 1).fill = F_TOT
-r.f += 1
-r.explicar("El dato decisivo es el cambio de formato: SEIS HORAS de parada en la línea de "
-           "2019 frente a menos de media hora en el robot. Alcopalet gana dinero en series "
-           "especiales (el 114×114 de Don Simón, las exigencias de Tetra Pak). Con seis horas "
-           "de parada una serie corta es inviable; con media hora, es negocio.")
-r.hueco()
+    cc = ws.cell(f, 3, mad); cc.font = NEG; cc.number_format = EU2
+    cc.alignment = Alignment(horizontal="center")
+    cc = ws.cell(f, 4, dias); cc.font = NEG; cc.number_format = NUM
+    cc.alignment = Alignment(horizontal="center")
+    formula = (f"=90000*(B{f}-(C{f}+{COSTE_NM}))-108000"
+               f"-(B{f}*90000*D{f}/365+1000*(C{f}+{COSTE_NM}))*0.075")
+    cc = ws.cell(f, 5, formula); cc.font = TOT; cc.number_format = EUR
+    cc.alignment = Alignment(horizontal="center")
+    for col in range(1, 6):
+        ws.cell(f, col).fill = relleno
+    i.f += 1
+i.explicar("Conclusión para la negociación: ninguna palanca por separado salva el contrato. "
+           "Con solo el plazo de cobro sigue perdiendo. Con solo la madera, también. Hace "
+           "falta subir el precio SÍ O SÍ, pero combinarlo con las otras dos reduce lo que "
+           "hay que pedir: en vez de exigir 12,17 € a secas, se puede cerrar en 12,50 € con "
+           "un palet más barato de fabricar y cobrando antes.")
+i.hueco()
 
-r.barra("EL AHORRO TEÓRICO DE MANO DE OBRA")
-r.explicar("Si el robot fabrica lo mismo que varios operarios manuales, el ahorro parece "
-           "evidente. Este bloque lo cuantifica. Ojo: es TEÓRICO, y el bloque siguiente "
-           "explica por qué.")
-r.cabecera(["Concepto", "Valor", "", "Comentario"])
-r_rcap2 = r.fila("Capacidad anual del robot (palets)", "=400*0.9*242", NUM, NEG, None, PCT,
-                 "Ver hoja 3")
-r_prodop = r.fila("Productividad manual (palets/operario/día)", "=500/8", NU2, NEG)
-r_equiv = r.fila("Operarios manuales equivalentes", f"=B{r_rcap2}/(B{r_prodop}*242)", NU2,
-                 TOT, None, PCT, "Los que harían falta para fabricar lo mismo a mano")
-r.fila("Operarios que exige el robot", 1, NUM, AZUL)
-r_libre = r.fila("Operarios liberados", f"=B{r_equiv}-B{r.f-1}", NU2, TOT)
-r_ahorro = r.fila("AHORRO TEÓRICO (€/año)", f"=B{r_libre}*38000", EUR, TOT, None, PCT,
-                  "A 38.000 € por operario", F_BIEN, grande=VERDE)
-r.fila("Coste anual del leasing solo de la máquina",
-       "=-40000*(0.075/12)/(1-(1+0.075/12)^(-60))*12", EUR, NEG, None, PCT,
-       "40.000 € al 7,5% a 5 años. SIN el tráiler")
-r.fila("Plazo de recuperación (meses)", f"=40000/B{r_ahorro}*12", NU2, TOT, None, PCT,
-       "Menos de tres meses", F_BIEN)
-r.hueco()
-
-r.barra("PERO: «NO QUIERO DESPIDOS»", "→ VA AL INFORME")
-r.explicar("Esteban afirma expresamente que no quiere despedir a nadie, y que el turno único "
-           "es un valor diferencial para retener a la plantilla. Un ahorro de mano de obra "
-           "que no se traduce ni en menos nóminas ni en más producción vendida NO es un "
-           "ahorro real. Esta es la hipótesis más atacable de todo el trabajo, y por eso hay "
-           "que ponerla encima de la mesa antes de que la pongan ellos.")
-r.cabecera(["Concepto", "Valor", "", "Comentario"])
-r_mon = r.fila("% de mano de obra liberada que se monetiza", 0.00, PCT, NEG, None, PCT,
-               "HIPÓTESIS MÍA. Cámbiala y mira qué pasa abajo", F_HIP)
-r.fila("Ahorro REAL de mano de obra", f"=B{r_ahorro}*B{r_mon}", EUR, TOT)
-r.fila("(−) Leasing de la máquina", "=-40000*(0.075/12)/(1-(1+0.075/12)^(-60))*12", EUR, NEG)
-r.fila("RESULTADO REAL DEL ROBOT AISLADO", f"=B{r.f-2}+B{r.f-1}", EUR, TOT, None, PCT,
-       "Con 0% de monetización, el robot solo aporta coste", F_MAL, grande=BIG)
-r.explicar("Tres vías para que ese ahorro sea real, y ninguna implica despedir: reasignar "
-           "personal a la línea de palet usado, que necesita 2,6 operarios más y solo le "
-           "falta espacio; crecer en palet nuevo a precio de mercado; o no reponer las bajas "
-           "naturales de una plantilla con más de una década de antigüedad.")
-r.hueco()
-
-r.barra("LA PREGUNTA CORRECTA: ¿A QUÉ DEDICAR LA MÁQUINA?", "→ VA AL INFORME")
-r.explicar("La capacidad del robot es la misma se use para lo que se use. Lo que cambia es a "
-           "quién se le vende. Esta comparación es, probablemente, el argumento más potente "
-           "del informe.")
-r.cabecera(["Destino de la producción", "Precio", "Margen/palet", "Margen anual"])
-# El transporte difiere: 0,53 € solo aplica a las rutas de Persán con el tráiler
-# propio a plena carga; para el mercado ordinario rige el 0,62 € del Anexo 3.
-for etiqueta, precio, transporte in [
-    ("Vender a Persán a 10 €", 10.00, 0.53),
-    ("Vender al mercado actual a 15,16 €", 15.16, 0.62),
+i.barra("Y SI PERSÁN DICE QUE NO")
+for t in [
+    "No pasa nada. Perder un contrato que pierde dinero no es perder: la capacidad ociosa de "
+    "40.876 palets/año sigue ahí, y el robot se justifica igualmente por flexibilidad.",
+    "El coste de equivocarse es asimétrico: rechazar cuesta una oportunidad; firmar a 10 € "
+    "cuesta 944.383 € en cinco años.",
+    "Hay que hablar ANTES con el proveedor gallego de madera. Un aumento del 52% en el "
+    "volumen de compra da poder de negociación, y si la madera baja, todas las cuentas "
+    "mejoran, se firme o no con Persán.",
 ]:
-    coste = 8.27 + 0.42 + transporte + 1.30
-    f = r.f
-    ws.cell(f, 1, etiqueta).font = ETI
-    cc = ws.cell(f, 2, precio); cc.font = AZUL; cc.number_format = EU2
-    cc.alignment = Alignment(horizontal="center")
-    cc = ws.cell(f, 3, f"=B{f}-{round(coste, 2)}"); cc.font = TOT; cc.number_format = EU2
-    cc.alignment = Alignment(horizontal="center")
-    cc = ws.cell(f, 4, f"=C{f}*{int(400*0.9*242)}"); cc.font = TOT; cc.number_format = EUR
-    cc.alignment = Alignment(horizontal="center")
-    r.f += 1
-r.fila("COSTE DE OPORTUNIDAD", f"=D{r.f-1}-D{r.f-2}", EUR, TOT, None, PCT,
-       "Lo que cuesta dedicar la máquina a Persán en vez de al mercado", F_MAL, grande=BIG)
-r.explicar("Matiz honesto y necesario: esto supone que hay demanda para colocar esos palets a "
-           "15,16 €. Con la fábrica al 81%, hoy la restricción es la demanda, no la "
-           "capacidad. Es la principal debilidad de este argumento y hay que decirlo antes de "
-           "que lo diga el jurado.")
+    i.texto(t)
 
 # ══════════════════════════════════════════════════════════════════════════
-# HOJA 6 — LAS OPCIONES
+# 7. INVERSIÓN MÁQUINA
 # ══════════════════════════════════════════════════════════════════════════
-o = Hoja(wb, "6. Las opciones", "6. Las cinco opciones, comparadas",
-         "Todo lo anterior confluye aquí. Cada columna es una de las alternativas que el "
-         "caso pone sobre la mesa.")
+v = Hoja(wb, "7. Inversión máquina", "7. Análisis de la inversión de la máquina",
+         "40.000 € a 5 años, con un coste de financiación del 7,5%. La rentabilidad no "
+         "depende de la máquina: depende de a qué se dedique.")
 
-o.barra("QUÉ ES CADA OPCIÓN")
-o.cabecera(["Opción", "", "", "En qué consiste"])
+v.barra("DATOS DE LA INVERSIÓN")
+v.cabecera(["Concepto", "Valor", "", "", "Comentario"])
+r_inv = v.fila("Inversión", 40000, fmt=EUR, fuente=AZUL, nota="Precio del robot")
+r_k = v.fila("Coste del dinero", 0.075, fmt=PCT, fuente=AZUL, nota="Tipo ofrecido por el banco")
+r_n = v.fila("Horizonte (años)", 5, fmt=NUM, fuente=AZUL, nota="Igual que la duración del leasing")
+r_cuota = v.fila("Cuota anual del leasing, solo la máquina",
+                 f"=B{r_inv}*(B{r_k}/12)/(1-(1+B{r_k}/12)^(-B{r_n}*12))*12", fmt=EUR,
+                 fuente=TOT, nota="Frente a 48.000 €/año si se financia junto con el tráiler. "
+                                  "Separar las dos compras ahorra 38.382 €/año")
+v.hueco()
+
+v.barra("LA RENTABILIDAD DEPENDE DEL USO", "→ VA AL INFORME")
+v.explicar("La misma máquina, con el mismo coste, da resultados radicalmente distintos según "
+           "a qué se destine. Esta tabla es el argumento para separar la decisión de comprar "
+           "de la decisión de firmar.")
+v.cabecera(["Uso que se le dé", "Flujo anual", "VAN a 5 años", "Plazo de recuperación", "Comentario"])
+for et, flujo, nota, relleno in [
+    ("A. Sustituye mano de obra y esta se reasigna al 100%", 180880,
+     "Los 4,76 operarios liberados pasan a producir algo vendible (palet usado, crecimiento).",
+     F_BIEN),
+    ("B. Se reasigna la mitad", 90440,
+     "Escenario intermedio y probablemente el más realista.", F_BIEN),
+    ("C. No se reasigna a nadie", 0,
+     "Si nadie cambia de puesto y no se vende más, el ahorro teórico no existe.", F_MAL),
+    ("D. Se dedica a Persán a 10 €", -45302,
+     "Fabricar a pérdida con una máquina eficiente sigue siendo fabricar a pérdida.", F_MAL),
+    ("E. Se dedica al mercado actual a 15,16 €", 396396,
+     "El mejor uso posible, PERO requiere demanda: hoy la fábrica está al 81%.", F_BIEN),
+]:
+    f = v.f
+    ws = v.ws
+    ws.cell(f, 1, et).font = ETI
+    cc = ws.cell(f, 2, flujo); cc.font = NEG; cc.number_format = EUR
+    cc.alignment = Alignment(horizontal="center")
+    cc = ws.cell(f, 3, f"=-$B${r_inv}+B{f}*(1-(1+$B${r_k})^-$B${r_n})/$B${r_k}")
+    cc.font = TOT; cc.number_format = EUR
+    cc.alignment = Alignment(horizontal="center")
+    cc = ws.cell(f, 4, f'=IF(B{f}<=0,"nunca",$B${r_inv}/B{f}*12)')
+    cc.font = TOT; cc.number_format = '0.0" meses"'
+    cc.alignment = Alignment(horizontal="center")
+    ws.cell(f, 5, nota).font = MINI
+    ws.cell(f, 5).alignment = Alignment(wrap_text=True, vertical="center")
+    for col in range(1, 6):
+        ws.cell(f, col).fill = relleno
+    v.f += 1
+v.explicar("Lectura: el caso C es el escenario más conservador y el único en que la máquina "
+           "no se paga sola, y aun así solo cuesta 40.000 €. Los casos A, B y E la convierten "
+           "en la mejor inversión disponible. El caso D —dedicarla a Persán tal como está "
+           "negociado— es el ÚNICO que destruye valor de forma estructural.")
+v.hueco()
+
+v.barra("POR QUÉ COMPRARLA IGUALMENTE, AUNQUE NO SE FIRME PERSÁN")
+v.cabecera(["Razón", "Dato", "", "", "Explicación"])
+v.fila("Flexibilidad de formato", 0.42, fmt=NU2, fuente=TOT,
+       nota="Horas de cambio de formato, frente a 6 horas de la línea de 2019. Alcopalet gana "
+            "dinero en series especiales: el 114×114 de Don Simón, las exigencias de Tetra "
+            "Pak. Con 6 horas de parada una serie corta es inviable.")
+v.fila("Productividad por operario", 360, fmt=NUM, fuente=TOT,
+       nota="Palets por operario y día, frente a 62,5 en manual y 195 en la línea de 2019.")
+v.fila("Reduce el riesgo laboral y de absentismo", 5.76, fmt=NU2, fuente=TOT,
+       nota="Operarios manuales equivalentes. El caso dice que la mano de obra es «cada vez "
+            "más difícil de gestionar y contratar» y menciona absentismo los lunes.")
+v.fila("Mantenimiento mínimo", "", nota="Sin electrónica compleja ni rodamientos: funciona con "
+                                       "poleas y solo requiere limpieza diaria. La línea de "
+                                       "2019 tiene mantenimiento «complejo y constante».")
+v.fila("Riesgo económico limitado", 40000, fmt=EUR, fuente=TOT, relleno=F_BIEN,
+       nota="Sobre un beneficio de 279.364 €. En el peor escenario se pierden 40.000 €; en el "
+            "mejor se ganan 180.000 € al año.")
+
+# ══════════════════════════════════════════════════════════════════════════
+# 8. ESCENARIOS
+# ══════════════════════════════════════════════════════════════════════════
+s = Hoja(wb, "8. Escenarios", "8. Las cinco opciones, comparadas",
+         "Todo lo anterior confluye aquí. Cada columna es una alternativa real que el caso "
+         "pone sobre la mesa.")
+
+s.barra("QUÉ ES CADA OPCIÓN")
+s.cabecera(["Opción", "", "", "", "En qué consiste"])
 for et, desc in [
-    ("A — No hacer nada", "Ni máquina ni contrato ni dividendo. La empresa sigue igual."),
-    ("B — Persán + robot", "Lo que propone Esteban: firmar el contrato y comprar la máquina "
-                           "con el tráiler."),
-    ("C — Dividendo sin invertir", "Lo que piden los padres: repartir y no comprometer nada."),
-    ("D — Robot sin Persán", "Comprar la máquina SOLA, sin tráiler, y no firmar el contrato."),
-    ("E — Robot + Persán renegociado", "Comprar la máquina y firmar solo si Persán sube el "
-                                       "precio y acorta el plazo de pago."),
+    ("A — No hacer nada", "Ni máquina, ni contrato, ni dividendo. La empresa sigue igual y se "
+                          "queda estancada en los 3.000 m² actuales."),
+    ("B — Persán + robot (lo que propone Esteban)",
+     "Firmar el contrato a 10 € y comprar máquina y tráiler con leasing conjunto."),
+    ("C — Dividendo sin invertir (lo que piden los padres)",
+     "Repartir beneficio para la casa y no comprometer nada."),
+    ("D — Robot solo, sin Persán",
+     "Comprar la máquina SIN el tráiler y no firmar. Se financia solo 40.000 €."),
+    ("E — Robot + Persán renegociado (RECOMENDADA)",
+     "Comprar la máquina hoy y firmar solo si se consiguen las tres palancas: 12,50 €, "
+     "madera a 7,50 € y cobro a 90 días."),
 ]:
-    o.fila(et, "", EUR, NEG, None, PCT, desc)
-o.hueco()
+    s.fila(et, nota=desc)
+s.hueco()
 
-o.barra("IMPACTO ECONÓMICO ANUAL", "→ VA AL INFORME")
-o.explicar("Todas las cifras son el efecto sobre el resultado anual de la empresa, partiendo "
-           "del beneficio actual de 279.364 €.")
-o.cabecera(["Concepto", "B — Persán + robot", "D — Robot solo", "E — Renegociado"])
-
-PRECIO_REN, DIAS_REN = 12.50, 90
-ws = o.ws
-filas_op = {}
-for clave, etiqueta, fB, fD, fE, nota in [
+s.barra("IMPACTO ECONÓMICO ANUAL", "→ VA AL INFORME")
+s.explicar("Efecto sobre el resultado anual, partiendo del beneficio actual de 279.364 €. "
+           "Las opciones A y C no alteran el resultado: A no hace nada y C solo saca caja.")
+s.cabecera(["Concepto", "B — Persán + robot", "D — Robot solo", "E — Renegociado", "Comentario"])
+ws = s.ws
+filas = {}
+for clave, et, fB, fD, fE, nota in [
     ("mc", "Margen de contribución del contrato",
-     "=90000*(10-10.52)", "0", f"=90000*({PRECIO_REN}-10.52)",
-     "En D no hay contrato, luego no hay margen"),
+     "=90000*(10-10.548)", "0", f"=90000*(12.5-(7.5+{COSTE_NM}))",
+     "En D no hay contrato. En E, con madera re-especificada"),
     ("ah", "Ahorro real de mano de obra", "0", "0", "0",
-     "Cero mientras no se reasigne personal (hipótesis conservadora)"),
+     "Cero en todas: hipótesis conservadora de no reasignar a nadie"),
     ("ca", "Alquiler de la campa", "=-5000*12", "0", "=-5000*12", None),
     ("le", "Leasing", "=-4000*12",
      "=-40000*(0.075/12)/(1-(1+0.075/12)^(-60))*12", "=-4000*12",
      "En D solo se financia la máquina: no hace falta tráiler"),
     ("ci", "Coste financiero del circulante",
-     "=-(90000*10*180/365+1000*10.52)*0.075", "0",
-     f"=-(90000*{PRECIO_REN}*{DIAS_REN}/365+1000*10.52)*0.075",
-     "En E se supone además cobrar a 90 días en vez de 180"),
+     "=-(90000*10*180/365+1000*10.548)*0.075", "0",
+     f"=-(90000*12.5*90/365+1000*(7.5+{COSTE_NM}))*0.075",
+     "En E se cobra a 90 días en vez de 180"),
 ]:
-    f = o.f
-    ws.cell(f, 1, etiqueta).font = ETI
+    f = s.f
+    ws.cell(f, 1, et).font = ETI
     for col, formula in ((2, fB), (3, fD), (4, fE)):
         cc = ws.cell(f, col, formula)
-        cc.font = NEG
-        cc.number_format = EUR
+        cc.font = NEG; cc.number_format = EUR
         cc.alignment = Alignment(horizontal="center")
     if nota:
-        ws.cell(f, 1).comment = None
-    filas_op[clave] = f
-    o.f += 1
+        ws.cell(f, 5, nota).font = MINI
+        ws.cell(f, 5).alignment = Alignment(wrap_text=True, vertical="center")
+    filas[clave] = f
+    s.f += 1
 
-f = o.f
+f = s.f
 ws.cell(f, 1, "IMPACTO ANUAL SOBRE EL RESULTADO").font = TOT
 for col in (2, 3, 4):
     L = chr(64 + col)
-    cc = ws.cell(f, col, f"=SUM({L}{filas_op['mc']}:{L}{filas_op['ci']})")
-    cc.font = TOT
-    cc.number_format = EUR
+    cc = ws.cell(f, col, f"=SUM({L}{filas['mc']}:{L}{filas['ci']})")
+    cc.font = TOT; cc.number_format = EUR
     cc.alignment = Alignment(horizontal="center")
-    cc.fill = F_TOT
-ws.cell(f, 1).fill = F_TOT
-fila_impacto = f
-o.f += 1
+for col in range(1, 6):
+    ws.cell(f, col).fill = F_TOT
+fila_imp = f
+s.f += 1
 
-f = o.f
+f = s.f
 ws.cell(f, 1, "RESULTADO NETO PROYECTADO").font = TOT
 for col in (2, 3, 4):
     L = chr(64 + col)
-    cc = ws.cell(f, col, f"=279364+{L}{fila_impacto}")
-    cc.font = TOT
-    cc.number_format = EUR
+    cc = ws.cell(f, col, f"=279364+{L}{fila_imp}")
+    cc.font = TOT; cc.number_format = EUR
     cc.alignment = Alignment(horizontal="center")
-    cc.fill = F_TOT
-ws.cell(f, 1).fill = F_TOT
-o.f += 1
-o.fila("(Opciones A y C dejan el resultado en 279.364 €, sin cambio)", "", EUR, NEG,
-       None, PCT, "A no hace nada; C solo saca caja, no altera el resultado")
-o.hueco()
+for col in range(1, 6):
+    ws.cell(f, col).fill = F_TOT
+ws.cell(f, 5, "Opciones A y C: 279.364 € (sin cambio)").font = MINI
+s.f += 1
+s.hueco()
 
-o.barra("IMPACTO EN LA CAJA DEL PRIMER AÑO", "→ VA AL INFORME")
-o.explicar("Tan importante como el resultado. La empresa generó caja NEGATIVA en 2025, así "
-           "que lo que decida tiene que caber en la tesorería.")
-o.cabecera(["Concepto", "B — Persán + robot", "D — Robot solo", "E — Renegociado"])
-f = o.f
+s.barra("IMPACTO EN LA CAJA DEL PRIMER AÑO", "→ VA AL INFORME")
+s.explicar("Tan importante como el resultado. La empresa generó caja NEGATIVA en 2025, así "
+           "que cualquier decisión tiene que caber en la tesorería.")
+s.cabecera(["Concepto", "B — Persán + robot", "D — Robot solo", "E — Renegociado", "Comentario"])
+f = s.f
 ws.cell(f, 1, "Impacto en el resultado").font = ETI
 for col in (2, 3, 4):
     L = chr(64 + col)
-    cc = ws.cell(f, col, f"={L}{fila_impacto}")
-    cc.font = NEG
-    cc.number_format = EUR
+    cc = ws.cell(f, col, f"={L}{fila_imp}")
+    cc.font = NEG; cc.number_format = EUR
     cc.alignment = Alignment(horizontal="center")
-o.f += 1
-f = o.f
+s.f += 1
+f = s.f
 ws.cell(f, 1, "(−) Circulante inmovilizado el primer año").font = ETI
-for col, formula in ((2, "=-(90000*10*180/365+1000*10.52)"), (3, "0"),
-                     (4, f"=-(90000*{PRECIO_REN}*{DIAS_REN}/365+1000*10.52)")):
+for col, formula in ((2, "=-(90000*10*180/365+1000*10.548)"), (3, "0"),
+                     (4, f"=-(90000*12.5*90/365+1000*(7.5+{COSTE_NM}))")):
     cc = ws.cell(f, col, formula)
-    cc.font = NEG
-    cc.number_format = EUR
+    cc.font = NEG; cc.number_format = EUR
     cc.alignment = Alignment(horizontal="center")
-o.f += 1
-f = o.f
+s.f += 1
+f = s.f
 ws.cell(f, 1, "NECESIDAD DE CAJA DEL PRIMER AÑO").font = TOT
 for col in (2, 3, 4):
     L = chr(64 + col)
     cc = ws.cell(f, col, f"={L}{f-2}+{L}{f-1}")
-    cc.font = TOT
-    cc.number_format = EUR
+    cc.font = TOT; cc.number_format = EUR
     cc.alignment = Alignment(horizontal="center")
-    cc.fill = F_MAL
-ws.cell(f, 1).fill = F_MAL
-o.f += 1
-o.fila("Caja operativa generada en 2025 (referencia)", -60555, EUR, AZUL, None, PCT,
-       "Ver hoja 1. La empresa NO generó caja el año pasado", F_MAL)
-o.hueco()
+for col in range(1, 6):
+    ws.cell(f, col).fill = F_MAL
+s.f += 1
+s.fila("Caja operativa generada en 2025 (referencia)", -60555, fmt=EUR, fuente=AZUL,
+       relleno=F_MAL, nota="Ver hoja 2. La empresa NO generó caja el año pasado")
+s.hueco()
 
-o.barra("COMPARACIÓN CUALITATIVA")
-o.explicar("No todo se decide con euros. Estos son los criterios que el propio caso pone "
-           "sobre la mesa, y que hay que respetar para que la propuesta sea realista.")
-o.cabecera(["Criterio", "B — Persán + robot", "D — Robot solo", "E — Renegociado"])
-for criterio, vB, vD, vE in [
-    ("¿El contrato cubre sus costes?", "NO", "n/a", "SÍ"),
-    ("¿Cabe en la tesorería?", "NO", "SÍ", "AJUSTADO"),
-    ("¿Respeta «sin despidos»?", "SÍ", "SÍ", "SÍ"),
-    ("¿Respeta el turno único?", "SÍ", "SÍ", "SÍ"),
-    ("¿Permite el plan de crecimiento a 2030?", "SÍ", "PARCIAL", "SÍ"),
-    ("¿Da seguridad a los fundadores?", "NO", "PARCIAL", "PARCIAL"),
-    ("¿Reduce la dependencia de mano de obra?", "SÍ", "SÍ", "SÍ"),
-    ("Riesgo de concentración de cliente", "ALTO", "BAJO", "MEDIO"),
+s.barra("COMPARACIÓN CUALITATIVA")
+s.explicar("No todo se decide con euros. Estos son los criterios que el propio caso pone "
+           "sobre la mesa y que hay que respetar para que la propuesta sea realista.")
+s.cabecera(["Criterio", "B — Persán + robot", "D — Robot solo", "E — Renegociado", "Observación"])
+for crit, vB, vD, vE, nota in [
+    ("¿El contrato cubre sus costes?", "NO", "n/a", "SÍ",
+     "Solo E supera el precio de equilibrio de 12,17 €"),
+    ("¿Cabe en la tesorería?", "NO", "SÍ", "AJUSTADO",
+     "B exige 643.000 € el primer año"),
+    ("¿Respeta «sin despidos»?", "SÍ", "SÍ", "SÍ",
+     "Ninguna obliga a despedir: la capacidad extra se necesita igual"),
+    ("¿Respeta el turno único?", "SÍ", "SÍ", "SÍ", None),
+    ("¿Permite crecer hasta 2030?", "SÍ", "PARCIAL", "SÍ",
+     "A y C congelan la empresa en los 3.000 m² actuales"),
+    ("¿Da seguridad a los fundadores?", "NO", "PARCIAL", "PARCIAL",
+     "B deja el beneficio en 90.000 €: sin dividendo en 5 años"),
+    ("¿Reduce la dependencia de mano de obra?", "SÍ", "SÍ", "SÍ",
+     "Recurso «cada vez más difícil de contratar» según el caso"),
+    ("Riesgo de concentración de cliente", "ALTO", "BAJO", "MEDIO",
+     "Persán sería el 20% de la facturación a precio fijo"),
 ]:
-    f = o.f
-    ws.cell(f, 1, criterio).font = ETI
-    for col, v in ((2, vB), (3, vD), (4, vE)):
-        cc = ws.cell(f, col, v)
+    f = s.f
+    ws.cell(f, 1, crit).font = ETI
+    for col, val in ((2, vB), (3, vD), (4, vE)):
+        cc = ws.cell(f, col, val)
         cc.font = TOT
         cc.alignment = Alignment(horizontal="center")
-        if v in ("NO", "ALTO"):
-            cc.fill = F_MAL
-        elif v in ("SÍ", "BAJO"):
-            cc.fill = F_BIEN
-        else:
-            cc.fill = F_CLAVE
-    o.f += 1
-o.hueco()
+        cc.fill = F_MAL if val in ("NO", "ALTO") else (
+            F_BIEN if val in ("SÍ", "BAJO") else F_CLAVE)
+    if nota:
+        ws.cell(f, 5, nota).font = MINI
+        ws.cell(f, 5).alignment = Alignment(wrap_text=True, vertical="center")
+    s.f += 1
+s.hueco()
 
-o.barra("LA LECTURA")
+s.barra("LA DECISIÓN")
 for t in [
-    "El caso presenta la máquina y el contrato como una sola decisión, pero tienen plazos "
-    "distintos: la máquina hay que decidirla HOY, mientras que el contrato de Persán todavía "
-    "es un borrador. No hay ninguna razón para resolver las dos cosas en la misma reunión.",
-    "La máquina se justifica por flexibilidad (media hora de cambio de formato frente a seis "
-    "horas) y por reducir la dependencia de una mano de obra difícil de contratar. No por "
-    "capacidad: la fábrica está al 81%.",
-    "Si se compra la máquina sin el tráiler, el leasing baja de 48.000 € a unos 9.600 € al "
-    "año. Los 150.000 € del camión solo hacen falta para el retén de Persán.",
-    "El contrato a 10 € pierde dinero en cada palet. El precio de equilibrio está en 12,17 €. "
-    "Perder a Persán cuesta una oportunidad; firmarlo cuesta casi un millón de euros en "
-    "cinco años.",
-    "Hay tres palancas de negociación, no una: el precio, el plazo de cobro y —la que nadie "
-    "mira— la especificación de la madera. Los 8,27 € son el estándar Tetra Pak, nacido de un "
-    "incidente en una aduana china. Persán fabrica detergentes en Sevilla: probablemente no "
-    "necesita esa calidad.",
-    "Y a los fundadores hay que decirles que rechazar Persán a 10 € es precisamente lo que "
-    "protege su jubilación: si se firma, el beneficio cae a 90.000 € y no habrá dividendo "
-    "en cinco años.",
+    "La máquina y el contrato tienen plazos distintos: el fabricante pide respuesta HOY, "
+    "mientras que el contrato de Persán todavía es un borrador. No hay ninguna razón para "
+    "resolver las dos cosas en la misma reunión, y confundirlas es exactamente lo que le "
+    "está pasando a Esteban.",
+    "COMPRAR LA MÁQUINA, sin el tráiler: 40.000 € de riesgo, leasing de 9.618 €/año en vez de "
+    "48.000 €, y se justifica por flexibilidad y por reducir la dependencia de mano de obra.",
+    "NO FIRMAR a 10 €: pierde 0,55 € por palet, y hasta 0,10 € aunque el operario fuese "
+    "gratis. Volver a Persán con las tres palancas y un objetivo claro de 12,50 €.",
+    "A LOS PADRES: rechazar Persán a 10 € es precisamente lo que protege su jubilación. Si se "
+    "firma, el beneficio cae a 90.000 € y no habrá dividendo en cinco años. Proponer un "
+    "reparto moderado ahora y una política de dividendo creciente.",
 ]:
-    o.texto(t)
+    s.texto(t)
+
+# ══════════════════════════════════════════════════════════════════════════
+# 9. ANEXOS PARA EL INFORME
+# ══════════════════════════════════════════════════════════════════════════
+a = Hoja(wb, "9. Anexos informe", "9. Los anexos que llevaría al informe final",
+         "El Anexo al CPNNI-24 limita el informe a 10 carillas INCLUYENDO anexos, portada e "
+         "índice. Con ~5 carillas de informe y 1 de portada e índice, quedan unas 4 para "
+         "anexos. Estos son los cuatro que elegiría.")
+
+a.barra("EL PRESUPUESTO DE ESPACIO")
+a.cabecera(["Elemento", "Carillas", "", "", "Comentario"])
+a.fila("Portada e índice", 1.0, fmt=NU2, fuente=TOT, nota="Título, autor, fecha, programa")
+a.fila("Cuerpo del informe", 5.0, fmt=NU2, fuente=TOT,
+       nota="Introducción, problema, opciones, criterios, elección y conclusión")
+a.fila("Anexos", 3.5, fmt=NU2, fuente=TOT, nota="Los cuatro de abajo")
+a.fila("TOTAL", 9.5, fmt=NU2, fuente=TOT, relleno=F_BIEN,
+       nota="Por debajo del máximo de 10. El ideal recomendado son 7")
+a.hueco()
+
+a.barra("ANEXO 1 — ESTRUCTURA DE COSTES Y PUNTO DE EQUILIBRIO", "½ carilla")
+a.explicar("Sale de la hoja 2. Es el anexo que sostiene TODO el análisis: sin la separación "
+           "entre fijos y variables no se puede juzgar el contrato.")
+a.cabecera(["Qué incluir", "", "", "", "Por qué"])
+a.fila("Tabla de costes fijos y variables sobre ventas", nota="Con el % sobre ventas de cada "
+       "partida y el margen de contribución del 27,2%")
+a.fila("La línea de comprobación del EBITDA", nota="Diferencia cero con el Anexo 1. Es lo que "
+       "hace la reordenación indiscutible")
+a.fila("Punto de equilibrio y margen de seguridad", nota="3.214.115 € y 29,9%")
+a.fila("Efecto de Persán sobre el punto de equilibrio", nota="Sube casi 400.000 € por los "
+       "108.000 € de costes fijos adicionales")
+a.hueco()
+
+a.barra("ANEXO 2 — ANÁLISIS ECONÓMICO DEL CONTRATO PERSÁN", "1 carilla")
+a.explicar("Sale de las hojas 4 y 5. Es el anexo central: contiene la prueba de que el "
+           "contrato destruye valor y a partir de qué precio dejaría de hacerlo.")
+a.cabecera(["Qué incluir", "", "", "", "Por qué"])
+a.fila("Escandallo con la mano de obra ponderada", nota="Coste real de 10,548 € frente a los "
+       "10,52 € del Anexo 3, y margen de −0,548 €/palet")
+a.fila("Margen sin mano de obra: −0,10 €/palet", nota="EL ARGUMENTO DEFINITIVO: aunque el "
+       "operario fuese gratis, el contrato pierde")
+a.fila("Cuenta de resultados incremental completa", nota="Del margen de contribución al "
+       "impacto anual de −191.398 €, pasando por campa, leasing y circulante")
+a.fila("Los cuatro niveles de precio de equilibrio", nota="Y el resultado: 12,17 €")
+a.fila("Tabla de sensibilidad precio × madera", nota="Demuestra que ninguna palanca por "
+       "separado salva el contrato")
+a.hueco()
+
+a.barra("ANEXO 3 — CAPACIDAD PRODUCTIVA Y ENCAJE DEL CONTRATO", "½ carilla")
+a.explicar("Sale de la hoja 4. Es el anexo que desmonta el argumento de urgencia de Esteban y "
+           "que revela que la máquina no llega a las 90.000 unidades.")
+a.cabecera(["Qué incluir", "", "", "", "Por qué"])
+a.fila("Capacidad anual de los tres sistemas", nota="Línea 2019, manual y robot, con el "
+       "cálculo a la vista")
+a.fila("Grado de utilización actual: 81%", nota="Desmonta el «no llegamos». Hay 40.876 palets "
+       "de holgura sin invertir")
+a.fila("Capacidad del robot: oficial 90% y realista 80%", nota="En NINGÚN escenario cubre las "
+       "90.000 por sí solo")
+a.fila("Recorrido de la línea de palet usado", nota="99.670 unidades bloqueadas por espacio, "
+       "no por demanda. Es la alternativa creativa")
+a.hueco()
+
+a.barra("ANEXO 4 — ESCENARIOS Y ANÁLISIS DE LA INVERSIÓN", "1 carilla")
+a.explicar("Sale de las hojas 7 y 8. Es el anexo que respalda la recomendación y demuestra "
+           "que se han valorado alternativas, que es el criterio 8 de evaluación "
+           "(«creatividad para generar soluciones y alternativas»).")
+a.cabecera(["Qué incluir", "", "", "", "Por qué"])
+a.fila("Tabla comparativa de las cinco opciones", nota="Impacto anual, resultado proyectado y "
+       "necesidad de caja del primer año")
+a.fila("Comparación cualitativa frente a los criterios", nota="Sin despidos, turno único, "
+       "crecimiento, seguridad de los fundadores, riesgo de cliente")
+a.fila("VAN y plazo de recuperación de la máquina", nota="Los cinco usos posibles. Demuestra "
+       "que la máquina es buena y el contrato malo, por separado")
+a.fila("Términos propuestos para la renegociación", nota="Las tres palancas con su objetivo y "
+       "las cláusulas innegociables")
+a.hueco()
+
+a.barra("QUÉ DEJARÍA FUERA Y POR QUÉ")
+for t in [
+    "La reconciliación entre el Anexo 1 y el Anexo 3 (los 288 € de desviación). Es "
+    "imprescindible haberla hecho, pero es control de calidad interno. Se menciona en una "
+    "frase dentro del cuerpo y se guarda para el turno de preguntas.",
+    "El endeudamiento implícito (587.280 €, 1,30x EBITDA que pasaría a 4,13x). Es un buen "
+    "argumento, pero cabe en dos líneas del cuerpo del informe. Al anexo solo iría si sobrara "
+    "espacio.",
+    "El coste por camión (134.109 € frente a los 47.700 € que asigna el Anexo 3). Es una "
+    "inferencia propia, no un dato del caso. Mejor guardarla para la defensa oral, donde "
+    "demuestra profundidad sin comprometer el rigor del informe escrito.",
+    "El análisis del Anexo 2 (rentabilidad por líneas). Sus conclusiones caben en tres filas "
+    "dentro del cuerpo del informe: no merece un anexo propio.",
+    "Las tablas de sensibilidad completas al plazo de cobro. Basta con la de precio × madera, "
+    "que es la que de verdad discrimina.",
+]:
+    a.texto(t)
 
 wb.save("/home/user/DANISANTELMO/Alcopalet_Analisis_Completo.xlsx")
-print("Guardado:", [s.title for s in wb.worksheets])
+print("Guardado:", [x.title for x in wb.worksheets])
