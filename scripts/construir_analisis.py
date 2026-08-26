@@ -438,7 +438,7 @@ for et, imp, caja, val, fill in [
      "No hay caja: en 2025 se generaron −60.555 €", F_MAL),
     ("D — Robot solo, sin tráiler", -9618, -9618,
      "Riesgo mínimo y gana flexibilidad", F_CLA),
-    ("E — Robot + Persán renegociado", 117964, -287917, "RECOMENDADA", F_BIEN),
+    ("E — Robot + Persán renegociado", 117964, -169183, "RECOMENDADA", F_BIEN),
 ]:
     f = c.f
     ws = c.ws
