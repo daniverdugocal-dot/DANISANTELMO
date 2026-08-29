@@ -10,14 +10,16 @@ pres.author = "Daniel Verdugo Calvo";
 pres.title = "Alcopalet — El precio del crecimiento";
 
 // ---------------------------------------------------------------- paleta
-const OSCURO = "2B2118";   // madera oscura
-const AMBAR = "C87F2A";    // acento
-const AMBAR_C = "EFD9B8";  // acento claro
-const GRIS = "6B6259";
-const CLARO = "F7F5F2";
+const OSCURO = "12294A";   // azul marino corporativo
+const AMBAR = "3E6CA3";    // azul acero (acento sobre fondo claro)
+const ACL = "8FB3DE";      // azul claro (acento sobre fondo oscuro)
+const AMBAR_C = "D6E2F0";  // azul hielo (tarjetas destacadas)
+const GRIS = "5A6472";
+const CLARO = "F4F6F9";
 const BLANCO = "FFFFFF";
 const ROJO = "B3261E";
-const VERDE = "2E6F40";
+const VERDE = "1E6B3A";
+const ROJO_CL = "FF8A80";  // rojo legible sobre azul marino
 
 const TIT = "Cambria";
 const CPO = "Calibri";
@@ -52,20 +54,20 @@ function circulo(s, n, x, y, d, relleno, colorTexto) {
 
 function tarjeta(s, x, y, w, h, relleno) {
   s.addShape(pres.ShapeType.roundRect, {
-    x, y, w, h, rectRadius: 0.06,
+    x, y, w, h, rectRadius: 0.03,
     fill: { color: relleno || CLARO },
-    line: { color: relleno === BLANCO ? "E3DED6" : relleno || CLARO, width: 1 },
+    line: { color: relleno === BLANCO ? "DCE3EB" : relleno || CLARO, width: 1 },
   });
 }
 
 function pie(s, n) {
   s.addText("Alcopalet · El precio del crecimiento", {
     x: M, y: 6.92, w: 6, h: 0.3, isTextBox: true, margin: 0,
-    fontFace: CPO, fontSize: 9, color: "A79E93",
+    fontFace: CPO, fontSize: 9, color: "98A2B0",
   });
   s.addText(String(n), {
     x: 13.33 - M - 1, y: 6.92, w: 1, h: 0.3, isTextBox: true, margin: 0,
-    fontFace: CPO, fontSize: 9, color: "A79E93", align: "right",
+    fontFace: CPO, fontSize: 9, color: "98A2B0", align: "right",
   });
 }
 
@@ -74,7 +76,7 @@ let s = pres.addSlide();
 s.background = { color: OSCURO };
 s.addText("CASO PRÁCTICO", {
   x: M, y: 2.0, w: ANCHO, h: 0.35, isTextBox: true, margin: 0,
-  fontFace: CPO, fontSize: 14, color: AMBAR, charSpacing: 5, bold: true,
+  fontFace: CPO, fontSize: 14, color: ACL, charSpacing: 5, bold: true,
 });
 s.addText("ALCOPALET", {
   x: M, y: 2.42, w: ANCHO, h: 1.15, isTextBox: true, margin: 0,
@@ -84,14 +86,14 @@ s.addText("El precio del crecimiento", {
   x: M, y: 3.6, w: ANCHO, h: 0.55, isTextBox: true, margin: 0,
   fontFace: TIT, fontSize: 26, italic: true, color: AMBAR_C,
 });
-s.addShape(pres.ShapeType.ellipse, { x: M, y: 4.62, w: 0.13, h: 0.13, fill: { color: AMBAR } });
+s.addShape(pres.ShapeType.ellipse, { x: M, y: 4.62, w: 0.13, h: 0.13, fill: { color: ACL } });
 s.addText("Daniel Verdugo Calvo", {
   x: M + 0.32, y: 4.5, w: 6, h: 0.35, isTextBox: true, margin: 0,
   fontFace: CPO, fontSize: 15, color: BLANCO,
 });
 s.addText("Programa LYDES  ·  San Telmo Business School  ·  31 de agosto de 2026", {
   x: M, y: 5.0, w: ANCHO, h: 0.32, isTextBox: true, margin: 0,
-  fontFace: CPO, fontSize: 12, color: "A79E93",
+  fontFace: CPO, fontSize: 12, color: "98A2B0",
 });
 s.addNotes("Buenos días. Voy a defender el caso Alcopalet. En diez minutos: cuál es el problema, qué decisión propongo y cómo se ejecuta.");
 
@@ -157,11 +159,11 @@ filas.forEach((f, i) => {
 tarjeta(s, 8.1, 1.85, ANCHO - 7.4, 2.9, OSCURO);
 s.addText("MARGEN POR PALÉ", {
   x: 8.45, y: 2.15, w: 4.3, h: 0.3, isTextBox: true, margin: 0,
-  fontFace: CPO, fontSize: 12, bold: true, color: AMBAR, charSpacing: 3,
+  fontFace: CPO, fontSize: 12, bold: true, color: ACL, charSpacing: 3,
 });
 s.addText("−0,52 €", {
   x: 8.45, y: 2.5, w: 4.3, h: 1.1, isTextBox: true, margin: 0,
-  fontFace: TIT, fontSize: 62, bold: true, color: "FF7B6B",
+  fontFace: TIT, fontSize: 62, bold: true, color: ROJO_CL,
 });
 s.addText("Cada palé vendido a Persán resta margen.\nNi el volumen ni la máquina lo corrigen.", {
   x: 8.45, y: 3.72, w: 4.3, h: 0.8, isTextBox: true, margin: 0,
@@ -205,11 +207,11 @@ comp.forEach((c, i) => {
 tarjeta(s, 8.35, 1.95, ANCHO - 7.65, 3.32, OSCURO);
 s.addText("IMPACTO ANUAL", {
   x: 8.7, y: 2.25, w: 4.1, h: 0.3, isTextBox: true, margin: 0,
-  fontFace: CPO, fontSize: 12, bold: true, color: AMBAR, charSpacing: 3,
+  fontFace: CPO, fontSize: 12, bold: true, color: ACL, charSpacing: 3,
 });
 s.addText("−188.877 €", {
   x: 8.7, y: 2.6, w: 4.1, h: 1.0, isTextBox: true, margin: 0,
-  fontFace: TIT, fontSize: 44, bold: true, color: "FF7B6B",
+  fontFace: TIT, fontSize: 44, bold: true, color: ROJO_CL,
 });
 s.addText("67,6 %", {
   x: 8.7, y: 3.72, w: 1.6, h: 0.55, isTextBox: true, margin: 0,
@@ -320,7 +322,7 @@ s = pres.addSlide();
 s.background = { color: OSCURO };
 s.addText("LA DECISIÓN", {
   x: M, y: 0.85, w: ANCHO, h: 0.35, isTextBox: true, margin: 0,
-  fontFace: CPO, fontSize: 13, bold: true, color: AMBAR, charSpacing: 5,
+  fontFace: CPO, fontSize: 13, bold: true, color: ACL, charSpacing: 5,
 });
 s.addText("Invertir en el robot y renegociar antes de firmar", {
   x: M, y: 1.25, w: ANCHO - 0.5, h: 1.4, isTextBox: true, margin: 0,
@@ -337,15 +339,15 @@ dec.forEach((d, i) => {
   const w = ANCHO / 3 - 0.4;
   s.addText(d[0].toUpperCase(), {
     x, y: 2.85, w, h: 0.3, isTextBox: true, margin: 0,
-    fontFace: CPO, fontSize: 11, bold: true, color: AMBAR, charSpacing: 2,
+    fontFace: CPO, fontSize: 11, bold: true, color: ACL, charSpacing: 2,
   });
   s.addText(d[1], {
     x, y: 3.2, w: w * 0.45, h: 0.62, isTextBox: true, margin: 0,
-    fontFace: TIT, fontSize: 22, color: "8A8079", strike: true,
+    fontFace: TIT, fontSize: 22, color: "7C8899", strike: true,
   });
   s.addText("→", {
     x: x + w * 0.45, y: 3.26, w: 0.42, h: 0.5, isTextBox: true, margin: 0,
-    fontFace: CPO, fontSize: 20, color: AMBAR, align: "center",
+    fontFace: CPO, fontSize: 20, color: ACL, align: "center",
   });
   s.addText(d[2], {
     x: x + w * 0.45 + 0.42, y: 3.2, w: w * 0.52, h: 0.62, isTextBox: true, margin: 0,
@@ -450,11 +452,11 @@ s.addText("El cambio de formato pasa de 300 a 25 minutos, lo que hace viables la
 });
 s.addText("300 min", {
   x: M + 7.0, y: 4.95, w: 1.7, h: 0.5, isTextBox: true, margin: 0,
-  fontFace: TIT, fontSize: 26, color: "8A8079", strike: true, align: "right",
+  fontFace: TIT, fontSize: 26, color: "7C8899", strike: true, align: "right",
 });
 s.addText("→", {
   x: M + 8.75, y: 5.02, w: 0.5, h: 0.4, isTextBox: true, margin: 0,
-  fontFace: CPO, fontSize: 20, color: AMBAR, align: "center",
+  fontFace: CPO, fontSize: 20, color: ACL, align: "center",
 });
 s.addText("25 min", {
   x: M + 9.3, y: 4.95, w: 2.5, h: 0.5, isTextBox: true, margin: 0,
@@ -500,7 +502,7 @@ s = pres.addSlide();
 s.background = { color: OSCURO };
 s.addText("¿Y SI PERSÁN NO ACEPTA?", {
   x: M, y: 1.15, w: ANCHO, h: 0.35, isTextBox: true, margin: 0,
-  fontFace: CPO, fontSize: 13, bold: true, color: AMBAR, charSpacing: 5,
+  fontFace: CPO, fontSize: 13, bold: true, color: ACL, charSpacing: 5,
 });
 s.addText("Se rechaza el contrato y se mantiene la inversión", {
   x: M, y: 1.55, w: ANCHO - 0.5, h: 1.25, isTextBox: true, margin: 0,
@@ -519,7 +521,7 @@ const cierre = [
 cierre.forEach((c, i) => {
   const x = M + i * (ANCHO / 3);
   const w = ANCHO / 3 - 0.4;
-  s.addShape(pres.ShapeType.ellipse, { x, y: 4.25, w: 0.13, h: 0.13, fill: { color: AMBAR } });
+  s.addShape(pres.ShapeType.ellipse, { x, y: 4.25, w: 0.13, h: 0.13, fill: { color: ACL } });
   s.addText(c[0], {
     x, y: 4.5, w, h: 0.45, isTextBox: true, margin: 0,
     fontFace: TIT, fontSize: 24, bold: true, color: BLANCO,
@@ -532,7 +534,7 @@ cierre.forEach((c, i) => {
 
 s.addText("Daniel Verdugo Calvo  ·  Programa LYDES  ·  San Telmo Business School", {
   x: M, y: 6.35, w: ANCHO, h: 0.32, isTextBox: true, margin: 0,
-  fontFace: CPO, fontSize: 12, color: "8A8079",
+  fontFace: CPO, fontSize: 12, color: "7C8899",
 });
 s.addNotes("Si Persán no acepta, se rechaza y se conserva la máquina. Crecer sí, pero con margen. Invertir sí, pero sin atar la inversión al contrato. Y repartir sí, cuando el negocio genere caja. Muchas gracias.");
 
